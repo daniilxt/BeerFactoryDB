@@ -1,0 +1,256 @@
+drop table if exists OrderPosition;
+drop table if exists Orders;
+drop table if exists ResBuyPosition;
+drop table if exists ImportAlcBuyPosition;
+drop table if exists ClientList;
+
+drop table if exists CylindricallyConicalTank;
+
+drop table if exists Task;
+drop table if exists LoaderTask;
+drop table if exists RecipeList;
+drop table if exists ResourceStorage;
+drop table if exists BeerStorage;
+drop table if exists ImportAlcBuy;
+
+drop table if exists BarMan;
+drop table if exists ResBuy;
+drop table if exists Manager;
+drop table if exists LoaderMan;
+drop table if exists TechnologistEngineer;
+drop table if exists StaffManager;
+drop table if exists User;
+
+
+
+create table if not exists User
+(
+    IdUser   int not null auto_increment,
+    Login    varchar(30) not null unique,
+    Password varchar(30) not null,
+    primary key (IdUser)
+);
+
+create table if not exists StaffManager
+(
+    IdStaffManager int not null auto_increment,
+    Name           varchar(50) not null,
+    SecondName     varchar(50) not null,
+    MiddleName     varchar(50) not null,
+    Phone          varchar(50) not null,
+    DateJoin       date not null,
+    DateDismiss    date,
+    Salary         int not null,
+    IdUser         int not null,
+    primary key (IdStaffManager),
+    foreign key (IdUser) references User (IdUser)
+);
+
+create table if not exists TechnologistEngineer
+(
+    IdTechnologistEngineer int not null auto_increment,
+    Name           varchar(50) not null,
+    SecondName     varchar(50) not null,
+    MiddleName     varchar(50) not null,
+    Phone          varchar(50) not null,
+    DateJoin       date not null,
+    DateDismiss    date,
+    Salary         int not null,
+    IdUser         int not null,
+    primary key (IdTechnologistEngineer),
+    foreign key (IdUser) references User (IdUser)
+);
+
+create table if not exists Manager
+(
+    IdManager   int not null auto_increment,
+    Name           varchar(50) not null,
+    SecondName     varchar(50) not null,
+    MiddleName     varchar(50) not null,
+    Phone          varchar(50) not null,
+    DateJoin       date not null,
+    DateDismiss    date,
+    Salary         int not null,
+    IdUser         int not null,
+    primary key(IdManager),
+    foreign key (IdUser) references User (IdUser)
+);
+
+create table if not exists LoaderMan
+(
+    IdLoaderMan int not null auto_increment,
+    Name           varchar(50) not null,
+    SecondName     varchar(50) not null,
+    MiddleName     varchar(50) not null,
+    Phone          varchar(50) not null,
+    DateJoin       date not null,
+    DateDismiss    date,
+    Salary         int not null,
+    IdUser         int not null,
+    primary key (IdLoaderMan),
+    foreign key (IdUser) references User (IdUser)
+);
+
+create table if not exists BarMan
+(
+    IdBarMan    int not null auto_increment,
+    Name           varchar(50) not null,
+    SecondName     varchar(50) not null,
+    MiddleName     varchar(50) not null,
+    Phone          varchar(50) not null,
+    DateJoin       date not null,
+    DateDismiss    date,
+    Salary         int not null,
+    IdUser         int not null,
+    primary key (IdBarMan),
+    foreign key (IdUser) references User (IdUser)
+);
+
+create table if not exists BeerStorage
+(
+    IdBeerKind int not null auto_increment,
+    Name       varchar(50) not null unique,
+    Price      int not null,
+    Type       varchar(50) not null,
+    Amount     int not null,
+    CookTime   int not null,
+    primary key (IdBeerKind)
+);
+
+create table if not exists ResourceStorage
+(
+    IdResource int not null auto_increment,
+    Name       varchar(50) not null unique,
+    Amount     int not null,
+    Price      int not null,
+    primary key (IdResource)
+);
+
+create table if not exists RecipeList
+(
+    idRecipe   int not null auto_increment,
+    IdBeerKind int not null,
+    IdResource int not null,
+    Amount     int not null,
+    primary key (idRecipe),
+    foreign key (IdBeerKind) references BeerStorage (IdBeerKind),
+    foreign key (IdResource) references ResourceStorage (IdResource)
+);
+
+create table if not exists Task
+(
+    IdTask                  int not null auto_increment,
+    IdTechnologicalEngineer int not null,
+    IdBeerKind              int not null,
+    Date                    date not null,
+    Status                  varchar(50) not null,
+    Amount                  int not null,
+    primary key (IdTask),
+    foreign key (IdTechnologicalEngineer) references TechnologistEngineer (IdTechnologistEngineer),
+    foreign key (IdBeerKind) references BeerStorage (IdBeerKind)
+);
+
+create table if not exists CylindricallyConicalTank
+(
+    IdCCT     int not null auto_increment,
+    IdTask    int not null,
+    DateStart date not null,
+    DateEnd   date,
+    StatusCCT varchar(20) not null,
+    primary key (IdCCT),
+    foreign key (IdTask) references Task (IdTask)
+);
+
+create table if not exists ClientList
+(
+    IdClient         int not null auto_increment,
+    NameClient       varchar(50) not null,
+    SecondNameClient varchar(50) not null,
+    MiddleNameClient varchar(50) not null,
+    PhoneClient      varchar(50) not null unique,
+    Age              date not null,
+    DateJoin         date not null,
+    primary key (IdClient)
+);
+
+create table if not exists Orders
+(
+    IdOrder  int not null auto_increment,
+    IdClient int not null,
+    IdManager int not null,
+    Date     date not null,
+    Status   varchar(50) not null,
+    primary key (IdOrder),
+    foreign key (IdClient) references ClientList (IdClient),
+    foreign key (IdManager) references Manager (IdManager)
+);
+
+create table if not exists OrderPosition
+(
+    IdOrderPosition int not null auto_increment,
+    Number          int not null,
+    IdOrder         int not null,
+    IdBeerKind      int not null,
+    primary key (IdOrderPosition),
+    foreign key (IdOrder) references Orders (IdOrder),
+    foreign key (IdBeerKind) references BeerStorage (IdBeerKind)
+);
+create table if not exists ResBuy
+(
+    IdResBuy   int not null auto_increment,
+    IdEngineer int not null,
+    IdManager  int not null,
+    Date       date not null,
+    Status     varchar(50) not null,
+    primary key (IdResBuy),
+    foreign key (IdEngineer) references TechnologistEngineer (IdTechnologistEngineer),
+    foreign key (IdManager) references Manager (IdManager)
+);
+
+create table if not exists ResBuyPosition
+(
+    IdResBuyPosition int not null auto_increment,
+    Number           int not null,
+    IdResBuy         int not null,
+    IdResource       int not null,
+    primary key (IdResBuyPosition),
+    foreign key (IdResBuy) references ResBuy (IdResBuy),
+    foreign key (IdResource) references ResourceStorage (IdResource)
+);
+
+create table if not exists ImportAlcBuy
+(
+    IdImportAlcBuy int not null auto_increment,
+    IdBarman       int not null,
+    IdManager      int not null,
+    Date           date not null,
+    Status         varchar(50) not null,
+    primary key (IdImportAlcBuy),
+    foreign key (IdBarman) references BarMan (IdBarMan),
+    foreign key (IdManager) references Manager (IdManager)
+);
+
+create table if not exists ImportAlcBuyPosition
+(
+    IdImportAlcPosition int not null auto_increment,
+    Number              int not null,
+    IdImportAlcBuy      int not null,
+    IdBeerKind          int not null,
+    primary key (IdImportAlcPosition),
+    foreign key (IdImportAlcBuy) references ImportAlcBuy (IdImportAlcBuy),
+    foreign key (IdBeerKind) references BeerStorage (IdBeerKind)
+
+);
+create table if not exists LoaderTask
+(
+    IdLoaderTask int not null auto_increment,
+    IdLoaderMan     int not null,
+    IdResBuy        int not null,
+    IdImportAlc     int not null,
+    Date            date not null,
+    Status          varchar(50) not null,
+    primary key (IdLoaderTask),
+    foreign key (IdLoaderMan) references LoaderMan (IdLoaderMan),
+    foreign key (IdResBuy) references ResBuy (IdResBuy),
+    foreign key (IdImportAlc) references ImportAlcBuy (IdImportAlcBuy)
+);

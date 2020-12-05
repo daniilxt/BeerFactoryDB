@@ -1,0 +1,342 @@
+create table BeerStorage
+(
+    IdBeerKind int auto_increment
+        primary key,
+    Name       varchar(50) not null,
+    Price      int         not null,
+    Type       varchar(50) not null,
+    Amount     int         not null,
+    CookTime   int         not null,
+    constraint Name
+        unique (Name)
+);
+
+create table ClientList
+(
+    IdClient         int auto_increment
+        primary key,
+    NameClient       varchar(50) not null,
+    SecondNameClient varchar(50) not null,
+    MiddleNameClient varchar(50) not null,
+    PhoneClient      varchar(50) not null,
+    Age              date        not null,
+    DateJoin         date        not null,
+    constraint PhoneClient
+        unique (PhoneClient)
+);
+
+create table ResourceStorage
+(
+    IdResource int auto_increment
+        primary key,
+    Name       varchar(50) not null,
+    Amount     int         not null,
+    Price      int         not null,
+    Unit       varchar(50) not null,
+    constraint Name
+        unique (Name)
+);
+
+create table RecipeList
+(
+    idRecipe   int auto_increment
+        primary key,
+    IdBeerKind int not null,
+    IdResource int not null,
+    Amount     int not null,
+    constraint RecipeList_ibfk_1
+        foreign key (IdBeerKind) references BeerStorage (IdBeerKind),
+    constraint RecipeList_ibfk_2
+        foreign key (IdResource) references ResourceStorage (IdResource)
+);
+
+create index IdBeerKind
+    on RecipeList (IdBeerKind);
+
+create index IdResource
+    on RecipeList (IdResource);
+
+create table User
+(
+    IdUser   int auto_increment
+        primary key,
+    Login    varchar(30) not null,
+    Password varchar(30) not null,
+    constraint Login
+        unique (Login)
+);
+
+create table BarMan
+(
+    IdBarMan    int auto_increment
+        primary key,
+    Name        varchar(50) not null,
+    SecondName  varchar(50) not null,
+    MiddleName  varchar(50) not null,
+    Phone       varchar(50) not null,
+    DateJoin    date        not null,
+    DateDismiss date        null,
+    Salary      int         not null,
+    IdUser      int         not null,
+    constraint BarMan_ibfk_1
+        foreign key (IdUser) references User (IdUser)
+);
+
+create index IdUser
+    on BarMan (IdUser);
+
+create table LoaderMan
+(
+    IdLoaderMan int auto_increment
+        primary key,
+    Name        varchar(50) not null,
+    SecondName  varchar(50) not null,
+    MiddleName  varchar(50) not null,
+    Phone       varchar(50) not null,
+    DateJoin    date        not null,
+    DateDismiss date        null,
+    Salary      int         not null,
+    IdUser      int         not null,
+    constraint LoaderMan_ibfk_1
+        foreign key (IdUser) references User (IdUser)
+);
+
+create index IdUser
+    on LoaderMan (IdUser);
+
+create table Manager
+(
+    IdManager   int auto_increment
+        primary key,
+    Name        varchar(50) not null,
+    SecondName  varchar(50) not null,
+    MiddleName  varchar(50) not null,
+    Phone       varchar(50) not null,
+    DateJoin    date        not null,
+    DateDismiss date        null,
+    Salary      int         not null,
+    IdUser      int         not null,
+    constraint Manager_ibfk_1
+        foreign key (IdUser) references User (IdUser)
+);
+
+create table ImportAlcBuy
+(
+    IdImportAlcBuy int auto_increment
+        primary key,
+    IdBarman       int         not null,
+    IdManager      int         not null,
+    Date           date        not null,
+    Status         varchar(50) not null,
+    constraint ImportAlcBuy_ibfk_1
+        foreign key (IdBarman) references BarMan (IdBarMan),
+    constraint ImportAlcBuy_ibfk_2
+        foreign key (IdManager) references Manager (IdManager)
+);
+
+create index IdBarman
+    on ImportAlcBuy (IdBarman);
+
+create index IdManager
+    on ImportAlcBuy (IdManager);
+
+create table ImportAlcBuyPosition
+(
+    IdImportAlcPosition int auto_increment
+        primary key,
+    Number              int not null,
+    IdImportAlcBuy      int not null,
+    IdBeerKind          int not null,
+    constraint ImportAlcBuyPosition_ibfk_1
+        foreign key (IdImportAlcBuy) references ImportAlcBuy (IdImportAlcBuy),
+    constraint ImportAlcBuyPosition_ibfk_2
+        foreign key (IdBeerKind) references BeerStorage (IdBeerKind)
+);
+
+create index IdBeerKind
+    on ImportAlcBuyPosition (IdBeerKind);
+
+create index IdImportAlcBuy
+    on ImportAlcBuyPosition (IdImportAlcBuy);
+
+create index IdUser
+    on Manager (IdUser);
+
+create table Orders
+(
+    IdOrder   int auto_increment
+        primary key,
+    IdClient  int         not null,
+    IdManager int         not null,
+    Date      date        not null,
+    Status    varchar(50) not null,
+    constraint Orders_ibfk_1
+        foreign key (IdClient) references ClientList (IdClient),
+    constraint Orders_ibfk_2
+        foreign key (IdManager) references Manager (IdManager)
+);
+
+create table OrderPosition
+(
+    IdOrderPosition int auto_increment
+        primary key,
+    Number          int not null,
+    IdOrder         int not null,
+    IdBeerKind      int not null,
+    constraint OrderPosition_ibfk_1
+        foreign key (IdOrder) references Orders (IdOrder),
+    constraint OrderPosition_ibfk_2
+        foreign key (IdBeerKind) references BeerStorage (IdBeerKind)
+);
+
+create index IdBeerKind
+    on OrderPosition (IdBeerKind);
+
+create index IdOrder
+    on OrderPosition (IdOrder);
+
+create index IdClient
+    on Orders (IdClient);
+
+create index IdManager
+    on Orders (IdManager);
+
+create table StaffManager
+(
+    IdStaffManager int auto_increment
+        primary key,
+    Name           varchar(50) not null,
+    SecondName     varchar(50) not null,
+    MiddleName     varchar(50) not null,
+    Phone          varchar(50) not null,
+    DateJoin       date        not null,
+    DateDismiss    date        null,
+    Salary         int         not null,
+    IdUser         int         not null,
+    constraint StaffManager_ibfk_1
+        foreign key (IdUser) references User (IdUser)
+);
+
+create index IdUser
+    on StaffManager (IdUser);
+
+create table TechnologistEngineer
+(
+    IdTechnologistEngineer int auto_increment
+        primary key,
+    Name                   varchar(50) not null,
+    SecondName             varchar(50) not null,
+    MiddleName             varchar(50) not null,
+    Phone                  varchar(50) not null,
+    DateJoin               date        not null,
+    DateDismiss            date        null,
+    Salary                 int         not null,
+    IdUser                 int         not null,
+    constraint TechnologistEngineer_ibfk_1
+        foreign key (IdUser) references User (IdUser)
+);
+
+create table ResBuy
+(
+    IdResBuy   int auto_increment
+        primary key,
+    IdEngineer int         not null,
+    IdManager  int         not null,
+    Date       date        not null,
+    Status     varchar(50) not null,
+    constraint ResBuy_ibfk_1
+        foreign key (IdEngineer) references TechnologistEngineer (IdTechnologistEngineer),
+    constraint ResBuy_ibfk_2
+        foreign key (IdManager) references Manager (IdManager)
+);
+
+create table LoaderTask
+(
+    IdLoaderTask int auto_increment
+        primary key,
+    IdLoaderMan  int         not null,
+    IdResBuy     int         not null,
+    IdImportAlc  int         not null,
+    Date         date        not null,
+    Status       varchar(50) not null,
+    constraint LoaderTask_ibfk_1
+        foreign key (IdLoaderMan) references LoaderMan (IdLoaderMan),
+    constraint LoaderTask_ibfk_2
+        foreign key (IdResBuy) references ResBuy (IdResBuy),
+    constraint LoaderTask_ibfk_3
+        foreign key (IdImportAlc) references ImportAlcBuy (IdImportAlcBuy)
+);
+
+create index IdImportAlc
+    on LoaderTask (IdImportAlc);
+
+create index IdLoaderMan
+    on LoaderTask (IdLoaderMan);
+
+create index IdResBuy
+    on LoaderTask (IdResBuy);
+
+create index IdEngineer
+    on ResBuy (IdEngineer);
+
+create index IdManager
+    on ResBuy (IdManager);
+
+create table ResBuyPosition
+(
+    IdResBuyPosition int auto_increment
+        primary key,
+    Number           int not null,
+    IdResBuy         int not null,
+    IdResource       int not null,
+    constraint ResBuyPosition_ibfk_1
+        foreign key (IdResBuy) references ResBuy (IdResBuy),
+    constraint ResBuyPosition_ibfk_2
+        foreign key (IdResource) references ResourceStorage (IdResource)
+);
+
+create index IdResBuy
+    on ResBuyPosition (IdResBuy);
+
+create index IdResource
+    on ResBuyPosition (IdResource);
+
+create table Task
+(
+    IdTask                  int auto_increment
+        primary key,
+    IdTechnologicalEngineer int         not null,
+    IdBeerKind              int         not null,
+    Date                    date        not null,
+    Status                  varchar(50) not null,
+    Amount                  int         not null,
+    constraint Task_ibfk_1
+        foreign key (IdTechnologicalEngineer) references TechnologistEngineer (IdTechnologistEngineer),
+    constraint Task_ibfk_2
+        foreign key (IdBeerKind) references BeerStorage (IdBeerKind)
+);
+
+create table CylindricallyConicalTank
+(
+    IdCCT     int auto_increment
+        primary key,
+    IdTask    int         not null,
+    DateStart date        not null,
+    DateEnd   date        null,
+    StatusCCT varchar(20) not null,
+    constraint CylindricallyConicalTank_ibfk_1
+        foreign key (IdTask) references Task (IdTask)
+);
+
+create index IdTask
+    on CylindricallyConicalTank (IdTask);
+
+create index IdBeerKind
+    on Task (IdBeerKind);
+
+create index IdTechnologicalEngineer
+    on Task (IdTechnologicalEngineer);
+
+create index IdUser
+    on TechnologistEngineer (IdUser);
+
