@@ -1,3 +1,4 @@
+import controllers.ControllerAuth
 import javafx.application.Application
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
@@ -15,8 +16,17 @@ class MainApplication : Application() {
     lateinit var output: Label
 
     override fun start(stage: Stage) {
-        stage.scene = Scene(FXMLLoader.load(javaClass.getResource("MainApplication.fxml")))
-        stage.show()
+        try {
+
+            val loader = FXMLLoader(javaClass.getResource("MainApplication.fxml"))
+            stage.scene = Scene(loader.load())
+            stage.title = "Beer Factory"
+            stage.show()
+            val controller: ControllerAuth = loader.getController()
+            controller.initialize()
+        } catch (ex: Exception) {
+
+        }
     }
 }
 
