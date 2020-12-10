@@ -1,5 +1,6 @@
 package controllers
 
+import JDBC.Utils
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -39,13 +40,11 @@ class ControllerAuth {
 
     @FXML
     fun onSignIn() {
-        try {
-            if (!auth_login?.text.isNullOrEmpty() && !auth_password?.text.isNullOrEmpty()) {
-                println("Success")
-            } else {
-                alert()
-            }
-        } catch (ex: Exception) {
+        if (!auth_login?.text.isNullOrEmpty() && !auth_password?.text.isNullOrEmpty()) {
+            println("Success")
+            val connection = Utils.getNewConnection()
+           println(Utils.getUser("w_eng2", connection!!))
+        } else {
             alert()
         }
     }
