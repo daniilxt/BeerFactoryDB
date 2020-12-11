@@ -2,6 +2,8 @@ package JDBC
 
 import JDBC.dao.Role
 import JDBC.dao.User
+import pojo.Recipe
+import pojo.Task
 import pojo.Tasks
 import java.sql.Connection
 import java.sql.DriverManager
@@ -37,9 +39,9 @@ object Utils {
             val resultSet = connection.createStatement().executeQuery(sql)
             if (resultSet.next()) {
                 return User(
-                        resultSet.getString("Login"),
-                        resultSet.getString("Password"),
-                        Role.valueOf(resultSet.getString("Role").toUpperCase())
+                    resultSet.getString("Login"),
+                    resultSet.getString("Password"),
+                    Role.valueOf(resultSet.getString("Role").toUpperCase())
                 )
             }
         } catch (ex: SQLException) {
@@ -49,31 +51,88 @@ object Utils {
     }
 
     fun getTasks(idEngineer: Long, connection: Connection): List<Tasks>? {
-        val sql2 = "SELECT * FROM User WHERE Login = '$idEngineer'"
         val sql = "SELECT t.IdTask, BeerStorage.Name NameBeer, t.IdTechnologicalEngineer, t.Amount,t.Date,t.Status\n" +
                 "from Task t " +
                 " inner join BeerStorage on BeerStorage.IdBeerKind = t.IdBeerKind\n" +
-                "where t.IdTechnologicalEngineer = 1"
+                "where t.IdTechnologicalEngineer = $idEngineer"
         try {
             val resultSet = connection.createStatement().executeQuery(sql)
             return if (!resultSet.next()) {
                 null
             } else {
                 getFromResultSet<Tasks>(resultSet) {
-                    Tasks(resultSet.getLong("IdTask"), resultSet.getLong("IdTechnologicalEngineer"),
-                            resultSet.getString("NameBeer"), resultSet.getDate("Date"),
-                            resultSet.getLong("Amount"), resultSet.getString("Status"))
+                    Tasks(
+                        resultSet.getLong("IdTask"), resultSet.getLong("IdTechnologicalEngineer"),
+                        resultSet.getString("NameBeer"), resultSet.getDate("Date"),
+                        resultSet.getLong("Amount"), resultSet.getString("Status")
+                    )
                 }
             }
         } catch (ex: SQLException) {
             println(ex)
         }
-        return  null
+        return null
     }
+
+    fun getTask(idEngineer: Long, connection: Connection): Task? {
+        val sql = "select t.IdTask,BeerStorage.IdBeerKind, BeerStorage.Name NameBeer, t.Amount,t.Date\n" +
+                "from Task t\n" +
+                "         inner join BeerStorage on BeerStorage.IdBeerKind = t.IdBeerKind\n" +
+                "where t.IdTechnologicalEngineer = $idEngineer"
+        try {
+            val resultSet = connection.createStatement().executeQuery(sql)
+
+            return if (!resultSet.next()) {
+                null
+            } else {
+                getFromResultSet(resultSet) {
+                    Task(
+                        resultSet.getLong("IdTask"), resultSet.getLong("IdBeerKind"),
+                        resultSet.getString("NameBeer"), resultSet.getLong("Amount"),
+                        resultSet.getDate("Date")
+                    )
+                }?.get(0)
+            }
+        } catch (ex: SQLException) {
+            println(ex)
+        }
+        return null
+    }
+
+    fun getRecipe(idBeerKind: Long, connection: Connection): List<Recipe>? {
+        val sql = "select ResourceStorage.Name as ResName,\n" +
+                "       RecipeList.Amount,\n" +
+                "       ResourceStorage.Amount  ResAmount, ResourceStorage.Unit, ResourceStorage.Price ResPrice\n" +
+                "from RecipeList\n" +
+                "         inner join ResourceStorage on RecipeList.IdResource = ResourceStorage.IdResource\n" +
+                "         inner join BeerStorage on RecipeList.IdBeerKind = BeerStorage.IdBeerKind\n" +
+                "where BeerStorage.IdBeerKind = ${idBeerKind}\n" +
+                "  and BeerStorage.Type != 'Import' "
+        try {
+            val resultSet = connection.createStatement().executeQuery(sql)
+
+            return if (!resultSet.next()) {
+                null
+            } else {
+                getFromResultSet(resultSet) {
+                    Recipe(
+                        resultSet.getString("ResName"), resultSet.getLong("Amount"),
+                        resultSet.getLong("ResAmount"), resultSet.getString("Unit"),
+                        resultSet.getLong("ResPrice")
+                        )
+                }
+            }
+        } catch (ex: SQLException) {
+            println(ex)
+        }
+        return null
+    }
+
+
 
     @Throws(SQLException::class)
     private fun <T> getFromResultSet(resultSet: ResultSet, action: () -> T): List<T>? {
-        val records: MutableList<T> = ArrayList<T>()
+        val records: MutableList<T> = ArrayList()
         do {
             val tmp: T = action()
             records.add(tmp)

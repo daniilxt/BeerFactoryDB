@@ -14,9 +14,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="700.0" prefWidth="870.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ControllerFactory">
+<AnchorPane prefHeight="700.0" prefWidth="901.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ControllerFactory">
    <children>
-      <TabPane layoutX="79.0" layoutY="35.0" prefHeight="604.0" prefWidth="870.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <TabPane layoutX="79.0" layoutY="35.0" prefHeight="604.0" prefWidth="914.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
           <Tab fx:id="tab_factory" text="Factory">
             <content>
@@ -55,19 +55,19 @@
                         </ImageView>
                         <TableView fx:id="table_res" layoutX="149.0" layoutY="301.0" prefHeight="350.0" prefWidth="366.0">
                           <columns>
-                            <TableColumn fx:id="res_name" prefWidth="92.0" text="resourceName" />
-                            <TableColumn fx:id="res_amount" prefWidth="63.0" text="amount" />
-                              <TableColumn fx:id="res_amount_store" prefWidth="83.0" text="storeAmount" />
-                              <TableColumn fx:id="res_unit" prefWidth="32.0" text="unit" />
-                              <TableColumn fx:id="res_price" prefWidth="102.0" text="resourcePrice" />
+                            <TableColumn fx:id="res_name" prefWidth="92.0" text="resName" />
+                            <TableColumn fx:id="res_amount" prefWidth="65.0" text="amount" />
+                              <TableColumn fx:id="res_amount_store" prefWidth="81.0" text="storeAmount" />
+                              <TableColumn fx:id="res_unit" prefWidth="56.0" text="unit" />
+                              <TableColumn fx:id="res_price" prefWidth="78.0" text="resPrice" />
                           </columns>
                         </TableView>
-                        <TextField layoutX="150.0" layoutY="88.0" prefHeight="30.0" prefWidth="125.0" promptText="id task">
+                        <TextField fx:id="id_task_find" layoutX="150.0" layoutY="88.0" prefHeight="30.0" prefWidth="125.0" promptText="id task">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </TextField>
-                        <Button fx:id="btn_handle" layoutX="523.0" layoutY="212.0" mnemonicParsing="false" text="Handle">
+                        <Button fx:id="btn_handle" layoutX="523.0" layoutY="212.0" mnemonicParsing="false" onAction="#handleTask" text="Handle">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -81,7 +81,7 @@
                               <TableColumn fx:id="table_task_date" prefWidth="75.0" text="date" />
                           </columns>
                         </TableView>
-                        <Button fx:id="btn_find_task" layoutX="298.0" layoutY="88.0" mnemonicParsing="false" text="find">
+                        <Button fx:id="btn_find_task" layoutX="298.0" layoutY="88.0" mnemonicParsing="false" onAction="#findIdTask" text="find">
                            <font>
                               <Font size="14.0" />
                            </font>
