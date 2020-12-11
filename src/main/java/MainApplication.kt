@@ -2,6 +2,7 @@ import controllers.ControllerAuth
 import javafx.application.Application
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
+import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
@@ -17,13 +18,12 @@ class MainApplication : Application() {
 
     override fun start(stage: Stage) {
         try {
-
-            val loader = FXMLLoader(javaClass.getResource("MainApplication.fxml"))
-            stage.scene = Scene(loader.load())
+            stage.scene = Scene(FXMLLoader.load(javaClass.getResource("MainApplication.fxml")))
             stage.title = "Beer Factory"
             stage.show()
-            val controller: ControllerAuth = loader.getController()
-            controller.initialize()
+
+            /*         val controller: ControllerAuth = loader.getController()
+                       controller.initialize()*/
         } catch (ex: Exception) {
 
         }

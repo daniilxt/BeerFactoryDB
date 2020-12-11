@@ -4,10 +4,14 @@ import JDBC.Utils
 import JDBC.dao.Role
 import encryptor.BaseCoder
 import javafx.fxml.FXML
+import javafx.fxml.FXMLLoader
+import javafx.scene.Parent
+import javafx.scene.Scene
 import javafx.scene.control.Alert
 import javafx.scene.control.Button
 import javafx.scene.control.PasswordField
 import javafx.scene.control.TextField
+import javafx.stage.Stage
 import java.net.URL
 import java.util.*
 
@@ -59,7 +63,23 @@ class ControllerAuth {
     }
 
     private fun nextScreen(role: Role) {
-        //action
+        try {
+            // auth_btn_sign?.scene?.window?.hide()
+            val path = when (role) {
+                Role.ENGINEER -> {
+                    "Factory"
+                }
+                else -> {
+                    "MainApplication"
+                }
+            }
+            val root: Parent = FXMLLoader.load(javaClass.getResource("../${path}.fxml"))
+            val window: Stage = auth_btn_sign?.scene?.window as Stage
+            window.scene = Scene(root)
+            window.show()
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
     }
 
     private fun validateUser(password: String, inputPwd: String): Boolean {
