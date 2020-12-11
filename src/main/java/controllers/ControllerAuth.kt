@@ -61,7 +61,10 @@ class ControllerAuth {
             alert()
         }
     }
-
+    @FXML
+    fun onRegister() {
+        moveToScreen("Registration")
+    }
     private fun nextScreen(role: Role) {
         try {
             // auth_btn_sign?.scene?.window?.hide()
@@ -73,10 +76,7 @@ class ControllerAuth {
                     "MainApplication"
                 }
             }
-            val root: Parent = FXMLLoader.load(javaClass.getResource("../${path}.fxml"))
-            val window: Stage = auth_btn_sign?.scene?.window as Stage
-            window.scene = Scene(root)
-            window.show()
+            moveToScreen(path)
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
@@ -89,6 +89,12 @@ class ControllerAuth {
     @FXML
     fun initialize() {
 
+    }
+    private fun moveToScreen(name:String){
+        val root: Parent = FXMLLoader.load(javaClass.getResource("../${name}.fxml"))
+        val window: Stage = auth_btn_sign?.scene?.window as Stage
+        window.scene = Scene(root)
+        window.show()
     }
 }
 
