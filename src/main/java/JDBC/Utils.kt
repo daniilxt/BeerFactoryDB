@@ -10,12 +10,17 @@ object Utils {
     @Throws(SQLException::class)
     fun getNewConnection(): Connection? {
         //Class.forName("com.mysql.jdbc.Driver")
-        val dbURL = "jdbc:mariadb://localhost:3306/bdIlasha"
-        val user = "root"
-        val password = "root"
-        val connection = DriverManager.getConnection(dbURL, user, password)
-        if (connection.isValid(1)) {
-            println("Connection successful")
+        var connection: Connection? = null
+        try {
+            val dbURL = "jdbc:mariadb://localhost:3306/bdIlasha"
+            val user = "root"
+            val password = "root"
+            connection = DriverManager.getConnection(dbURL, user, password)
+            if (connection.isValid(1)) {
+                println("Connection successful")
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
         return connection
     }
@@ -27,9 +32,9 @@ object Utils {
             val resultSet = connection.createStatement().executeQuery(sql)
             if (resultSet.next()) {
                 return User(
-                    resultSet.getString("Login"),
-                    resultSet.getString("Password"),
-                    Role.valueOf(resultSet.getString("Role").toUpperCase())
+                        resultSet.getString("Login"),
+                        resultSet.getString("Password"),
+                        Role.valueOf(resultSet.getString("Role").toUpperCase())
                 )
             }
         } catch (ex: SQLException) {

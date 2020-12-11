@@ -47,24 +47,29 @@ class ControllerAuth {
 
     @FXML
     fun onSignIn() {
+        nextScreen(Role.ENGINEER)
         if (!auth_login?.text.isNullOrEmpty() && !auth_password?.text.isNullOrEmpty()) {
             println("Success")
             val connection = Utils.getNewConnection()
-            val user = Utils.getUser(auth_login?.text.toString(), connection!!)
+            val user = connection?.let { Utils.getUser(auth_login?.text.toString(), it) }
             if (user != null) {
                 if (validateUser(user.password, auth_password!!.text.toString())) {
                     println("Password is Valid")
                     nextScreen(user.role)
+                    return
                 }
             }
+            alert()
         } else {
             alert()
         }
     }
+
     @FXML
     fun onRegister() {
         moveToScreen("Registration")
     }
+
     private fun nextScreen(role: Role) {
         try {
             // auth_btn_sign?.scene?.window?.hide()
@@ -90,7 +95,8 @@ class ControllerAuth {
     fun initialize() {
 
     }
-    private fun moveToScreen(name:String){
+
+    private fun moveToScreen(name: String) {
         val root: Parent = FXMLLoader.load(javaClass.getResource("../${name}.fxml"))
         val window: Stage = auth_btn_sign?.scene?.window as Stage
         window.scene = Scene(root)
