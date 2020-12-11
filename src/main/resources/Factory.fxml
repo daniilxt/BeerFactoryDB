@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="700.0" prefWidth="901.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ControllerFactory">
+<AnchorPane prefHeight="700.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ControllerFactory">
    <children>
       <TabPane layoutX="79.0" layoutY="35.0" prefHeight="604.0" prefWidth="914.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
@@ -22,30 +22,33 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="700.0" prefWidth="870.0">
                      <children>
-                        <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="661.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="692.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@assets/cylindrical_tank.png" />
                            </image>
                         </ImageView>
-                        <Label layoutX="645.0" layoutY="227.0" text="Canonical Tanks">
+                        <Label layoutX="676.0" layoutY="223.0" text="Canonical Tanks">
                            <font>
                               <Font size="22.0" />
                            </font>
                         </Label>
-                        <Button fx:id="btn_add_cct" graphicTextGap="1.0" layoutX="757.0" layoutY="271.0" mnemonicParsing="false" onAction="#addNewCCT" text="+">
+                        <Button fx:id="btn_add_cct" graphicTextGap="1.0" layoutX="788.0" layoutY="267.0" mnemonicParsing="false" onAction="#addNewCCT" text="+">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Button>
-                        <Text layoutX="660.0" layoutY="296.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1 / 2">
+                        <Text fx:id="cct_numbers" layoutX="691.0" layoutY="292.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1 / 2">
                            <font>
                               <Font size="32.0" />
                            </font>
                         </Text>
-                        <TableView layoutX="587.0" layoutY="317.0" prefHeight="241.0" prefWidth="257.0">
+                        <TableView fx:id="table_cct" layoutX="570.0" layoutY="318.0" prefHeight="297.0" prefWidth="377.0">
                           <columns>
-                            <TableColumn prefWidth="75.0" text="idCCT" />
-                            <TableColumn prefWidth="75.0" text="idTask" />
+                            <TableColumn fx:id="cct_id" prefWidth="75.0" text="idCCT" />
+                            <TableColumn fx:id="cct_task" prefWidth="75.0" text="idTask" />
+                              <TableColumn fx:id="cct_start" prefWidth="75.0" text="dateStart" />
+                              <TableColumn fx:id="cct_end" prefWidth="75.0" text="dateEnd" />
+                              <TableColumn fx:id="cct_status" prefWidth="75.0" text="status" />
                           </columns>
                         </TableView>
                         <ImageView fitHeight="282.0" fitWidth="258.0" layoutX="-46.0" layoutY="215.0" pickOnBounds="true" preserveRatio="true">
@@ -53,7 +56,7 @@
                               <Image url="@assets/engineer.png" />
                            </image>
                         </ImageView>
-                        <TableView fx:id="table_res" layoutX="149.0" layoutY="301.0" prefHeight="350.0" prefWidth="366.0">
+                        <TableView fx:id="table_res" layoutX="149.0" layoutY="301.0" prefHeight="314.0" prefWidth="366.0">
                           <columns>
                             <TableColumn fx:id="res_name" prefWidth="92.0" text="resName" />
                             <TableColumn fx:id="res_amount" prefWidth="65.0" text="amount" />

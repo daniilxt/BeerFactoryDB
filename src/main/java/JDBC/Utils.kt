@@ -2,6 +2,7 @@ package JDBC
 
 import JDBC.dao.Role
 import JDBC.dao.User
+import pojo.CylindricallyTank
 import pojo.Recipe
 import pojo.Task
 import pojo.Tasks
@@ -119,7 +120,7 @@ object Utils {
                         resultSet.getString("ResName"), resultSet.getLong("Amount"),
                         resultSet.getLong("ResAmount"), resultSet.getString("Unit"),
                         resultSet.getLong("ResPrice")
-                        )
+                    )
                 }
             }
         } catch (ex: SQLException) {
@@ -128,7 +129,48 @@ object Utils {
         return null
     }
 
+    fun countFreeCCT(connection: Connection?): Pair<Long, Long> {
+        val sql1 = "select count(c.StatusCCT) from CylindricallyConicalTank c\n" +
+                "where c.StatusCCT = 'Free' "
+        val sql2 = "select count(c.StatusCCT) from CylindricallyConicalTank c\n"
+        try {
+            var resultSet = connection!!.createStatement()?.executeQuery(sql1)
+            val first = if (resultSet!!.next()) {
+                resultSet.getLong(1)
+            } else 0
+            resultSet = connection.createStatement()?.executeQuery(sql2)
+            val second = if (resultSet!!.next()) {
+                resultSet.getLong(1)
+            } else 0
 
+            return Pair(first, second)
+        } catch (ex: SQLException) {
+            println(ex)
+        }
+        return Pair(0, 0)
+    }
+
+    fun showCCT(connection: Connection): List<CylindricallyTank>? {
+        val sql = "select * from CylindricallyConicalTank"
+        try {
+            val resultSet = connection.createStatement().executeQuery(sql)
+
+            return if (!resultSet.next()) {
+                null
+            } else {
+                getFromResultSet(resultSet) {
+                    CylindricallyTank(
+                        resultSet.getLong(1), resultSet.getLong(2), resultSet.getDate(3),
+                        resultSet.getDate(4), resultSet.getString(5)
+                    )
+                }
+            }
+        } catch (ex: SQLException) {
+            println(ex)
+        }
+        return null
+
+    }
 
     @Throws(SQLException::class)
     private fun <T> getFromResultSet(resultSet: ResultSet, action: () -> T): List<T>? {

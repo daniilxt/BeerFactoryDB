@@ -6,11 +6,13 @@ import JDBC.dao.User
 import javafx.fxml.FXML
 import javafx.scene.control.*
 import javafx.scene.control.cell.PropertyValueFactory
-import jdk.jshell.execution.Util
+import javafx.scene.text.Text
+import pojo.CylindricallyTank
 import pojo.Recipe
 import pojo.Task
 import pojo.Tasks
 import java.net.URL
+import java.sql.Connection
 import java.sql.Date
 import java.util.*
 
@@ -96,6 +98,24 @@ class ControllerFactory {
     private var table_tasks_amount: TableColumn<Tasks, Long>? = null
 
     @FXML
+    private var table_cct: TableView<CylindricallyTank>? = null
+
+    @FXML
+    private var cct_id: TableColumn<CylindricallyTank, Long>? = null
+
+    @FXML
+    private var cct_task: TableColumn<CylindricallyTank, Long>? = null
+
+    @FXML
+    private var cct_start: TableColumn<CylindricallyTank, Date>? = null
+
+    @FXML
+    private var cct_end: TableColumn<CylindricallyTank, Date>? = null
+
+    @FXML
+    private var cct_status: TableColumn<CylindricallyTank, String>? = null
+
+    @FXML
     private var id_task_find: TextField? = null
 
     @FXML
@@ -115,6 +135,10 @@ class ControllerFactory {
 
     @FXML
     private var filter_amount_to: TextField? = null
+
+    @FXML
+    private var cct_numbers: Text? = null
+
     private var worker: User? = null
 
     @FXML
@@ -143,15 +167,40 @@ class ControllerFactory {
 
     @FXML
     fun handleTask() {
+        if (!table_task?.items?.isEmpty()!!) {
+            Utils.getNewConnection()
+            val connection = Utils.getNewConnection()
+            val countFreeCCT = Utils.countFreeCCT(connection)
+        }
         alert()
     }
 
     @FXML
     fun initialize() {
-        initColumns()
+        val connection = Utils.getNewConnection()
+        val pair = Utils.countFreeCCT(connection)
+        cct_numbers?.text = "${pair.first} / ${pair.second}"
+        if (connection != null) {
+            initCCT(connection)
+            initColumns(connection)
+        } else {
+            alert()
+        }
     }
 
-    private fun initColumns() {
+    private fun initCCT(connection: Connection) {
+        //cct table
+        table_cct?.items?.clear()
+        Utils.showCCT(connection)?.let { table_cct?.items?.addAll(it) }
+
+        cct_id?.cellValueFactory = PropertyValueFactory("idCCT")
+        cct_task?.cellValueFactory = PropertyValueFactory("idTask")
+        cct_start?.cellValueFactory = PropertyValueFactory("dateStart")
+        cct_end?.cellValueFactory = PropertyValueFactory("dateEnd")
+        cct_status?.cellValueFactory = PropertyValueFactory("statusCCT")
+    }
+
+    private fun initColumns(connection: Connection) {
         worker = User("log", "pwd", Role.ENGINEER)
         //tasks table
         table_tasks_id?.cellValueFactory = PropertyValueFactory("idTask")
@@ -162,10 +211,9 @@ class ControllerFactory {
         table_tasks_status?.cellValueFactory = PropertyValueFactory("status")
 
         val appList = mutableListOf<Tasks>()
-        val connection = Utils.getNewConnection()
 
         appList.add(Tasks(1, 1, "Volkovskoe", Date(11122441), 3, "free"))
-        Utils.getTasks(1, connection!!)?.let { appList.addAll(it) }
+        Utils.getTasks(1, connection)?.let { appList.addAll(it) }
         table_tasks?.items?.clear()
         table_tasks?.items?.addAll(appList)
 
@@ -182,8 +230,6 @@ class ControllerFactory {
         res_amount_store?.cellValueFactory = PropertyValueFactory("storeAmount")
         res_unit?.cellValueFactory = PropertyValueFactory("unit")
         res_price?.cellValueFactory = PropertyValueFactory("resPrice")
-
-        //cct table
 
     }
 
