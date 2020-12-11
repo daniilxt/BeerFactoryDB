@@ -1,5 +1,6 @@
 package controllers
 
+import JDBC.Utils
 import javafx.fxml.FXML
 import javafx.scene.control.*
 import javafx.scene.control.cell.PropertyValueFactory
@@ -124,7 +125,10 @@ class ControllerFactory {
         table_tasks_status?.cellValueFactory = PropertyValueFactory("amount")
 
         val appList = mutableListOf<Tasks>()
+        val connection = Utils.getNewConnection()
+
         appList.add(Tasks(1,1,"Volkovskoe",java.sql.Date(11122441),3,"free"))
+        Utils.getTasks(1,connection!!)?.let { appList.addAll(it) }
         table_tasks?.items?.clear()
         table_tasks?.items?.addAll(appList)
         //task table

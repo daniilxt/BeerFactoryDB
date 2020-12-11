@@ -47,7 +47,7 @@ class ControllerAuth {
 
     @FXML
     fun onSignIn() {
-        nextScreen(Role.ENGINEER)
+        nextScreen(Role.ENGINEER) //todo del
         if (!auth_login?.text.isNullOrEmpty() && !auth_password?.text.isNullOrEmpty()) {
             println("Success")
             val connection = Utils.getNewConnection()
@@ -93,7 +93,6 @@ class ControllerAuth {
 
     @FXML
     fun initialize() {
-
     }
 
     private fun moveToScreen(name: String) {
