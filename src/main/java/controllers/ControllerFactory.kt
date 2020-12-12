@@ -1,16 +1,12 @@
 package controllers
 
 import JDBC.Utils
-import JDBC.dao.Role
 import JDBC.dao.User
 import javafx.fxml.FXML
 import javafx.scene.control.*
 import javafx.scene.control.cell.PropertyValueFactory
 import javafx.scene.text.Text
-import pojo.CylindricallyTank
-import pojo.Recipe
-import pojo.Task
-import pojo.Tasks
+import pojo.*
 import java.net.URL
 import java.sql.Connection
 import java.sql.Date
@@ -139,7 +135,7 @@ class ControllerFactory {
     @FXML
     private var cct_numbers: Text? = null
 
-    private var worker: User? = null
+    private var worker: TechnologistEngineer? = null
 
     @FXML
     fun addNewCCT() {
@@ -152,7 +148,7 @@ class ControllerFactory {
             val connection = Utils.getNewConnection()
             table_task?.items?.clear()
             if (connection != null) {
-                table_task?.items?.addAll(Utils.getTask(1, connection))
+                table_task?.items?.addAll(Utils.getTask(id_task_find!!.text.toString().toLong(), connection))
             }
             if (!table_task?.items?.isEmpty()!!) {
                 table_res?.items?.clear()
@@ -178,16 +174,13 @@ class ControllerFactory {
     }
 
     @FXML
-    fun initialize() {
+    fun initialize(user:User) {
         val connection = Utils.getNewConnection()
+        worker = Utils.getEngineerByLogin(user.login,connection!!)
         val pair = Utils.countFreeCCT(connection)
         cct_numbers?.text = "${pair.first} / ${pair.second}"
-        if (connection != null) {
-            initCCT(connection)
-            initColumns(connection)
-        } else {
-            alert()
-        }
+        initCCT(connection)
+        initColumns(connection)
     }
 
     private fun initCCT(connection: Connection) {
@@ -203,7 +196,6 @@ class ControllerFactory {
     }
 
     private fun initColumns(connection: Connection) {
-        worker = User("log", "pwd", Role.ENGINEER)
         //tasks table
         table_tasks_id?.cellValueFactory = PropertyValueFactory("idTask")
         table_tasks_id_engineer?.cellValueFactory = PropertyValueFactory("idTechnologicalEngineer")
@@ -214,7 +206,7 @@ class ControllerFactory {
 
         val appList = mutableListOf<Tasks>()
         appList.add(Tasks(1, 1, "Volkovskoe", Date(11122441), 3, "free"))
-        Utils.getTasks(1, connection)?.let { appList.addAll(it) }
+        Utils.getTasks(worker!!.idTechnologistEngineer, connection)?.let { appList.addAll(it) }
         table_tasks?.items?.clear()
         table_tasks?.items?.addAll(appList)
 

@@ -46,7 +46,6 @@ class ControllerRegistration {
     @FXML
     fun initialize() {
 
-
     }
 }
 

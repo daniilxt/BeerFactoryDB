@@ -2,6 +2,7 @@ package controllers
 
 import JDBC.Utils
 import JDBC.dao.Role
+import JDBC.dao.User
 import encryptor.BaseCoder
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
@@ -47,7 +48,7 @@ class ControllerAuth {
 
     @FXML
     fun onSignIn() {
-        nextScreen(Role.ENGINEER) //todo del
+        //nextScreen(Role.ENGINEER) //todo del
         if (!auth_login?.text.isNullOrEmpty() && !auth_password?.text.isNullOrEmpty()) {
             println("Success")
             val connection = Utils.getNewConnection()
@@ -81,7 +82,7 @@ class ControllerAuth {
                     "MainApplication"
                 }
             }
-            moveToScreen(path)
+            moveToScreen(path, role)
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
@@ -95,11 +96,23 @@ class ControllerAuth {
     fun initialize() {
     }
 
-    private fun moveToScreen(name: String) {
-        val root: Parent = FXMLLoader.load(javaClass.getResource("../${name}.fxml"))
+    private fun moveToScreen(name: String, role: Role = Role.CLIENT) {
+        // val root: Parent = FXMLLoader.load(javaClass.getResource("../${name}.fxml"))
+/*        val root: Parent = FXMLLoader.load(javaClass.getResource("../${name}.fxml"))
         val window: Stage = auth_btn_sign?.scene?.window as Stage
         window.scene = Scene(root)
-        window.show()
+        window.show()*/
+        val loader = FXMLLoader()
+        loader.location = javaClass.getResource("../${name}.fxml")
+        val root = loader.load<Parent>()
+        if (name == "Factory") {
+            val contr: ControllerFactory = loader.getController()
+            contr.initialize(User(auth_login!!.text.toString(), auth_password!!.text.toString(), Role.ENGINEER))
+        }
+        auth_btn_sign?.scene?.window?.hide()
+        val stage = Stage()
+        stage.scene = Scene(root)
+        stage.show()
     }
 }
 
