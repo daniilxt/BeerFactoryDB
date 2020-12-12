@@ -166,17 +166,41 @@ class ControllerFactory {
         if (!table_task?.items?.isEmpty()!!) {
             val connection = Utils.getNewConnection()
             val pair = Utils.countFreeCCT(connection)
-            if (pair.first > 0){
-
+            if (pair.first > 0) {
+                val arrBuy = mutableListOf<Recipe>()
+                table_res!!.items.forEachIndexed { index, it ->
+                    run {
+                        if (Utils.checkRes(
+                                it.resName!!, it.amount * table_task!!.items[0].amount, connection!!
+                            ) < it.amount
+                        ) {
+                            arrBuy.add(table_res!!.items[index])
+                        }
+                    }
+                }
+                println(arrBuy)
+                if (arrBuy.isNotEmpty()) {
+                    println("Need Buy:")
+                    arrBuy.forEachIndexed { index, it ->
+                        run {
+                            println(
+                                "${it.resName} ${(it.amount * table_task!!.items[0].amount) - it.storeAmount} ")
+                            println(index)
+                        }
+                    }
+                }
+                println("Success")
+            } else {
+                alert()
             }
         }
         alert()
     }
 
     @FXML
-    fun initialize(user:User) {
+    fun initialize(user: User) {
         val connection = Utils.getNewConnection()
-        worker = Utils.getEngineerByLogin(user.login,connection!!)
+        worker = Utils.getEngineerByLogin(user.login, connection!!)
         val pair = Utils.countFreeCCT(connection)
         cct_numbers?.text = "${pair.first} / ${pair.second}"
         initCCT(connection)
