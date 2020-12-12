@@ -54,7 +54,6 @@
                               <TableColumn fx:id="table_cart_type" prefWidth="70.0" text="TypeBeer" />
                               <TableColumn fx:id="table_cart_amount" prefWidth="59.0" text="Amount" />
                               <TableColumn fx:id="table_cart_price" prefWidth="95.0" text="Price" />
-                              <TableColumn fx:id="table_cart_btn" prefWidth="75.0" text="Action" />
                            </columns>
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

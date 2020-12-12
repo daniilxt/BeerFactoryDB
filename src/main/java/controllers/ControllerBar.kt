@@ -43,8 +43,24 @@ class ControllerBar {
     @FXML
     private var table_beer_menu_price: TableColumn<BeerMenu, Long>? = null
 
-/*    @FXML
-    private var table_beer_menu_btn: TableColumn<BeerMenu, Button>? = null*/
+    @FXML
+    private var table_cart: TableView<BeerMenu>? = null
+
+    @FXML
+    private var table_cart_num: TableColumn<Long, Long>? = null
+
+    @FXML
+    private var table_cart_name: TableColumn<BeerMenu, String>? = null
+
+    @FXML
+    private var table_cart_type: TableColumn<BeerMenu, String>? = null
+
+    @FXML
+    private var table_cart_amount: TableColumn<BeerMenu, Long>? = null
+
+    @FXML
+    private var table_cart_price: TableColumn<BeerMenu, Long>? = null
+
 
     @FXML
     private var filter_date_from: DatePicker? = null
@@ -85,36 +101,72 @@ class ControllerBar {
         table_beer_menu_price?.cellValueFactory = PropertyValueFactory("Price")
 
         val connection = Utils.getNewConnection()
+        val data = mutableListOf<BeerMenu>()
         table_beer_menu?.items?.clear()
         Utils.getBeerMenu(connection!!)?.let { table_beer_menu?.items?.addAll(it) }
-        d()
+        table_beer_menu?.columns?.add(addButtonColumn("Action","add") {
+            println(it)
+            data.add(it)
+            updateCart(data)
+            //todo
+        })
 
+        table_cart_num?.cellFactory = LineNumbersCellFactory()
+        table_cart_name?.cellValueFactory = PropertyValueFactory("Name")
+        table_cart_type?.cellValueFactory = PropertyValueFactory("Type")
+        table_cart_amount?.cellValueFactory = PropertyValueFactory("Amount")
+        table_cart_price?.cellValueFactory = PropertyValueFactory("Price")
+        table_cart?.columns?.add(addButtonColumn("Action","del") {
+            println(it)
+            data.remove(it)
+            updateCart(data)
+            //todo
+        })
     }
 
-    private fun d() {
-        val colBtn: TableColumn<BeerMenu, Void> = TableColumn("Add")
+    private fun updateCart(data: MutableList<BeerMenu>) {
+        table_cart?.items?.clear()
+        table_cart?.items?.addAll(data)
+    }
 
-        val cellFactory: Callback<TableColumn<BeerMenu?, Void?>?, TableCell<BeerMenu?, Void?>?> =
+    private fun <T> addButtonColumn(columnName:String,btnName:String,func: (it: T) -> Unit): TableColumn<T, Void> {
+        val colBtn: TableColumn<T, Void> = TableColumn(columnName)
+        val cellFactory: Callback<TableColumn<T?, Void?>?, TableCell<T?, Void?>?> =
             Callback {
-                object : TableCell<BeerMenu?, Void?>() {
-                    private val btn = Button("Action")
+                object : TableCell<T?, Void?>() {
+                    private val btn = Button(btnName)
                     override fun updateItem(item: Void?, empty: Boolean) {
                         super.updateItem(item, empty)
-                        btn.setOnAction { event ->
-                            val BeerMenu: BeerMenu? = tableView.items[index]
-                            println("??")
-                            println(tableView.items[index])
+                        btn.setOnAction {
+                            val type: T? = tableView.items[index]
+                            type?.let { it1 -> func(it1) }
                         }
                         graphic = if (empty) {
-                            null;
+                            null
                         } else {
-                            btn;
+                            btn
                         }
                     }
                 }
             }
 
-        colBtn.setCellFactory(cellFactory)
-        table_beer_menu?.columns?.add(colBtn)
+        colBtn.cellFactory = cellFactory
+        return colBtn
+    }
+}
+
+//todo fix bug
+class LineNumbersCellFactory<T, E> : Callback<TableColumn<T, E>?, TableCell<T, E>> {
+    override fun call(param: TableColumn<T, E>?): TableCell<T, E> {
+        return object : TableCell<T, E>() {
+            override fun updateItem(item: E, empty: Boolean) {
+                super.updateItem(item, empty)
+                if (!empty) {
+                    setText("${tableRow.index + 1}")
+                } else {
+                    setText("")
+                }
+            }
+        }
     }
 }
