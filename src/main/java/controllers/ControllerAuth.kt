@@ -78,6 +78,9 @@ class ControllerAuth {
                 Role.ENGINEER -> {
                     "Factory"
                 }
+                Role.BARMAN -> {
+                    "Bar"
+                }
                 else -> {
                     "MainApplication"
                 }

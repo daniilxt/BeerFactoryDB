@@ -2,11 +2,8 @@ package JDBC
 
 import JDBC.dao.Role
 import JDBC.dao.User
-import pojo.TechnologistEngineer
-import pojo.CylindricallyTank
-import pojo.Recipe
-import pojo.Task
-import pojo.Tasks
+import javafx.scene.control.Button
+import pojo.*
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.ResultSet
@@ -202,8 +199,8 @@ object Utils {
         val sql2 = "call validateResources(${amount},'${resName}',@num);"
         val sql3 = "select @num;"
         try {
-            val resultSet1 = connection.createStatement().executeQuery(sql)
-            val resultSet2 = connection.createStatement().executeQuery(sql2)
+            connection.createStatement().executeQuery(sql)
+            connection.createStatement().executeQuery(sql2)
             val resultSet = connection.createStatement().executeQuery(sql3)
             return if (resultSet!!.next()) {
                 resultSet.getLong(1)
@@ -212,6 +209,26 @@ object Utils {
             println(ex)
         }
         return 0
+    }
+
+    fun getBeerMenu(connection: Connection):List<BeerMenu>? {
+        val sql = "select * from BeerMenu"
+        try {
+            val resultSet = connection.createStatement().executeQuery(sql)
+            return if (!resultSet.next()) {
+                null
+            } else {
+                getFromResultSet(resultSet) {
+                    BeerMenu(
+                        resultSet.getString("Name"), resultSet.getString("Type"),
+                        resultSet.getLong("Amount"), resultSet.getLong("Price")
+                    )
+                }
+            }
+        } catch (ex: SQLException) {
+            println(ex)
+        }
+        return null
     }
 
     @Throws(SQLException::class)
