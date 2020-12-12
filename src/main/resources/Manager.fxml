@@ -19,17 +19,17 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="700.0" prefWidth="870.0" style="-fx-background-color: #FFFFFF;">
                      <children>
-                        <Button fx:id="btn_buy" layoutX="409.0" layoutY="414.0" mnemonicParsing="false" onAction="#findIdTask" style="-fx-background-color: #E19133; -fx-background-radius: 10 10 10 10;" text="QUCK BUY">
+                        <Button fx:id="btn_buy" layoutX="732.0" layoutY="411.0" mnemonicParsing="false" onAction="#findIdTask" style="-fx-background-color: #E19133; -fx-background-radius: 10 10 10 10;" text="QUCK BUY">
                            <font>
                               <Font name="Arial" size="20.0" />
                            </font>
                         </Button>
-                        <ImageView fitHeight="339.0" fitWidth="309.0" layoutX="321.0" layoutY="68.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="339.0" fitWidth="309.0" layoutX="686.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@assets/barman.jpg" />
+                              <Image url="@assets/manager.png" />
                            </image>
                         </ImageView>
-                        <Label layoutX="443.0" layoutY="37.0" text="BAR">
+                        <Label layoutX="393.0" layoutY="43.0" text="MANAGER">
                            <font>
                               <Font size="35.0" />
                            </font>
@@ -77,12 +77,12 @@
                         </TableView>
                         <ImageView fitHeight="183.0" fitWidth="337.0" layoutX="67.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@assets/menu.png" />
+                              <Image url="@../../../../../Desktop/sec10-h2.png" />
                            </image>
                         </ImageView>
                         <ImageView fitHeight="92.0" fitWidth="132.0" layoutX="743.0" layoutY="62.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@assets/cart.png" />
+                              <Image url="@../../../../../Desktop/608-6088209_beer-crate-clip-art-hd-png-download.png" />
                            </image>
                         </ImageView>
                      </children></AnchorPane>
