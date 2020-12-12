@@ -168,9 +168,11 @@ class ControllerFactory {
     @FXML
     fun handleTask() {
         if (!table_task?.items?.isEmpty()!!) {
-            Utils.getNewConnection()
             val connection = Utils.getNewConnection()
-            val countFreeCCT = Utils.countFreeCCT(connection)
+            val pair = Utils.countFreeCCT(connection)
+            if (pair.first > 0){
+
+            }
         }
         alert()
     }
@@ -211,7 +213,6 @@ class ControllerFactory {
         table_tasks_status?.cellValueFactory = PropertyValueFactory("status")
 
         val appList = mutableListOf<Tasks>()
-
         appList.add(Tasks(1, 1, "Volkovskoe", Date(11122441), 3, "free"))
         Utils.getTasks(1, connection)?.let { appList.addAll(it) }
         table_tasks?.items?.clear()
