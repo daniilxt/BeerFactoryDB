@@ -7,10 +7,7 @@ import javafx.fxml.FXML
 import javafx.scene.control.*
 import javafx.scene.control.cell.PropertyValueFactory
 import javafx.util.Callback
-import pojo.LoaderTask
-import pojo.ResStorage
-import pojo.TaskResource
-import pojo.Worker
+import pojo.*
 import java.net.URL
 import java.sql.Connection
 import java.util.*
@@ -93,19 +90,19 @@ class ControllerLoaderMan {
     private var tab_factory: Tab? = null
 
     @FXML
-    private var table_res_alc_store_: TableView<*>? = null
+    private var table_res_alc_store: TableView<AlcStorage>? = null
 
     @FXML
-    private var table_res_alc_store_name: TableColumn<*, *>? = null
+    private var table_res_alc_store_name: TableColumn<AlcStorage, String>? = null
 
     @FXML
-    private var table_res_alc_store_amount: TableColumn<*, *>? = null
+    private var table_res_alc_store_amount: TableColumn<AlcStorage, Long>? = null
 
     @FXML
-    private var table_res_alc_store_type: TableColumn<*, *>? = null
+    private var table_res_alc_store_type: TableColumn<AlcStorage, String>? = null
 
     @FXML
-    private var table_res_alc_store_price: TableColumn<*, *>? = null
+    private var table_res_alc_store_price: TableColumn<AlcStorage, Long>? = null
 
     @FXML
     private var table_res_alc: TableView<TaskResource>? = null
@@ -197,8 +194,8 @@ class ControllerLoaderMan {
         table_res_alc?.columns?.add(addButtonColumn("Action", "handle") {
             dataResAlc.clear()
             table_res_alc?.items?.let { it1 -> dataResAlc.addAll(it1) }
-            dataRes.remove(it)
-            updateTasksResAlc(dataRes)
+            dataResAlc.remove(it)
+            updateTasksResAlc(dataResAlc, connection, it)
             //todo
         })
         //table res storage
@@ -206,6 +203,12 @@ class ControllerLoaderMan {
         table_res_store_amount?.cellValueFactory = PropertyValueFactory("storeAmount")
         table_res_store_unit?.cellValueFactory = PropertyValueFactory("unit")
         table_res_store_price?.cellValueFactory = PropertyValueFactory("resPrice")
+
+        //table alc storage
+        table_res_alc_store_name?.cellValueFactory = PropertyValueFactory("resName")
+        table_res_alc_store_amount?.cellValueFactory = PropertyValueFactory("storeAmount")
+        table_res_alc_store_type?.cellValueFactory = PropertyValueFactory("type")
+        table_res_alc_store_price?.cellValueFactory = PropertyValueFactory("resPrice")
 
     }
 
@@ -240,9 +243,18 @@ class ControllerLoaderMan {
         }
     }
 
-    private fun updateTasksResAlc(data: MutableList<TaskResource>) {
+    private fun updateTasksResAlc(data: MutableList<TaskResource>, connection: Connection, it: TaskResource) {
         table_res_alc?.items?.clear()
         table_res_alc?.items?.addAll(data)
+
+        val dataAlcStore = mutableListOf<AlcStorage>()
+        Utils.updateBeerStoreList(connection, it.resName!!, it.amount)?.let { it1 -> dataAlcStore.addAll(it1) }
+        table_res_alc_store?.items?.clear()
+        table_res_alc_store?.items?.addAll(dataAlcStore)
+        if (table_res_alc!!.items.isEmpty()) {
+            println("Все выполнено")
+            Utils.updateStatusAlcTask(connection, "done", it.idTask)
+        }
     }
 
     private fun updateTasks(data: MutableList<LoaderTask>) {

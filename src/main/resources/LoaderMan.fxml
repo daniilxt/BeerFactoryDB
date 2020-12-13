@@ -102,7 +102,7 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
-                                <TableView fx:id="table_res_alc_store_" layoutX="497.0" layoutY="182.0" prefHeight="377.0" prefWidth="439.0">
+                                <TableView fx:id="table_res_alc_store" layoutX="497.0" layoutY="182.0" prefHeight="377.0" prefWidth="439.0">
                                     <columns>
                                         <TableColumn fx:id="table_res_alc_store_name" prefWidth="75.0" text="name" />
                                         <TableColumn fx:id="table_res_alc_store_amount" prefWidth="70.0" text="amount" />

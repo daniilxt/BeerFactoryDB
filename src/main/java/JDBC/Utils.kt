@@ -350,8 +350,40 @@ object Utils {
         return null
     }
 
+    fun updateBeerStoreList(connection: Connection, name: String, amount: Long): List<AlcStorage>? {
+        var sql = "call changeBeerCount(${amount},'${name}')"
+        try {
+            connection.createStatement().executeQuery(sql)
+            sql = "select * from BeerStorage"
+            val resultSet = connection.createStatement().executeQuery(sql)
+
+            return if (!resultSet.next()) {
+                null
+            } else {
+                getFromResultSet(resultSet) {
+                    AlcStorage(
+                            resultSet.getString("Name"), resultSet.getLong("Amount"),
+                            resultSet.getString("Type"), resultSet.getLong("Price")
+                    )
+                }
+            }
+        } catch (ex: SQLException) {
+            println(ex)
+        }
+        return null
+    }
+
     fun updateStatusResTask(connection: Connection, status: String, idTask: Long) {
         val sql = "call changeResTaskStatus('${status}',${idTask})"
+        try {
+            connection.createStatement().executeQuery(sql)
+        } catch (ex: SQLException) {
+            println(ex)
+        }
+    }
+
+    fun updateStatusAlcTask(connection: Connection, status: String, idTask: Long) {
+        val sql = "call changeAlcTaskStatus('${status}',${idTask})"
         try {
             connection.createStatement().executeQuery(sql)
         } catch (ex: SQLException) {
