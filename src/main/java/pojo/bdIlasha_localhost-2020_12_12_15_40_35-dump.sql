@@ -600,3 +600,9 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2020-12-12 15:40:35
+
+INSERT INTO testwind.clientlist (IdClient, NameClient, SecondNameClient, MiddleNameClient, PhoneClient, Age, DateJoin) VALUES (1, 'Jiga', 'Jeegun', 'Alekseevich', '8(954)212-01-23', '1970-01-03', '2020-01-01');
+INSERT INTO testwind.clientlist (IdClient, NameClient, SecondNameClient, MiddleNameClient, PhoneClient, Age, DateJoin) VALUES (2, 'Oleg', 'Miami', 'Eldarovich', '8(999)-145-22-01', '1989-05-12', '2020-02-01');
+INSERT INTO testwind.clientlist (IdClient, NameClient, SecondNameClient, MiddleNameClient, PhoneClient, Age, DateJoin) VALUES (3, 'Sergey', 'Ivanov', 'Artemovich', '8(999)-745-42-51', '1991-05-02', '2020-02-21');
+INSERT INTO testwind.clientlist (IdClient, NameClient, SecondNameClient, MiddleNameClient, PhoneClient, Age, DateJoin) VALUES (4, 'Alla', 'Duhova', 'Vladimirovna', '8(954)647-01-23', '1996-05-04', '2020-05-21');
+INSERT INTO testwind.clientlist (IdClient, NameClient, SecondNameClient, MiddleNameClient, PhoneClient, Age, DateJoin) VALUES (6, 'Boris', 'Moiseev', 'Mihailovich', '8(954)902-51-77', '1992-05-15', '2019-07-06');
