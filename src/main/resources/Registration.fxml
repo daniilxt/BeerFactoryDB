@@ -11,92 +11,107 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="reg_date" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="647.0" prefWidth="857.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ControllerAuth">
+<AnchorPane fx:id="reg_date" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="647.0" prefWidth="857.0" xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ControllerAuth">
     <children>
-      <Line endX="255.0" endY="285.0" layoutX="144.0" layoutY="205.0" startX="255.0" startY="39.0" stroke="#309e22" strokeWidth="2.0" />
-        <ImageView fitHeight="192.0" fitWidth="182.0" layoutX="309.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+        <Line endX="255.0" endY="285.0" layoutX="144.0" layoutY="205.0" startX="255.0" startY="39.0" stroke="#309e22"
+              strokeWidth="2.0"/>
+        <ImageView fitHeight="192.0" fitWidth="182.0" layoutX="309.0" layoutY="14.0" pickOnBounds="true"
+                   preserveRatio="true">
             <image>
-                <Image url="@assets/beer_logo.png" />
+                <Image url="@assets/beer_logo.png"/>
             </image>
         </ImageView>
-      <AnchorPane layoutX="41.0" layoutY="209.0" prefHeight="317.0" prefWidth="316.0" style="-fx-background-color: #A1C64F; -fx-background-radius: 20 20 20 20;">
-         <children>
-            <TextField fx:id="reg_name" layoutX="136.0" layoutY="72.0" promptText="Enter name" style="-fx-background-radius: 8 8 8 8;">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </TextField>
-            <Label layoutX="30.0" layoutY="78.0" text="FIRST NAME" />
-            <TextField fx:id="reg_second_name" layoutX="136.0" layoutY="111.0" promptText="Enter second name" style="-fx-background-radius: 8 8 8 8;">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </TextField>
-            <Label layoutX="30.0" layoutY="111.0" prefHeight="29.0" prefWidth="96.0" text="SECOND NAME" />
-            <TextField fx:id="reg_middle_name" layoutX="136.0" layoutY="150.0" promptText="Enter middle name" style="-fx-background-radius: 8 8 8 8;">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </TextField>
-            <Label layoutX="30.0" layoutY="156.0" text="MIDDLE NAME" />
-            <TextField fx:id="reg_phone" alignment="TOP_LEFT" layoutX="136.0" layoutY="193.0" promptText="Enter phone" style="-fx-background-radius: 8 8 8 8;">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </TextField>
-            <Label layoutX="30.0" layoutY="199.0" text="PHONE" />
-            <Label layoutX="31.0" layoutY="242.0" text="DATE BIRTH" />
-            <Label layoutX="35.0" layoutY="10.0" text="Create account">
-               <font>
-                  <Font name="System Bold" size="22.0" />
-               </font>
-            </Label>
-            <DatePicker fx:id="reg_date" layoutX="136.0" layoutY="236.0" prefHeight="29.0" prefWidth="162.0" promptText="Enter date birth" />
-         </children>
-      </AnchorPane>
-            <Button fx:id="reg_btn" layoutX="616.0" layoutY="552.0" mnemonicParsing="false" style="-fx-background-color: #00ff00; -fx-background-radius: 20 20 20 20;" text="Register">
-                <font>
-                    <Font size="30.0" />
-                </font>
-            </Button>
-      <AnchorPane layoutX="448.0" layoutY="209.0" prefHeight="317.0" prefWidth="316.0" style="-fx-background-color: #A1C64F; -fx-background-radius: 20 20 20 20;">
-         <children>
-            <Label layoutX="35.0" layoutY="10.0" text="Create login">
-               <font>
-                  <Font name="System Bold" size="22.0" />
-               </font>
-            </Label>
-              <PasswordField fx:id="reg_password" layoutX="121.0" layoutY="150.0" promptText="Enter password" style="-fx-background-radius: 8 8 8 8;">
-                  <font>
-                      <Font size="14.0" />
-                  </font>
-              </PasswordField>
-              <TextField fx:id="reg_login" layoutX="121.0" layoutY="91.0" promptText="Enter login" style="-fx-background-radius: 8 8 8 8;">
-                  <font>
-                      <Font size="14.0" />
-                  </font>
-              </TextField>
-              <Label layoutX="14.0" layoutY="148.0" text="Password">
-                  <font>
-                      <Font size="23.0" />
-                  </font>
-              </Label>
-              <Label layoutX="14.0" layoutY="87.0" text="Login">
-                  <font>
-                      <Font size="26.0" />
-                  </font>
-              </Label>
-            <Label layoutX="17.0" layoutY="205.0" text="Password">
-               <font>
-                  <Font size="23.0" />
-               </font>
-            </Label>
-            <PasswordField fx:id="reg_conf_password" layoutX="121.0" layoutY="207.0" promptText="Confirm password" style="-fx-background-radius: 8 8 8 8;">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </PasswordField>
-         </children>
-      </AnchorPane>
+        <AnchorPane layoutX="41.0" layoutY="209.0" prefHeight="317.0" prefWidth="316.0"
+                    style="-fx-background-color: #A1C64F; -fx-background-radius: 20 20 20 20;">
+            <children>
+                <TextField fx:id="reg_name" layoutX="136.0" layoutY="72.0" promptText="Enter name"
+                           style="-fx-background-radius: 8 8 8 8;">
+                    <font>
+                        <Font size="13.0"/>
+                    </font>
+                </TextField>
+                <Label layoutX="30.0" layoutY="78.0" text="FIRST NAME"/>
+                <TextField fx:id="reg_second_name" layoutX="136.0" layoutY="111.0" promptText="Enter second name"
+                           style="-fx-background-radius: 8 8 8 8;">
+                    <font>
+                        <Font size="13.0"/>
+                    </font>
+                </TextField>
+                <Label layoutX="30.0" layoutY="111.0" prefHeight="29.0" prefWidth="96.0" text="SECOND NAME"/>
+                <TextField fx:id="reg_middle_name" layoutX="136.0" layoutY="150.0" promptText="Enter middle name"
+                           style="-fx-background-radius: 8 8 8 8;">
+                    <font>
+                        <Font size="13.0"/>
+                    </font>
+                </TextField>
+                <Label layoutX="30.0" layoutY="156.0" text="MIDDLE NAME"/>
+                <TextField fx:id="reg_phone" alignment="TOP_LEFT" layoutX="136.0" layoutY="193.0"
+                           promptText="Enter phone" style="-fx-background-radius: 8 8 8 8;">
+                    <font>
+                        <Font size="13.0"/>
+                    </font>
+                </TextField>
+                <Label layoutX="30.0" layoutY="199.0" text="PHONE"/>
+                <Label layoutX="31.0" layoutY="242.0" text="DATE BIRTH"/>
+                <Label layoutX="35.0" layoutY="10.0" text="Create account">
+                    <font>
+                        <Font name="System Bold" size="22.0"/>
+                    </font>
+                </Label>
+                <DatePicker fx:id="reg_date" layoutX="136.0" layoutY="236.0" prefHeight="29.0" prefWidth="162.0"
+                            promptText="Enter date birth"/>
+            </children>
+        </AnchorPane>
+        <Button fx:id="reg_btn" layoutX="616.0" layoutY="552.0" mnemonicParsing="false"
+                style="-fx-background-color: #00ff00; -fx-background-radius: 20 20 20 20;" text="Register">
+            <font>
+                <Font size="30.0"/>
+            </font>
+        </Button>
+        <AnchorPane layoutX="448.0" layoutY="209.0" prefHeight="317.0" prefWidth="316.0"
+                    style="-fx-background-color: #A1C64F; -fx-background-radius: 20 20 20 20;">
+            <children>
+                <Label layoutX="35.0" layoutY="10.0" text="Create login">
+                    <font>
+                        <Font name="System Bold" size="22.0"/>
+                    </font>
+                </Label>
+                <PasswordField fx:id="reg_password" layoutX="121.0" layoutY="150.0" promptText="Enter password"
+                               style="-fx-background-radius: 8 8 8 8;">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                </PasswordField>
+                <TextField fx:id="reg_login" layoutX="121.0" layoutY="91.0" promptText="Enter login"
+                           style="-fx-background-radius: 8 8 8 8;">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                </TextField>
+                <Label layoutX="14.0" layoutY="148.0" text="Password">
+                    <font>
+                        <Font size="23.0"/>
+                    </font>
+                </Label>
+                <Label layoutX="14.0" layoutY="87.0" text="Login">
+                    <font>
+                        <Font size="26.0"/>
+                    </font>
+                </Label>
+                <Label layoutX="17.0" layoutY="205.0" text="Password">
+                    <font>
+                        <Font size="23.0"/>
+                    </font>
+                </Label>
+                <PasswordField fx:id="reg_conf_password" layoutX="121.0" layoutY="207.0" promptText="Confirm password"
+                               style="-fx-background-radius: 8 8 8 8;">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                </PasswordField>
+            </children>
+        </AnchorPane>
     </children>
 </AnchorPane>
