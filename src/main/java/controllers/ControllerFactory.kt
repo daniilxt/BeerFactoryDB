@@ -135,7 +135,7 @@ class ControllerFactory {
     @FXML
     private var cct_numbers: Text? = null
 
-    private var worker: TechnologistEngineer? = null
+    private var worker: Worker? = null
 
     @FXML
     fun addNewCCT() {
@@ -200,7 +200,7 @@ class ControllerFactory {
     @FXML
     fun initialize(user: User) {
         val connection = Utils.getNewConnection()
-        worker = Utils.getEngineerByLogin(user.login, connection!!)
+        worker = Utils.getWorkerByLogin(user.login, connection!!)
         val pair = Utils.countFreeCCT(connection)
         cct_numbers?.text = "${pair.first} / ${pair.second}"
         initCCT(connection)
@@ -230,7 +230,7 @@ class ControllerFactory {
 
         val appList = mutableListOf<Tasks>()
         appList.add(Tasks(1, 1, "Volkovskoe", Date(11122441), 3, "free"))
-        Utils.getTasks(worker!!.idTechnologistEngineer, connection)?.let { appList.addAll(it) }
+        Utils.getTasks(worker!!.idWorker, connection)?.let { appList.addAll(it) }
         table_tasks?.items?.clear()
         table_tasks?.items?.addAll(appList)
 

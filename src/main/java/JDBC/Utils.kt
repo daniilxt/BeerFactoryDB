@@ -2,7 +2,6 @@ package JDBC
 
 import JDBC.dao.Role
 import JDBC.dao.User
-import javafx.scene.control.Button
 import pojo.*
 import java.sql.Connection
 import java.sql.DriverManager
@@ -38,9 +37,9 @@ object Utils {
             val resultSet = connection.createStatement().executeQuery(sql)
             if (resultSet.next()) {
                 return User(
-                    resultSet.getString("Login"),
-                    resultSet.getString("Password"),
-                    Role.valueOf(resultSet.getString("Role").toUpperCase())
+                        resultSet.getString("Login"),
+                        resultSet.getString("Password"),
+                        Role.valueOf(resultSet.getString("Role").toUpperCase())
                 )
             }
         } catch (ex: SQLException) {
@@ -61,9 +60,9 @@ object Utils {
             } else {
                 getFromResultSet<Tasks>(resultSet) {
                     Tasks(
-                        resultSet.getLong("IdTask"), resultSet.getLong("IdTechnologicalEngineer"),
-                        resultSet.getString("NameBeer"), resultSet.getDate("Date"),
-                        resultSet.getLong("Amount"), resultSet.getString("Status")
+                            resultSet.getLong("IdTask"), resultSet.getLong("IdTechnologicalEngineer"),
+                            resultSet.getString("NameBeer"), resultSet.getDate("Date"),
+                            resultSet.getLong("Amount"), resultSet.getString("Status")
                     )
                 }
             }
@@ -86,9 +85,9 @@ object Utils {
             } else {
                 getFromResultSet(resultSet) {
                     Task(
-                        resultSet.getLong("IdTask"), resultSet.getLong("IdBeerKind"),
-                        resultSet.getString("NameBeer"), resultSet.getLong("Amount"),
-                        resultSet.getDate("Date")
+                            resultSet.getLong("IdTask"), resultSet.getLong("IdBeerKind"),
+                            resultSet.getString("NameBeer"), resultSet.getLong("Amount"),
+                            resultSet.getDate("Date")
                     )
                 }?.get(0)
             }
@@ -115,9 +114,9 @@ object Utils {
             } else {
                 getFromResultSet(resultSet) {
                     Recipe(
-                        resultSet.getString("ResName"), resultSet.getLong("Amount"),
-                        resultSet.getLong("ResAmount"), resultSet.getString("Unit"),
-                        resultSet.getLong("ResPrice")
+                            resultSet.getString("ResName"), resultSet.getLong("Amount"),
+                            resultSet.getLong("ResAmount"), resultSet.getString("Unit"),
+                            resultSet.getLong("ResPrice")
                     )
                 }
             }
@@ -158,8 +157,8 @@ object Utils {
             } else {
                 getFromResultSet(resultSet) {
                     CylindricallyTank(
-                        resultSet.getLong(1), resultSet.getLong(2), resultSet.getDate(3),
-                        resultSet.getDate(4), resultSet.getString(5)
+                            resultSet.getLong(1), resultSet.getLong(2), resultSet.getDate(3),
+                            resultSet.getDate(4), resultSet.getString(5)
                     )
                 }
             }
@@ -169,10 +168,8 @@ object Utils {
         return null
     }
 
-    fun getEngineerByLogin(login: String, connection: Connection): TechnologistEngineer? {
-        val sql = "select * from TechnologistEngineer t\n" +
-                "inner join User on t.IdTechnologistEngineer = User.IdUser\n" +
-                "where User.Login = '${login}'"
+    fun getWorkerByLogin(login: String, connection: Connection): Worker? {
+        val sql = "select * from Workers WK where WK.Login = '${login}'"
         try {
             val resultSet = connection.createStatement().executeQuery(sql)
 
@@ -180,11 +177,11 @@ object Utils {
                 null
             } else {
                 getFromResultSet(resultSet) {
-                    TechnologistEngineer(
-                        resultSet.getLong("IdTechnologistEngineer"),
-                        resultSet.getString("Name"), resultSet.getString("SecondName"),
-                        resultSet.getString("MiddleName"), resultSet.getString("Phone"),
-                        resultSet.getDate("DateJoin"), resultSet.getDate("DateDismiss")
+                    Worker(
+                            resultSet.getLong("ID_WORKER"),
+                            resultSet.getString("Name"), resultSet.getString("SecondName"),
+                            resultSet.getString("MiddleName"), resultSet.getString("Phone"),
+                            resultSet.getDate("DateJoin")
                     )
                 }?.get(0)
             }
@@ -211,7 +208,7 @@ object Utils {
         return 0
     }
 
-    fun getBeerMenu(connection: Connection):List<BeerMenu>? {
+    fun getBeerMenu(connection: Connection): List<BeerMenu>? {
         val sql = "select * from BeerMenu"
         try {
             val resultSet = connection.createStatement().executeQuery(sql)
@@ -220,11 +217,58 @@ object Utils {
             } else {
                 getFromResultSet(resultSet) {
                     BeerMenu(
-                        resultSet.getString("Name"), resultSet.getString("Type"),
-                        resultSet.getLong("Amount"), resultSet.getLong("Price")
+                            resultSet.getString("Name"), resultSet.getString("Type"),
+                            resultSet.getLong("Amount"), resultSet.getLong("Price")
                     )
                 }
             }
+        } catch (ex: SQLException) {
+            println(ex)
+        }
+        return null
+    }
+
+    fun getLoaderTasks(connection: Connection, idLoader: Long): List<LoaderTask>? {
+        val sql = "select * from loadertask LT\n" +
+                "where LT.IdLoaderMan = ${idLoader}"
+        try {
+            val resultSet = connection.createStatement().executeQuery(sql)
+
+            return if (!resultSet.next()) {
+                null
+            } else {
+                getFromResultSet(resultSet) {
+                    LoaderTask(
+                            resultSet.getLong("IdLoaderTask"), resultSet.getLong("IdResBuy"),
+                            resultSet.getLong("IdImportAlc"), resultSet.getDate("Date"),
+                            resultSet.getString("Status")
+                    )
+                }
+            }
+        } catch (ex: SQLException) {
+            println(ex)
+        }
+        return null
+    }
+
+    fun getAndCheckTask(connection: Connection, idResBuy: Long, idImportAlc: Long): Pair<Long?, Long?>? {
+        var sql = "select * from ResBuy RB\n" +
+                "where RB.Status != 'system' and RB.IdResBuy = $idResBuy"
+        try {
+            var pair1: Long? = null
+            var resultSet = connection.createStatement().executeQuery(sql)
+            if (resultSet.next()) {
+                pair1 = resultSet.getLong("IdResBuy")
+            }
+            sql = "select * from ImportAlcBuy IAB\n" +
+                    "where IAB.Status != 'system' and IAB.IdImportAlcBuy = ${idImportAlc}"
+            var pair2: Long? = null
+            resultSet = connection.createStatement().executeQuery(sql)
+            if (resultSet.next()) {
+                pair2 = resultSet.getLong("IdImportAlcBuy")
+            }
+            return Pair(pair1, pair2)
+
         } catch (ex: SQLException) {
             println(ex)
         }

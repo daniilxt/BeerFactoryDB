@@ -75,15 +75,13 @@ class ControllerAuth {
         try {
             // auth_btn_sign?.scene?.window?.hide()
             val path = when (role) {
-                Role.ENGINEER -> {
-                    "Factory"
-                }
-                Role.BARMAN -> {
-                    "Bar"
-                }
-                else -> {
-                    "MainApplication"
-                }
+                Role.ENGINEER -> "Factory"
+                Role.BARMAN -> "Bar"
+                Role.LOADER -> "LoaderMan"
+                Role.MANAGER -> "Manager"
+                Role.STAFF_MANAGER -> "StaffManager"
+                Role.CLIENT -> "Client"
+                Role.ADMIN -> "LoaderMan"
             }
             moveToScreen(path, role)
         } catch (ex: Exception) {
@@ -100,17 +98,21 @@ class ControllerAuth {
     }
 
     private fun moveToScreen(name: String, role: Role = Role.CLIENT) {
-        // val root: Parent = FXMLLoader.load(javaClass.getResource("../${name}.fxml"))
 /*        val root: Parent = FXMLLoader.load(javaClass.getResource("../${name}.fxml"))
         val window: Stage = auth_btn_sign?.scene?.window as Stage
         window.scene = Scene(root)
         window.show()*/
+
         val loader = FXMLLoader()
         loader.location = javaClass.getResource("../${name}.fxml")
         val root = loader.load<Parent>()
         if (name == "Factory") {
             val contr: ControllerFactory = loader.getController()
             contr.initialize(User(auth_login!!.text.toString(), auth_password!!.text.toString(), Role.ENGINEER))
+        }
+        if (name == "LoaderMan") {
+            val contr: ControllerLoaderMan = loader.getController()
+            contr.initialize(User(auth_login!!.text.toString(), auth_password!!.text.toString(), Role.LOADER))
         }
         auth_btn_sign?.scene?.window?.hide()
         val stage = Stage()
