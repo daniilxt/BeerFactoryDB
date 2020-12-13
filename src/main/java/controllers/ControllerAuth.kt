@@ -114,6 +114,26 @@ class ControllerAuth {
             val contr: ControllerLoaderMan = loader.getController()
             contr.initialize(User(auth_login!!.text.toString(), auth_password!!.text.toString(), Role.LOADER))
         }
+        if (name == "Bar") {
+            val contr: ControllerBar = loader.getController()
+            contr.initialize(User(auth_login!!.text.toString(), auth_password!!.text.toString(), Role.BARMAN))
+        }
+        if (name == "Manager") {
+            val contr: ControllerManager = loader.getController()
+            contr.initialize(User(auth_login!!.text.toString(), auth_password!!.text.toString(), Role.MANAGER))
+        }
+        if (name == "StaffManager") {
+            val contr: ControllerStaffManager = loader.getController()
+            contr.initialize(User(auth_login!!.text.toString(), auth_password!!.text.toString(), Role.STAFF_MANAGER))
+        }
+        if (name == "Admin") {
+            val contr: ControllerLoaderMan = loader.getController()
+            contr.initialize(User(auth_login!!.text.toString(), auth_password!!.text.toString(), Role.ADMIN))
+        }
+        if (name == "Client") {
+            val contr: ControllerClient = loader.getController()
+            contr.initialize(User(auth_login!!.text.toString(), auth_password!!.text.toString(), Role.CLIENT))
+        }
         auth_btn_sign?.scene?.window?.hide()
         val stage = Stage()
         stage.scene = Scene(root)

@@ -1,10 +1,13 @@
 package controllers;
 
+import JDBC.Utils
+import JDBC.dao.User
 import javafx.fxml.FXML
 import javafx.scene.control.Button
 import javafx.scene.control.DatePicker
 import javafx.scene.control.PasswordField
 import javafx.scene.control.TextField
+import pojo.Worker
 import java.net.URL
 import java.util.*
 
@@ -42,10 +45,12 @@ class ControllerRegistration {
 
     @FXML
     private var reg_conf_password: PasswordField? = null
+    private var worker: Worker? = null
 
     @FXML
-    fun initialize() {
-
+    fun initialize(user: User) {
+        val connection = Utils.getNewConnection()
+        worker = Utils.getWorkerByLogin(user.login, connection!!)
     }
 }
 

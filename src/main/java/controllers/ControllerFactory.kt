@@ -229,7 +229,7 @@ class ControllerFactory {
         table_tasks_status?.cellValueFactory = PropertyValueFactory("status")
 
         val appList = mutableListOf<Tasks>()
-        appList.add(Tasks(1, 1, "Volkovskoe", Date(11122441), 3, "free"))
+        //appList.add(Tasks(1, 1, "Volkovskoe", Date(11122441), 3, "free"))
         Utils.getTasks(worker!!.idWorker, connection)?.let { appList.addAll(it) }
         table_tasks?.items?.clear()
         table_tasks?.items?.addAll(appList)

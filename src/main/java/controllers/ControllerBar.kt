@@ -1,12 +1,14 @@
 package controllers
 
 import JDBC.Utils
+import JDBC.dao.User
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.scene.control.*
 import javafx.scene.control.cell.PropertyValueFactory
 import javafx.util.Callback
 import pojo.BeerMenu
+import pojo.Worker
 import java.net.URL
 import java.util.*
 
@@ -79,13 +81,16 @@ class ControllerBar {
 
     @FXML
     private var filter_amount_to: TextField? = null
+    private var worker: Worker? = null
 
     @FXML
     fun findIdTask(event: ActionEvent?) {
     }
 
     @FXML
-    fun initialize() {
+    fun initialize(user: User) {
+        val connection = Utils.getNewConnection()
+        worker = Utils.getWorkerByLogin(user.login, connection!!)
         initMenu()
     }
 
@@ -104,7 +109,7 @@ class ControllerBar {
         val data = mutableListOf<BeerMenu>()
         table_beer_menu?.items?.clear()
         Utils.getBeerMenu(connection!!)?.let { table_beer_menu?.items?.addAll(it) }
-        table_beer_menu?.columns?.add(addButtonColumn("Action","add") {
+        table_beer_menu?.columns?.add(addButtonColumn("Action", "add") {
             println(it)
             data.add(it)
             updateCart(data)
@@ -116,7 +121,7 @@ class ControllerBar {
         table_cart_type?.cellValueFactory = PropertyValueFactory("Type")
         table_cart_amount?.cellValueFactory = PropertyValueFactory("Amount")
         table_cart_price?.cellValueFactory = PropertyValueFactory("Price")
-        table_cart?.columns?.add(addButtonColumn("Action","del") {
+        table_cart?.columns?.add(addButtonColumn("Action", "del") {
             println(it)
             data.remove(it)
             updateCart(data)
@@ -129,26 +134,26 @@ class ControllerBar {
         table_cart?.items?.addAll(data)
     }
 
-    private fun <T> addButtonColumn(columnName:String,btnName:String,func: (it: T) -> Unit): TableColumn<T, Void> {
+    private fun <T> addButtonColumn(columnName: String, btnName: String, func: (it: T) -> Unit): TableColumn<T, Void> {
         val colBtn: TableColumn<T, Void> = TableColumn(columnName)
         val cellFactory: Callback<TableColumn<T?, Void?>?, TableCell<T?, Void?>?> =
-            Callback {
-                object : TableCell<T?, Void?>() {
-                    private val btn = Button(btnName)
-                    override fun updateItem(item: Void?, empty: Boolean) {
-                        super.updateItem(item, empty)
-                        btn.setOnAction {
-                            val type: T? = tableView.items[index]
-                            type?.let { it1 -> func(it1) }
-                        }
-                        graphic = if (empty) {
-                            null
-                        } else {
-                            btn
+                Callback {
+                    object : TableCell<T?, Void?>() {
+                        private val btn = Button(btnName)
+                        override fun updateItem(item: Void?, empty: Boolean) {
+                            super.updateItem(item, empty)
+                            btn.setOnAction {
+                                val type: T? = tableView.items[index]
+                                type?.let { it1 -> func(it1) }
+                            }
+                            graphic = if (empty) {
+                                null
+                            } else {
+                                btn
+                            }
                         }
                     }
                 }
-            }
 
         colBtn.cellFactory = cellFactory
         return colBtn
