@@ -15,7 +15,7 @@
     <children>
         <TabPane fx:id="tab_loader" layoutX="79.0" layoutY="35.0" prefHeight="604.0" prefWidth="914.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <tabs>
-                <Tab fx:id="tab_factory" text="Bar">
+                <Tab fx:id="tab_factory" text="Storage">
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="700.0" prefWidth="870.0" style="-fx-background-color: #FFFFFF;">
                             <children>
@@ -32,7 +32,7 @@
                                         <Font size="35.0" />
                                     </font>
                                 </Label>
-                                <Button fx:id="btn_buy1" layoutX="702.0" layoutY="547.0" mnemonicParsing="false" onAction="#findIdTask" style="-fx-background-color: #E19133; -fx-background-radius: 10 10 10 10;" text="LOAD IMPORT ALC">
+                                <Button fx:id="btn_load_alc" layoutX="702.0" layoutY="547.0" mnemonicParsing="false" onAction="#findIdTask" style="-fx-background-color: #E19133; -fx-background-radius: 10 10 10 10;" text="LOAD IMPORT ALC">
                                     <font>
                                         <Font name="Arial" size="20.0" />
                                     </font>
@@ -64,6 +64,7 @@
                                 </Label>
                                 <TableView fx:id="table_res" layoutX="48.0" layoutY="176.0" prefHeight="377.0" prefWidth="362.0">
                                     <columns>
+                              <TableColumn fx:id="table_res_id_task" prefWidth="75.0" text="idTask" />
                                         <TableColumn fx:id="table_res_name" prefWidth="75.0" text="name" />
                                         <TableColumn fx:id="table_res_count" prefWidth="70.0" text="count" />
                                         <TableColumn fx:id="table_res_date" prefWidth="73.0" text="date" />
@@ -83,7 +84,7 @@
                                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                     </columnResizePolicy>
                                 </TableView>
-                                <Button layoutX="882.0" layoutY="627.0" mnemonicParsing="false" text="BACK">
+                                <Button fx:id="back_res" layoutX="882.0" layoutY="627.0" mnemonicParsing="false" text="BACK">
                                     <font>
                                         <Font size="14.0" />
                                     </font>
@@ -117,8 +118,14 @@
                                         <Font name="System Bold" size="16.0" />
                                     </font>
                                 </Label>
+                        <Button fx:id="back_alc" layoutX="882.0" layoutY="627.0" mnemonicParsing="false" text="BACK">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
                                 <TableView fx:id="table_res_alc" layoutX="34.0" layoutY="182.0" prefHeight="377.0" prefWidth="362.0">
                                     <columns>
+                              <TableColumn fx:id="table_res_alc_id_task" prefWidth="75.0" text="idTask" />
                                         <TableColumn fx:id="table_res_alc_name" prefWidth="75.0" text="name" />
                                         <TableColumn fx:id="table_res_alc_count" prefWidth="70.0" text="count" />
                                         <TableColumn fx:id="table_res_alc_date" prefWidth="73.0" text="date" />

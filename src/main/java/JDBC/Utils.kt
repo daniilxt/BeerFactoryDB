@@ -230,7 +230,7 @@ object Utils {
 
     fun getLoaderTasks(connection: Connection, idLoader: Long): List<LoaderTask>? {
         val sql = "select * from loadertask LT\n" +
-                "where LT.IdLoaderMan = ${idLoader}"
+                "where LT.IdLoaderMan = ${idLoader} and LT.Status != 'done' "
         try {
             val resultSet = connection.createStatement().executeQuery(sql)
 
@@ -276,7 +276,7 @@ object Utils {
     }
 
     fun getTaskResources(connection: Connection, first: Long): List<TaskResource>? {
-        val sql = "select Name, RBP.Number, Date\n" +
+        val sql = "select RB.IdResBuy, Name, RBP.Number, Date\n" +
                 "from ResBuyPosition RBP\n" +
                 "         inner join ResBuy RB on RBP.IdResBuy = RB.IdResBuy\n" +
                 "         inner join ResourceStorage RS on RBP.IdResource = RS.IdResource\n" +
@@ -289,8 +289,8 @@ object Utils {
             } else {
                 getFromResultSet(resultSet) {
                     TaskResource(
-                            resultSet.getString("Name"), resultSet.getLong("Number"),
-                            resultSet.getDate("Date")
+                            resultSet.getLong("IdResBuy"), resultSet.getString("Name"),
+                            resultSet.getLong("Number"), resultSet.getDate("Date")
 
                     )
                 }
@@ -302,7 +302,7 @@ object Utils {
     }
 
     fun getTaskResourcesAlc(connection: Connection, second: Long): List<TaskResource>? {
-        val sql = "select Name, IAB.Number, Date\n" +
+        val sql = "select I.IdImportAlcBuy, Name, IAB.Number, Date\n" +
                 "from ImportAlcBuyPosition IAB\n" +
                 "inner join ImportAlcBuy I on IAB.IdImportAlcBuy = I.IdImportAlcBuy\n" +
                 "inner join beerstorage b on IAB.IdBeerKind = b.IdBeerKind\n" +
@@ -315,8 +315,8 @@ object Utils {
             } else {
                 getFromResultSet(resultSet) {
                     TaskResource(
-                            resultSet.getString("Name"), resultSet.getLong("Number"),
-                            resultSet.getDate("Date")
+                            resultSet.getLong("IdImportAlcBuy"), resultSet.getString("Name"),
+                            resultSet.getLong("Number"), resultSet.getDate("Date")
 
                     )
                 }
@@ -325,6 +325,38 @@ object Utils {
             println(ex)
         }
         return null
+    }
+
+    fun updateResourceStoreList(connection: Connection, resName: String, amount: Long): List<ResStorage>? {
+        var sql = "call changeResCount(${amount},'${resName}')"
+        try {
+            connection.createStatement().executeQuery(sql)
+            sql = "select * from ResourceStorage"
+            val resultSet = connection.createStatement().executeQuery(sql)
+
+            return if (!resultSet.next()) {
+                null
+            } else {
+                getFromResultSet(resultSet) {
+                    ResStorage(
+                            resultSet.getString("Name"), resultSet.getLong("Amount"),
+                            resultSet.getString("Unit"), resultSet.getLong("Price")
+                    )
+                }
+            }
+        } catch (ex: SQLException) {
+            println(ex)
+        }
+        return null
+    }
+
+    fun updateStatusResTask(connection: Connection, status: String, idTask: Long) {
+        val sql = "call changeResTaskStatus('${status}',${idTask})"
+        try {
+            connection.createStatement().executeQuery(sql)
+        } catch (ex: SQLException) {
+            println(ex)
+        }
     }
 
     @Throws(SQLException::class)
