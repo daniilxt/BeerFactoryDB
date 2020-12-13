@@ -11,6 +11,7 @@ import pojo.LoaderTask
 import pojo.TaskResource
 import pojo.Worker
 import java.net.URL
+import java.sql.Connection
 import java.util.*
 
 
@@ -22,7 +23,13 @@ class ControllerLoaderMan {
     private var location: URL? = null
 
     @FXML
-    private var tab_factory: Tab? = null
+    private var tab_loader: TabPane? = null
+
+    @FXML
+    private var tab_res: Tab? = null
+
+    @FXML
+    private var tab_alc: Tab? = null
 
     @FXML
     private var btn_load_res: Button? = null
@@ -97,17 +104,18 @@ class ControllerLoaderMan {
     private var table_res_alc_store_price: TableColumn<*, *>? = null
 
     @FXML
-    private var table_res_alc_: TableView<*>? = null
+    private var table_res_alc: TableView<TaskResource>? = null
 
     @FXML
-    private var table_res_alc_name: TableColumn<*, *>? = null
+    private var table_res_alc_name: TableColumn<TaskResource, String>? = null
 
     @FXML
-    private var table_res_alc_count: TableColumn<*, *>? = null
+    private var table_res_alc_count: TableColumn<TaskResource, Long>? = null
 
-    @FXML
-    private var table_res_alc_date: TableColumn<*, *>? = null
     private var worker: Worker? = null
+
+    @FXML
+    private var table_res_alc_date: TableColumn<TaskResource, Date>? = null
 
     @FXML
     fun findIdTask(event: ActionEvent?) {
@@ -115,6 +123,12 @@ class ControllerLoaderMan {
 
     @FXML
     fun initialize(user: User) {
+        btn_load_res!!.setOnAction {
+            tab_loader!!.selectionModel!!.select(tab_res)
+            print("tab")
+
+        }
+
         val connection = Utils.getNewConnection()
         worker = Utils.getWorkerByLogin(user.login, connection!!)
         val data = mutableListOf<LoaderTask>()
@@ -136,17 +150,29 @@ class ControllerLoaderMan {
             //todo
         })
 
-        //table positions
-        var dataRes = mutableListOf<TaskResource>()
+        //table positions res
+        val dataRes = mutableListOf<TaskResource>()
         table_res_name?.cellValueFactory = PropertyValueFactory("resName")
         table_res_count?.cellValueFactory = PropertyValueFactory("amount")
         table_res_date?.cellValueFactory = PropertyValueFactory("date")
         table_res?.columns?.add(addButtonColumn("Action", "handle") {
-            println(it)
             dataRes.clear()
             table_res?.items?.let { it1 -> dataRes.addAll(it1) }
             dataRes.remove(it)
             updateTasksRes(dataRes)
+            //todo
+        })
+
+        //table alc positions
+        val dataResAlc = mutableListOf<TaskResource>()
+        table_res_alc_name?.cellValueFactory = PropertyValueFactory("resName")
+        table_res_alc_count?.cellValueFactory = PropertyValueFactory("amount")
+        table_res_alc_date?.cellValueFactory = PropertyValueFactory("date")
+        table_res_alc?.columns?.add(addButtonColumn("Action", "handle") {
+            dataResAlc.clear()
+            table_res_alc?.items?.let { it1 -> dataResAlc.addAll(it1) }
+            dataRes.remove(it)
+            updateTasksResAlc(dataRes)
             //todo
         })
     }
@@ -157,6 +183,7 @@ class ControllerLoaderMan {
         if (pair != null) {
             if (pair.first != null) {
                 handleTableRes(pair.first!!)
+
                 return
             }
             if (pair.second != null) {
@@ -166,23 +193,45 @@ class ControllerLoaderMan {
         }
     }
 
-    private fun handleTableRes(first: Long) {
-        println("Handled 1")
-    }
-
-    private fun handleTableAlc(second: Long) {
-        println("Handled 2")
-
-    }
-
+    // first tab
     private fun updateTasksRes(data: MutableList<TaskResource>) {
         table_res?.items?.clear()
         table_res?.items?.addAll(data)
     }
 
+    private fun updateTasksResAlc(data: MutableList<TaskResource>) {
+        table_res_alc?.items?.clear()
+        table_res_alc?.items?.addAll(data)
+    }
+
     private fun updateTasks(data: MutableList<LoaderTask>) {
         table_tasks?.items?.clear()
         table_tasks?.items?.addAll(data)
+    }
+
+    //second tab
+    private fun handleTableRes(first: Long) {
+        val dataRes = mutableListOf<TaskResource>()
+        val connection: Connection? = Utils.getNewConnection()
+        Utils.getTaskResources(connection!!, first)?.let { dataRes.addAll(it) }
+        tab_loader?.selectionModel?.select(tab_res)
+        table_res?.items?.clear()
+        table_res?.items?.addAll(dataRes)
+
+        println("Handled 1")
+    }
+
+    // todo fix dublicate
+    private fun handleTableAlc(second: Long) {
+        val dataResAlc = mutableListOf<TaskResource>()
+        val connection: Connection? = Utils.getNewConnection()
+        Utils.getTaskResourcesAlc(connection!!, second)?.let { dataResAlc.addAll(it) }
+        tab_loader?.selectionModel?.select(tab_alc)
+        table_res_alc?.items?.clear()
+        table_res_alc?.items?.addAll(dataResAlc)
+
+        println("Handled 2")
+
     }
 
     private fun <T> addButtonColumn(columnName: String, btnName: String, func: (it: T) -> Unit): TableColumn<T, Void> {

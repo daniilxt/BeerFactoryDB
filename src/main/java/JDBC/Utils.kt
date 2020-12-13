@@ -275,6 +275,58 @@ object Utils {
         return null
     }
 
+    fun getTaskResources(connection: Connection, first: Long): List<TaskResource>? {
+        val sql = "select Name, RBP.Number, Date\n" +
+                "from ResBuyPosition RBP\n" +
+                "         inner join ResBuy RB on RBP.IdResBuy = RB.IdResBuy\n" +
+                "         inner join ResourceStorage RS on RBP.IdResource = RS.IdResource\n" +
+                "where RB.IdResBuy = ${first}\n"
+        try {
+            val resultSet = connection.createStatement().executeQuery(sql)
+
+            return if (!resultSet.next()) {
+                null
+            } else {
+                getFromResultSet(resultSet) {
+                    TaskResource(
+                            resultSet.getString("Name"), resultSet.getLong("Number"),
+                            resultSet.getDate("Date")
+
+                    )
+                }
+            }
+        } catch (ex: SQLException) {
+            println(ex)
+        }
+        return null
+    }
+
+    fun getTaskResourcesAlc(connection: Connection, second: Long): List<TaskResource>? {
+        val sql = "select Name, IAB.Number, Date\n" +
+                "from ImportAlcBuyPosition IAB\n" +
+                "inner join ImportAlcBuy I on IAB.IdImportAlcBuy = I.IdImportAlcBuy\n" +
+                "inner join beerstorage b on IAB.IdBeerKind = b.IdBeerKind\n" +
+                "where I.IdImportAlcBuy = ${second}"
+        try {
+            val resultSet = connection.createStatement().executeQuery(sql)
+
+            return if (!resultSet.next()) {
+                null
+            } else {
+                getFromResultSet(resultSet) {
+                    TaskResource(
+                            resultSet.getString("Name"), resultSet.getLong("Number"),
+                            resultSet.getDate("Date")
+
+                    )
+                }
+            }
+        } catch (ex: SQLException) {
+            println(ex)
+        }
+        return null
+    }
+
     @Throws(SQLException::class)
     private fun <T> getFromResultSet(resultSet: ResultSet, action: () -> T): List<T>? {
         val records: MutableList<T> = ArrayList()
