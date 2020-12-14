@@ -8,8 +8,6 @@ import javafx.scene.control.cell.PropertyValueFactory
 import javafx.util.Callback
 import pojo.BeerMenu
 import pojo.Client
-import pojo.Worker
-import java.util.*
 
 
 class ControllerClient {
@@ -113,6 +111,9 @@ class ControllerClient {
     @FXML
     private var btn_clear: Button? = null
 
+    @FXML
+    private var btn_no_alc: CheckBox? = null
+
     private var client: Client? = null
 
     @FXML
@@ -133,9 +134,21 @@ class ControllerClient {
         table_beer_menu_price?.cellValueFactory = PropertyValueFactory("Price")
 
 
-        val data = mutableListOf<BeerMenu>()
+        var data = mutableListOf<BeerMenu>()
+        var dataList: MutableList<BeerMenu>
+        val dataCopy = Utils.getBeerMenu(connection!!)
+        btn_no_alc?.setOnAction {
+            dataList = if (btn_no_alc!!.isSelected) {
+                dataCopy!!.filter { it.type == "Import" }.toMutableList()
+            } else {
+                dataCopy as MutableList<BeerMenu>
+            }
+            table_beer_menu?.items?.clear()
+            table_beer_menu?.items?.addAll(dataList)
+        }
+
         table_beer_menu?.items?.clear()
-        Utils.getBeerMenu(connection!!)?.let { table_beer_menu?.items?.addAll(it) }
+        Utils.getBeerMenu(connection)?.let { table_beer_menu?.items?.addAll(it) }
         table_beer_menu?.columns?.add(addButtonColumn("Action", "add") {
             val beer = BeerMenu(it.name, it.type, 1, it.price)
             data.add(beer)
