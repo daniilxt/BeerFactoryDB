@@ -10,6 +10,5 @@ object BaseCoder {
 
     fun encode(decoded: String): String? {
         return Base64.getEncoder().encodeToString(decoded.toByteArray())
-
     }
 }

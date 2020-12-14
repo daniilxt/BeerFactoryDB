@@ -4,6 +4,7 @@ import JDBC.Utils
 import JDBC.dao.Role
 import JDBC.dao.User
 import encryptor.BaseCoder
+import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.Parent
@@ -133,6 +134,10 @@ class ControllerAuth {
         if (name == "Client") {
             val contr: ControllerClient = loader.getController()
             contr.initialize(User(auth_login!!.text.toString(), auth_password!!.text.toString(), Role.CLIENT))
+        }
+        if (name == "Registration") {
+            val contr: ControllerRegistration = loader.getController()
+            contr.initialize(User(auth_login!!.text.toString(), auth_password!!.text.toString(), Role.ENGINEER))
         }
         auth_btn_sign?.scene?.window?.hide()
         val stage = Stage()

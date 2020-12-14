@@ -11,9 +11,9 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="reg_date" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="647.0" prefWidth="857.0" xmlns="http://javafx.com/javafx/11.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ControllerRegistration">
+<AnchorPane
+        prefHeight="647.0" prefWidth="857.0" xmlns="http://javafx.com/javafx/11.0.1"
+        xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ControllerRegistration">
     <children>
         <Line endX="255.0" endY="285.0" layoutX="144.0" layoutY="205.0" startX="255.0" startY="39.0" stroke="#309e22"
               strokeWidth="2.0"/>

@@ -391,6 +391,56 @@ object Utils {
         }
     }
 
+    fun checkLogin(connection: Connection, login: String): Boolean {
+        val sql = "select * from User US where us.Login = '${login}'"
+        try {
+            val resultSet = connection.createStatement().executeQuery(sql)
+            return resultSet.next()
+        } catch (ex: SQLException) {
+            println(ex)
+        }
+        return false
+    }
+
+    fun createAccount(connection: Connection, login: String, password: String, role: Role): Pair<Boolean, Long> {
+        var sql = "INSERT INTO User (Login, Password, Role)" +
+                " VALUES ('${login}','${password}','${role.toString().toLowerCase()}')\n"
+        try {
+            connection.createStatement().executeQuery(sql)
+            sql = "select IdUser from User where Login = '${login}'"
+            val resultSet = connection.createStatement().executeQuery(sql)
+            if (resultSet.next()) {
+                return Pair(true, resultSet.getLong(1))
+            }
+        } catch (ex: SQLException) {
+            println(ex)
+            return Pair(false, 0)
+        }
+        return Pair(false, 0)
+    }
+
+    fun createClient(connection: Connection, client: Client): Boolean {
+        val sql = "INSERT INTO ClientList (NameClient, SecondNameClient, MiddleNameClient, PhoneClient, Age, DateJoin, IdUser)\n" +
+                "VALUES ( '${client.nameClient}', '${client.secondNameClient}', '${client.middleNameClient}'," +
+                " '${client.phoneClient}', '${client.age}', '${client.dateJoin}', '${client.idUser}');"
+        return try {
+            val resultSet = connection.createStatement().executeQuery(sql)
+            resultSet.next()
+        } catch (ex: SQLException) {
+            println(ex)
+            true
+        }
+    }
+
+    fun deleteAccount(connection: Connection, login: String) {
+        val sql = "call deleteUserByLogin('${login}')"
+        try {
+            connection.createStatement().executeQuery(sql)
+        } catch (ex: SQLException) {
+            println(ex)
+        }
+    }
+
     @Throws(SQLException::class)
     private fun <T> getFromResultSet(resultSet: ResultSet, action: () -> T): List<T>? {
         val records: MutableList<T> = ArrayList()
