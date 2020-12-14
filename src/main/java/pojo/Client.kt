@@ -9,5 +9,6 @@ data class Client(
         var phoneClient: String? = null,
         var age: Date? = null,
         var dateJoin: Date? = null,
-        var idUser: Long = 0
+        var idUser: Long = 0,
+        var idClient:Long = -1
 )

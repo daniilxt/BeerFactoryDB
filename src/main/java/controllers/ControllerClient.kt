@@ -8,6 +8,10 @@ import javafx.scene.control.cell.PropertyValueFactory
 import javafx.util.Callback
 import pojo.BeerMenu
 import pojo.Client
+import pojo.OrderPosition
+import pojo.Orders
+import java.sql.Connection
+import java.util.*
 
 
 class ControllerClient {
@@ -34,7 +38,7 @@ class ControllerClient {
     private var tab_factory: Tab? = null
 
     @FXML
-    private var filter_date: Button? = null
+    private var btn_buy: Button? = null
 
     @FXML
     private var table_cart: TableView<BeerMenu>? = null
@@ -73,34 +77,34 @@ class ControllerClient {
     private var filter_date1: Button? = null
 
     @FXML
-    private var table_orders_punct: TableView<*>? = null
+    private var table_orders_punct: TableView<OrderPosition>? = null
 
     @FXML
-    private var table_orders_punct_name: TableColumn<*, *>? = null
+    private var table_orders_punct_name: TableColumn<OrderPosition, String>? = null
 
     @FXML
-    private var table_orders_punct_type: TableColumn<*, *>? = null
+    private var table_orders_punct_type: TableColumn<OrderPosition, String>? = null
 
     @FXML
-    private var table_orders_punct_amount: TableColumn<*, *>? = null
+    private var table_orders_punct_amount: TableColumn<OrderPosition, Long>? = null
 
     @FXML
-    private var table_orders_punct_price: TableColumn<*, *>? = null
+    private var table_orders_punct_price: TableColumn<OrderPosition, Long>? = null
 
     @FXML
-    private var table_orders: TableView<*>? = null
+    private var table_orders: TableView<Orders>? = null
 
     @FXML
-    private var table_orders_num: TableColumn<*, *>? = null
+    private var table_orders_num: TableColumn<Orders, Long>? = null
 
     @FXML
-    private var table_orders_manager_id: TableColumn<*, *>? = null
+    private var table_orders_manager_id: TableColumn<Orders, Long>? = null
 
     @FXML
-    private var table_orders_sate: TableColumn<*, *>? = null
+    private var table_orders_date: TableColumn<Orders, Date>? = null
 
     @FXML
-    private var table_orders_status: TableColumn<*, *>? = null
+    private var table_orders_status: TableColumn<Orders, String>? = null
 
     @FXML
     private var find_num: TextField? = null
@@ -114,7 +118,42 @@ class ControllerClient {
     @FXML
     private var btn_no_alc: CheckBox? = null
 
+    @FXML
+    private var btn_go_orders: Button? = null
+
+    @FXML
+    private var btn_go_buy: Button? = null
+
+    @FXML
+    private var btn_clear_cart: Button? = null
+
+    @FXML
+    private var tab_loader: TabPane? = null
+
+    @FXML
+    private var tab_profile: Tab? = null
+
+    @FXML
+    private var tab_buy: Tab? = null
+
+    @FXML
+    private var tab_orders: Tab? = null
+
+    @FXML
+    private var btn_back_orders: Button? = null
+
+    @FXML
+    private var btn_back_menu: Button? = null
+
     private var client: Client? = null
+
+    @FXML
+    private fun alert(str: String = "Incorrect input") {
+        val alert = Alert(Alert.AlertType.ERROR)
+        alert.title = "Attention"
+        alert.contentText = str
+        alert.showAndWait()
+    }
 
     @FXML
     fun initialize(user: User) {
@@ -127,6 +166,7 @@ class ControllerClient {
             reg_phone?.text = client!!.phoneClient
             reg_date?.text = client!!.age.toString()
         }
+
         //table menu
         table_beer_menu_name?.cellValueFactory = PropertyValueFactory("Name")
         table_beer_menu_type?.cellValueFactory = PropertyValueFactory("Type")
@@ -146,6 +186,40 @@ class ControllerClient {
             table_beer_menu?.items?.clear()
             table_beer_menu?.items?.addAll(dataList)
         }
+        btn_clear_cart?.setOnAction { table_cart?.items?.clear() }
+        btn_buy?.setOnAction {
+            if (table_cart!!.items?.isNotEmpty()!!) {
+                val nowDate = java.sql.Date(Calendar.getInstance().time.time)
+                val manager = Utils.getCountManagers(connection)
+                val rnds = (1..manager).random()
+                Utils.createOrder(connection, table_cart!!.items, rnds, nowDate, client!!.idClient)
+
+                // todo  del duplicate
+                table_cart?.items?.clear()
+                val dataOrders = mutableListOf<Orders>()
+                table_orders?.items?.clear()
+                Utils.getOrdersByClient(connection, client!!.idClient)?.let { dataOrders.addAll(it) }
+                table_orders?.items?.addAll(dataOrders)
+
+            }
+        }
+        btn_find?.setOnAction {
+            if (find_num!!.text.isNotEmpty()) {
+                try {
+                    val num = find_num!!.text.toLong()
+                    showOrders(num, connection)
+
+                } catch (ex: Exception) {
+                    alert()
+                }
+            }
+        }
+        btn_clear?.setOnAction { table_orders_punct?.items?.clear() }
+        //move
+        btn_go_orders?.setOnAction { tab_loader!!.selectionModel!!.select(tab_orders) }
+        btn_go_buy?.setOnAction { tab_loader!!.selectionModel!!.select(tab_buy) }
+        btn_back_menu?.setOnAction { tab_loader!!.selectionModel!!.select(tab_profile) }
+        btn_back_orders?.setOnAction { tab_loader!!.selectionModel!!.select(tab_profile) }
 
         table_beer_menu?.items?.clear()
         Utils.getBeerMenu(connection)?.let { table_beer_menu?.items?.addAll(it) }
@@ -176,6 +250,38 @@ class ControllerClient {
             updateCart(data)
             //todo
         })
+
+        //table orders
+        val dataOrders = mutableListOf<Orders>()
+        table_orders?.items?.clear()
+        Utils.getOrdersByClient(connection, client!!.idClient)?.let { dataOrders.addAll(it) }
+        table_orders?.items?.addAll(dataOrders)
+
+        table_orders_num?.cellValueFactory = PropertyValueFactory("idOrder")
+        table_orders_manager_id?.cellValueFactory = PropertyValueFactory("manager")
+        table_orders_date?.cellValueFactory = PropertyValueFactory("date")
+        table_orders_status?.cellValueFactory = PropertyValueFactory("status")
+        table_orders?.columns?.add(addButtonColumn("Action", "show") {
+            println(it)
+            table_orders_punct?.items?.clear()
+            showOrders(it.idOrder, connection)
+            //todo
+        })
+        table_orders_punct_name?.cellValueFactory = PropertyValueFactory("beerName")
+        table_orders_punct_type?.cellValueFactory = PropertyValueFactory("type")
+        table_orders_punct_amount?.cellValueFactory = PropertyValueFactory("amount")
+        table_orders_punct_price?.cellValueFactory = PropertyValueFactory("price")
+
+    }
+
+    private fun showOrders(idOrder: Long, connection: Connection) {
+        table_orders_punct?.items?.clear()
+        val tmp = Utils.getOrderPositionByOrderId(connection, client!!.idClient, idOrder)
+        println(tmp)
+        tmp?.let { it1 -> table_orders_punct?.items?.addAll(it1) }
+        if (tmp == null) {
+            alert("Order not exists")
+        }
     }
 
     private fun updateCart(data: MutableList<BeerMenu>) {

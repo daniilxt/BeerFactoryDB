@@ -442,7 +442,7 @@ object Utils {
     }
 
     fun getClientByLogin(connection: Connection, login: String): Client? {
-        val sql = "select NameClient, SecondNameClient, MiddleNameClient, PhoneClient, Age\n" +
+        val sql = "select NameClient, SecondNameClient, MiddleNameClient, PhoneClient, Age, IdClient\n" +
                 "from ClientList CL\n" +
                 "         inner join User US on CL.IdUser = US.IdUser\n" +
                 "where US.Login = '${login}'"
@@ -457,9 +457,109 @@ object Utils {
                     Client(
                             resultSet.getString(1), resultSet.getString(2),
                             resultSet.getString(3), resultSet.getString(4),
-                            resultSet.getDate(5)
+                            resultSet.getDate(5), idClient = resultSet.getLong(6)
                     )
                 }?.get(0)
+            }
+        } catch (ex: SQLException) {
+            println(ex)
+        }
+        return null
+    }
+
+    fun createOrder(connection: Connection, items: List<BeerMenu>, manager: Long, date: java.sql.Date, idClient: Long) {
+        var sql = "INSERT INTO Orders (IdClient, IdManager, Date, Status)\n" +
+                "VALUES (${idClient}, ${manager}, '${date}', 'process');"
+
+        try {
+            connection.createStatement().executeQuery(sql)
+            sql = "select IdOrder from Orders where IdClient = ${idClient}"
+            var resultSet = connection.createStatement().executeQuery(sql)
+            val records: MutableList<Long> = ArrayList()
+            if (resultSet.next()) {
+                do {
+                    val tmp: Long = resultSet.getLong(1)
+                    records.add(tmp)
+                } while (resultSet.next())
+            }
+
+            items.forEach {
+                sql = "set @id = 0;"
+                connection.createStatement().executeQuery(sql)
+
+                sql = "SET @id = (select IdBeerKind from BeerStorage where Name = '${it.name}');"
+                connection.createStatement().executeQuery(sql)
+
+                sql = "select @id;"
+                resultSet = connection.createStatement().executeQuery(sql)
+                val idBeerKind = if (resultSet!!.next()) {
+                    resultSet.getLong(1)
+                } else 0
+
+                sql = "INSERT INTO  OrderPosition (Number, IdOrder, IdBeerKind)\n" +
+                        "VALUES (${it.amount}, ${records.last()}, ${idBeerKind});"
+                connection.createStatement().executeQuery(sql)
+            }
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
+    }
+
+    fun getCountManagers(connection: Connection): Long {
+        val sql = "select count(IdManager) from manager"
+        return try {
+            val resultSet = connection.createStatement().executeQuery(sql)
+            if (resultSet.next()) {
+                resultSet.getLong(1)
+            } else {
+                0
+            }
+        } catch (ex: SQLException) {
+            println(ex)
+            0
+        }
+    }
+
+    fun getOrdersByClient(connection: Connection, idClient: Long): List<Orders>? {
+        val sql = "select * from Orders\n" +
+                "where IdClient = ${idClient}"
+        try {
+            val resultSet = connection.createStatement().executeQuery(sql)
+
+            return if (!resultSet.next()) {
+                null
+            } else {
+                getFromResultSet(resultSet) {
+                    Orders(
+                            resultSet.getLong(1), resultSet.getLong(3),
+                            resultSet.getDate(4), resultSet.getString(5)
+                    )
+                }
+            }
+        } catch (ex: SQLException) {
+            println(ex)
+        }
+        return null
+    }
+
+    fun getOrderPositionByOrderId(connection: Connection, idClient: Long, idOrder: Long): List<OrderPosition>? {
+        val sql = "select BS.Name, BS.Type, OP.Number, sum(BS.Price * OP.Number) from OrderPosition OP\n" +
+                "inner join Orders O on O.IdOrder = OP.IdOrder\n" +
+                "inner join BeerStorage BS on OP.IdBeerKind = BS.IdBeerKind\n" +
+                "where IdClient = ${idClient} and O.IdOrder = ${idOrder}\n" +
+                "group by BS.Name"
+        try {
+            val resultSet = connection.createStatement().executeQuery(sql)
+
+            return if (!resultSet.next()) {
+                null
+            } else {
+                getFromResultSet(resultSet) {
+                    OrderPosition(
+                            resultSet.getString(1), resultSet.getString(2),
+                            resultSet.getLong(3), resultSet.getLong(4)
+                    )
+                }
             }
         } catch (ex: SQLException) {
             println(ex)
