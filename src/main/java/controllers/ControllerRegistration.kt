@@ -109,7 +109,7 @@ class ControllerRegistration {
                                     Client(
                                             reg_name!!.text.toString(), reg_second_name!!.text.toString(),
                                             reg_middle_name!!.text.toString(), reg_phone!!.text.toString(),
-                                            date as java.sql.Date?, nowDate, user.second
+                                            date as java.sql.Date?, nowDate,  idUser= user.second
                                     )
                             )
                             if (client) {

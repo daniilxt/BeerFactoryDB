@@ -4,6 +4,7 @@ import JDBC.dao.Role
 import JDBC.dao.User
 import pojo.*
 import java.sql.Connection
+import java.sql.Date
 import java.sql.DriverManager
 import java.sql.ResultSet
 import java.sql.SQLException
@@ -178,10 +179,11 @@ object Utils {
             } else {
                 getFromResultSet(resultSet) {
                     Worker(
-                            resultSet.getLong("ID_WORKER"),
-                            resultSet.getString("Name"), resultSet.getString("SecondName"),
-                            resultSet.getString("MiddleName"), resultSet.getString("Phone"),
-                            resultSet.getDate("DateJoin")
+                            resultSet.getLong("ID_WORKER"), resultSet.getString("Name"),
+                            resultSet.getString("SecondName"), resultSet.getString("MiddleName"),
+                            resultSet.getString("Phone"), resultSet.getDate("DateJoin"),
+                            resultSet.getDate("DateDismiss"), resultSet.getString("Login"),
+                            resultSet.getLong("WorksDays")
                     )
                 }?.get(0)
             }
@@ -558,6 +560,71 @@ object Utils {
                     OrderPosition(
                             resultSet.getString(1), resultSet.getString(2),
                             resultSet.getLong(3), resultSet.getLong(4)
+                    )
+                }
+            }
+        } catch (ex: SQLException) {
+            println(ex)
+        }
+        return null
+    }
+
+    fun getClientsList(connection: Connection): List<Client>? {
+        val sql = "select * from ClientList"
+        try {
+            val resultSet = connection.createStatement().executeQuery(sql)
+
+            return if (!resultSet.next()) {
+                null
+            } else {
+                getFromResultSet(resultSet) {
+                    Client(
+                            resultSet.getString(2), resultSet.getString(3),
+                            resultSet.getString(4), resultSet.getString(5),
+                            resultSet.getDate(6), resultSet.getDate(7),
+                            resultSet.getDate(9), resultSet.getLong(8),
+                            resultSet.getLong(1)
+                    )
+                }
+            }
+        } catch (ex: SQLException) {
+            println(ex)
+        }
+        return null
+    }
+
+    fun deleteClient(connection: Connection, idClient: Long, idUser: Long, date: Date) {
+        try {
+            val sql = "select Login from  User\n" +
+                    "inner join clientlist c on user.IdUser = c.IdUser\n" +
+                    "where IdClient = ${idClient}"
+            val resultSet = connection.createStatement().executeQuery(sql)
+            if (resultSet.next()) {
+                val login = resultSet.getString(1)
+                println(login)
+                deleteAccount(connection, login)
+            }
+
+        } catch (ex: SQLException) {
+            println(ex)
+        }
+    }
+
+    fun getWorkers(connection: Connection): List<Worker>? {
+        val sql = "select * from Workers"
+        try {
+            val resultSet = connection.createStatement().executeQuery(sql)
+
+            return if (!resultSet.next()) {
+                null
+            } else {
+                getFromResultSet(resultSet) {
+                    Worker(
+                            resultSet.getLong("ID_WORKER"), resultSet.getString("Name"),
+                            resultSet.getString("SecondName"), resultSet.getString("MiddleName"),
+                            resultSet.getString("Phone"), resultSet.getDate("DateJoin"),
+                            resultSet.getDate("DateDismiss"), resultSet.getString("Login"),
+                            resultSet.getLong("WorksDays")
                     )
                 }
             }

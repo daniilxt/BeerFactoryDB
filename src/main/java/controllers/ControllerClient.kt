@@ -16,134 +16,49 @@ import java.util.*
 
 class ControllerClient {
 
-    @FXML
-    private var tab_tasks: Tab? = null
-
-    @FXML
-    private var reg_name: TextField? = null
-
-    @FXML
-    private var reg_second_name: TextField? = null
-
-    @FXML
-    private var reg_middle_name: TextField? = null
-
-    @FXML
-    private var reg_phone: TextField? = null
-
-    @FXML
-    private var reg_date: TextField? = null
-
-    @FXML
-    private var tab_factory: Tab? = null
-
-    @FXML
-    private var btn_buy: Button? = null
-
-    @FXML
-    private var table_cart: TableView<BeerMenu>? = null
-
-    @FXML
-    private var table_cart_num: TableColumn<Long, Long>? = null
-
-    @FXML
-    private var table_cart_name: TableColumn<BeerMenu, String>? = null
-
-    @FXML
-    private var table_cart_type: TableColumn<BeerMenu, String>? = null
-
-    @FXML
-    private var table_cart_amount: TableColumn<BeerMenu, Long>? = null
-
-    @FXML
-    private var table_cart_price: TableColumn<BeerMenu, Long>? = null
-
-    @FXML
-    private var table_beer_menu: TableView<BeerMenu>? = null
-
-    @FXML
-    private var table_beer_menu_name: TableColumn<BeerMenu, String>? = null
-
-    @FXML
-    private var table_beer_menu_type: TableColumn<BeerMenu, String>? = null
-
-    @FXML
-    private var table_beer_menu_amount: TableColumn<BeerMenu, Long>? = null
-
-    @FXML
-    private var table_beer_menu_price: TableColumn<BeerMenu, Long>? = null
-
-    @FXML
-    private var filter_date1: Button? = null
-
-    @FXML
-    private var table_orders_punct: TableView<OrderPosition>? = null
-
-    @FXML
-    private var table_orders_punct_name: TableColumn<OrderPosition, String>? = null
-
-    @FXML
-    private var table_orders_punct_type: TableColumn<OrderPosition, String>? = null
-
-    @FXML
-    private var table_orders_punct_amount: TableColumn<OrderPosition, Long>? = null
-
-    @FXML
-    private var table_orders_punct_price: TableColumn<OrderPosition, Long>? = null
-
-    @FXML
-    private var table_orders: TableView<Orders>? = null
-
-    @FXML
-    private var table_orders_num: TableColumn<Orders, Long>? = null
-
-    @FXML
-    private var table_orders_manager_id: TableColumn<Orders, Long>? = null
-
-    @FXML
-    private var table_orders_date: TableColumn<Orders, Date>? = null
-
-    @FXML
-    private var table_orders_status: TableColumn<Orders, String>? = null
-
-    @FXML
-    private var find_num: TextField? = null
-
-    @FXML
-    private var btn_find: Button? = null
-
-    @FXML
-    private var btn_clear: Button? = null
-
-    @FXML
-    private var btn_no_alc: CheckBox? = null
-
-    @FXML
-    private var btn_go_orders: Button? = null
-
-    @FXML
-    private var btn_go_buy: Button? = null
-
-    @FXML
-    private var btn_clear_cart: Button? = null
-
-    @FXML
-    private var tab_loader: TabPane? = null
-
-    @FXML
-    private var tab_profile: Tab? = null
-
-    @FXML
-    private var tab_buy: Tab? = null
-
-    @FXML
-    private var tab_orders: Tab? = null
-
-    @FXML
-    private var btn_back_orders: Button? = null
-
-    @FXML
-    private var btn_back_menu: Button? = null
+    @FXML private var tab_tasks: Tab? = null
+    @FXML private var reg_name: TextField? = null
+    @FXML private var reg_second_name: TextField? = null
+    @FXML private var reg_middle_name: TextField? = null
+    @FXML private var reg_phone: TextField? = null
+    @FXML private var reg_date: TextField? = null
+    @FXML private var tab_factory: Tab? = null
+    @FXML private var btn_buy: Button? = null
+    @FXML private var table_cart: TableView<BeerMenu>? = null
+    @FXML private var table_cart_num: TableColumn<Long, Long>? = null
+    @FXML private var table_cart_name: TableColumn<BeerMenu, String>? = null
+    @FXML private var table_cart_type: TableColumn<BeerMenu, String>? = null
+    @FXML private var table_cart_amount: TableColumn<BeerMenu, Long>? = null
+    @FXML private var table_cart_price: TableColumn<BeerMenu, Long>? = null
+    @FXML private var table_beer_menu: TableView<BeerMenu>? = null
+    @FXML private var table_beer_menu_name: TableColumn<BeerMenu, String>? = null
+    @FXML private var table_beer_menu_type: TableColumn<BeerMenu, String>? = null
+    @FXML private var table_beer_menu_amount: TableColumn<BeerMenu, Long>? = null
+    @FXML private var table_beer_menu_price: TableColumn<BeerMenu, Long>? = null
+    @FXML private var filter_date1: Button? = null
+    @FXML private var table_orders_punct: TableView<OrderPosition>? = null
+    @FXML private var table_orders_punct_name: TableColumn<OrderPosition, String>? = null
+    @FXML private var table_orders_punct_type: TableColumn<OrderPosition, String>? = null
+    @FXML private var table_orders_punct_amount: TableColumn<OrderPosition, Long>? = null
+    @FXML private var table_orders_punct_price: TableColumn<OrderPosition, Long>? = null
+    @FXML private var table_orders: TableView<Orders>? = null
+    @FXML private var table_orders_num: TableColumn<Orders, Long>? = null
+    @FXML private var table_orders_manager_id: TableColumn<Orders, Long>? = null
+    @FXML private var table_orders_date: TableColumn<Orders, Date>? = null
+    @FXML private var table_orders_status: TableColumn<Orders, String>? = null
+    @FXML private var find_num: TextField? = null
+    @FXML private var btn_find: Button? = null
+    @FXML private var btn_clear: Button? = null
+    @FXML private var btn_no_alc: CheckBox? = null
+    @FXML private var btn_go_orders: Button? = null
+    @FXML private var btn_go_buy: Button? = null
+    @FXML private var btn_clear_cart: Button? = null
+    @FXML private var tab_loader: TabPane? = null
+    @FXML private var tab_profile: Tab? = null
+    @FXML private var tab_buy: Tab? = null
+    @FXML private var tab_orders: Tab? = null
+    @FXML private var btn_back_orders: Button? = null
+    @FXML private var btn_back_menu: Button? = null
 
     private var client: Client? = null
 
