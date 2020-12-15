@@ -101,13 +101,17 @@ class ControllerClient {
             table_beer_menu?.items?.clear()
             table_beer_menu?.items?.addAll(dataList)
         }
-        btn_clear_cart?.setOnAction { table_cart?.items?.clear() }
+        btn_clear_cart?.setOnAction { table_cart?.items?.clear()
+            data.clear()
+        }
         btn_buy?.setOnAction {
             if (table_cart!!.items?.isNotEmpty()!!) {
                 val nowDate = java.sql.Date(Calendar.getInstance().time.time)
                 val manager = Utils.getCountManagers(connection)
                 val rnds = (1..manager).random()
                 Utils.createOrder(connection, table_cart!!.items, rnds, nowDate, client!!.idClient)
+
+                data.clear()
 
                 // todo  del duplicate
                 table_cart?.items?.clear()

@@ -21,6 +21,7 @@ class ControllerBar {
 
     @FXML
     private var location: URL? = null
+
     @FXML
     private var tab_loader: TabPane? = null
 
@@ -157,6 +158,9 @@ class ControllerBar {
     private var btn_go_request: Button? = null
 
     private var worker: Worker? = null
+    val data = mutableListOf<BeerMenu>()
+    val dataRequest = mutableListOf<BeerMenu>()
+
 
     @FXML
     fun findIdTask(event: ActionEvent?) {
@@ -176,10 +180,14 @@ class ControllerBar {
         worker = Utils.getWorkerByLogin(user.login, connection!!)
         val manager = Utils.getManagers(connection)
         manager?.map { "${it.name} ${it.secondName} #${it.idWorker}" }?.toList()?.let { list_manager?.items?.addAll(it) }
+
         initMenu(connection)
         initButtons(connection)
 
-        btn_clear_cart?.setOnAction { table_cart?.items?.clear() }
+        btn_clear_cart?.setOnAction {
+            table_cart?.items?.clear()
+            data.clear()
+        }
         btn_buy?.setOnAction {
             if (table_cart!!.items?.isNotEmpty()!!) {
                 val nowDate = java.sql.Date(Calendar.getInstance().time.time)
@@ -187,13 +195,15 @@ class ControllerBar {
                 println(worker!!.idWorker)
                 println(table_cart!!.items)
                 worker?.idWorker?.let { it1 -> Utils.createBarmanOrder(connection, table_cart!!.items, it1, nowDate) }
+                data.clear()
 
-                // todo  del duplicate
+
+/*                // todo  del duplicate
                 table_cart?.items?.clear()
                 val dataBeerOrders = mutableListOf<BeerMenu>()
                 table_beer_menu?.items?.clear()
                 Utils.getBeerMenu(connection)?.let { dataBeerOrders.addAll(it) }
-                table_beer_menu?.items?.addAll(dataBeerOrders)
+                table_beer_menu?.items?.addAll(dataBeerOrders)*/
             } else {
                 alert()
             }
@@ -211,11 +221,15 @@ class ControllerBar {
                 println(managerId)
                 worker?.idWorker?.let { it1 -> Utils.createAlcoOrder(connection, table_cart1!!.items, it1, managerId!!.toLong(), nowDate) }
                 table_cart1?.items?.clear()
+                dataRequest.clear()
             } else {
                 alert()
             }
         }
-        brn_clear?.setOnAction { table_cart1?.items?.clear() }
+        brn_clear?.setOnAction {
+            table_cart1?.items?.clear()
+            dataRequest.clear()
+        }
     }
 
     private fun initButtons(connection: Connection) {
@@ -232,7 +246,6 @@ class ControllerBar {
     }
 
     private fun initMenu(connection: Connection) {
-        val data = mutableListOf<BeerMenu>()
         table_beer_menu_name?.cellValueFactory = PropertyValueFactory("Name")
         table_beer_menu_type?.cellValueFactory = PropertyValueFactory("Type")
         table_beer_menu_amount?.cellValueFactory = PropertyValueFactory("Amount")
@@ -268,7 +281,6 @@ class ControllerBar {
         })
 
         // table request alcohol
-        val dataRequest = mutableListOf<BeerMenu>()
         table_beer_menu_name1?.cellValueFactory = PropertyValueFactory("Name")
         table_beer_menu_type1?.cellValueFactory = PropertyValueFactory("Type")
         table_beer_menu_amount1?.cellValueFactory = PropertyValueFactory("Amount")
