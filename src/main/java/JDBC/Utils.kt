@@ -634,6 +634,46 @@ object Utils {
         return null
     }
 
+    fun createBarmanOrder(connection: Connection, items: List<BeerMenu>, idBarman: Long, nowDate: Date) {
+        var sql = "INSERT INTO BarmanOrders (IdBarman, Date, Status)\n" +
+                "VALUES (${idBarman}, '${nowDate}', 'done');"
+
+        try {
+            connection.createStatement().executeQuery(sql)
+            sql = "select IdBarmanOrder from BarmanOrders where IdBarman = ${idBarman}"
+            var resultSet = connection.createStatement().executeQuery(sql)
+            val records: MutableList<Long> = ArrayList()
+            if (resultSet.next()) {
+                do {
+                    val tmp: Long = resultSet.getLong(1)
+                    records.add(tmp)
+                } while (resultSet.next())
+            }
+
+            items.forEach {
+                sql = "set @id = 0;"
+                connection.createStatement().executeQuery(sql)
+
+                sql = "SET @id = (select IdBeerKind from BeerStorage where Name = '${it.name}');"
+                connection.createStatement().executeQuery(sql)
+
+                sql = "select @id;"
+                resultSet = connection.createStatement().executeQuery(sql)
+                val idBeerKind = if (resultSet!!.next()) {
+                    resultSet.getLong(1)
+                } else 0
+
+                sql = "INSERT INTO  BarmanOrderPosition (Number, IdBarmanOrder, IdBeerKind)\n" +
+                        "VALUES (${it.amount}, ${records.last()}, ${idBeerKind});"
+                connection.createStatement().executeQuery(sql)
+                sql = "call changeBeerCount('-${it.amount}','${it.name}')"
+                connection.createStatement().executeQuery(sql)
+            }
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
+    }
+
     @Throws(SQLException::class)
     private fun <T> getFromResultSet(resultSet: ResultSet, action: () -> T): List<T>? {
         val records: MutableList<T> = ArrayList()

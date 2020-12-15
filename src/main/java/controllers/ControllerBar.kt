@@ -10,77 +10,58 @@ import javafx.util.Callback
 import pojo.BeerMenu
 import pojo.Worker
 import java.net.URL
+import java.sql.Connection
 import java.util.*
 
 
 class ControllerBar {
+    @FXML private var resources: ResourceBundle? = null
+    @FXML private var location: URL? = null
+    @FXML private var tab_factory: Tab? = null
+    @FXML private var btn_buy: Button? = null
+    @FXML private var tab_tasks: Tab? = null
+    @FXML private var table_beer_menu: TableView<BeerMenu>? = null
+    @FXML private var table_beer_menu_name: TableColumn<BeerMenu, String>? = null
+    @FXML private var table_beer_menu_type: TableColumn<BeerMenu, String>? = null
+    @FXML private var table_beer_menu_amount: TableColumn<BeerMenu, Long>? = null
+    @FXML private var table_beer_menu_price: TableColumn<BeerMenu, Long>? = null
+    @FXML private var table_cart: TableView<BeerMenu>? = null
+    @FXML private var table_cart_num: TableColumn<Long, Long>? = null
+    @FXML private var table_cart_name: TableColumn<BeerMenu, String>? = null
+    @FXML private var table_cart_type: TableColumn<BeerMenu, String>? = null
+    @FXML private var table_cart_amount: TableColumn<BeerMenu, Long>? = null
+    @FXML private var table_cart_price: TableColumn<BeerMenu, Long>? = null
 
-    @FXML
-    private var resources: ResourceBundle? = null
+    @FXML private var filter_date_from: DatePicker? = null
+    @FXML private var filter_date_to: DatePicker? = null
+    @FXML private var filter_date: Button? = null
+    @FXML private var filter_amount: Button? = null
+    @FXML private var filter_amount_from: TextField? = null
+    @FXML private var filter_amount_to: TextField? = null
+    @FXML private val tab_buy: Tab? = null
+    @FXML private val btn_back_menu: Button? = null
+    @FXML private val btn_clear_cart: Button? = null
+    @FXML private val btn_no_alc: CheckBox? = null
 
-    @FXML
-    private var location: URL? = null
+    @FXML private val btn_buy1: Button? = null
+    @FXML private val tab_buy1: Tab? = null
+    @FXML private val btn_back_menu1: Button? = null
+    @FXML private val btn_create_request: Button? = null
+    @FXML private val table_cart1: TableView<BeerMenu>? = null
+    @FXML private val table_cart_num1: TableColumn<Long, Long>? = null
+    @FXML private val table_cart_name1: TableColumn<BeerMenu, String>? = null
+    @FXML private val table_cart_type1: TableColumn<BeerMenu, String>? = null
+    @FXML private val table_cart_amount1: TableColumn<BeerMenu, Long>? = null
+    @FXML private val table_cart_price1: TableColumn<BeerMenu, Long>? = null
 
-    @FXML
-    private var tab_factory: Tab? = null
+    @FXML private val table_beer_menu1: TableView<BeerMenu>? = null
+    @FXML private val table_beer_menu_name1: TableColumn<BeerMenu, String>? = null
+    @FXML private val table_beer_menu_type1: TableColumn<BeerMenu, String>? = null
+    @FXML private val table_beer_menu_amount1: TableColumn<BeerMenu, Long>? = null
+    @FXML private val table_beer_menu_price1: TableColumn<BeerMenu, Long>? = null
+    @FXML private val brn_clear: Button? = null
+    @FXML private val list_manager: ComboBox<*>? = null
 
-    @FXML
-    private var btn_buy: Button? = null
-
-    @FXML
-    private var tab_tasks: Tab? = null
-
-    @FXML
-    private var table_beer_menu: TableView<BeerMenu>? = null
-
-    @FXML
-    private var table_beer_menu_name: TableColumn<BeerMenu, String>? = null
-
-    @FXML
-    private var table_beer_menu_type: TableColumn<BeerMenu, String>? = null
-
-    @FXML
-    private var table_beer_menu_amount: TableColumn<BeerMenu, Long>? = null
-
-    @FXML
-    private var table_beer_menu_price: TableColumn<BeerMenu, Long>? = null
-
-    @FXML
-    private var table_cart: TableView<BeerMenu>? = null
-
-    @FXML
-    private var table_cart_num: TableColumn<Long, Long>? = null
-
-    @FXML
-    private var table_cart_name: TableColumn<BeerMenu, String>? = null
-
-    @FXML
-    private var table_cart_type: TableColumn<BeerMenu, String>? = null
-
-    @FXML
-    private var table_cart_amount: TableColumn<BeerMenu, Long>? = null
-
-    @FXML
-    private var table_cart_price: TableColumn<BeerMenu, Long>? = null
-
-
-    @FXML
-    private var filter_date_from: DatePicker? = null
-
-    @FXML
-    private var filter_date_to: DatePicker? = null
-
-    @FXML
-    private var filter_date: Button? = null
-
-    @FXML
-    private var filter_amount: Button? = null
-
-    @FXML
-    private var filter_amount_from: TextField? = null
-
-    @FXML
-    private var filter_amount_to: TextField? = null
     private var worker: Worker? = null
 
     @FXML
@@ -91,7 +72,25 @@ class ControllerBar {
     fun initialize(user: User) {
         val connection = Utils.getNewConnection()
         worker = Utils.getWorkerByLogin(user.login, connection!!)
-        initMenu()
+        initMenu(connection)
+
+        btn_clear_cart?.setOnAction { table_cart?.items?.clear() }
+        btn_buy?.setOnAction {
+            if (table_cart!!.items?.isNotEmpty()!!) {
+                val nowDate = java.sql.Date(Calendar.getInstance().time.time)
+                println(nowDate)
+                println(worker!!.idWorker)
+                println(table_cart!!.items)
+                worker?.idWorker?.let { it1 -> Utils.createBarmanOrder(connection, table_cart!!.items, it1, nowDate) }
+
+                // todo  del duplicate
+                table_cart?.items?.clear()
+                val dataBeerOrders = mutableListOf<BeerMenu>()
+                table_beer_menu?.items?.clear()
+                Utils.getBeerMenu(connection)?.let { dataBeerOrders.addAll(it) }
+                table_beer_menu?.items?.addAll(dataBeerOrders)
+            }
+        }
     }
 
     @FXML
@@ -99,19 +98,26 @@ class ControllerBar {
 
     }
 
-    private fun initMenu() {
+    private fun initMenu(connection: Connection) {
+        val data = mutableListOf<BeerMenu>()
         table_beer_menu_name?.cellValueFactory = PropertyValueFactory("Name")
         table_beer_menu_type?.cellValueFactory = PropertyValueFactory("Type")
         table_beer_menu_amount?.cellValueFactory = PropertyValueFactory("Amount")
         table_beer_menu_price?.cellValueFactory = PropertyValueFactory("Price")
 
-        val connection = Utils.getNewConnection()
-        val data = mutableListOf<BeerMenu>()
         table_beer_menu?.items?.clear()
-        Utils.getBeerMenu(connection!!)?.let { table_beer_menu?.items?.addAll(it) }
+        Utils.getBeerMenu(connection)?.let { table_beer_menu?.items?.addAll(it) }
         table_beer_menu?.columns?.add(addButtonColumn("Action", "add") {
-            println(it)
-            data.add(it)
+            val beer = BeerMenu(it.name, it.type, 1, it.price)
+            data.add(beer)
+            val count = data.count { i1 -> i1.name == beer.name }
+            if (count > 1) {
+                val first = data.first { it2 -> it2.name == beer.name }
+                val index = data.indexOf(first)
+                data.removeAll { item -> item.name == beer.name }
+                val newBeer = BeerMenu(first.name, first.type, first.amount + beer.amount, first.price + beer.price)
+                data.add(index, newBeer)
+            }
             updateCart(data)
             //todo
         })
