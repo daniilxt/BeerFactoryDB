@@ -2,6 +2,7 @@ package controllers
 
 import JDBC.Utils
 import JDBC.dao.User
+import javafx.collections.FXCollections
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.scene.control.*
@@ -15,52 +16,145 @@ import java.util.*
 
 
 class ControllerBar {
-    @FXML private var resources: ResourceBundle? = null
-    @FXML private var location: URL? = null
-    @FXML private var tab_factory: Tab? = null
-    @FXML private var btn_buy: Button? = null
-    @FXML private var tab_tasks: Tab? = null
-    @FXML private var table_beer_menu: TableView<BeerMenu>? = null
-    @FXML private var table_beer_menu_name: TableColumn<BeerMenu, String>? = null
-    @FXML private var table_beer_menu_type: TableColumn<BeerMenu, String>? = null
-    @FXML private var table_beer_menu_amount: TableColumn<BeerMenu, Long>? = null
-    @FXML private var table_beer_menu_price: TableColumn<BeerMenu, Long>? = null
-    @FXML private var table_cart: TableView<BeerMenu>? = null
-    @FXML private var table_cart_num: TableColumn<Long, Long>? = null
-    @FXML private var table_cart_name: TableColumn<BeerMenu, String>? = null
-    @FXML private var table_cart_type: TableColumn<BeerMenu, String>? = null
-    @FXML private var table_cart_amount: TableColumn<BeerMenu, Long>? = null
-    @FXML private var table_cart_price: TableColumn<BeerMenu, Long>? = null
+    @FXML
+    private var resources: ResourceBundle? = null
 
-    @FXML private var filter_date_from: DatePicker? = null
-    @FXML private var filter_date_to: DatePicker? = null
-    @FXML private var filter_date: Button? = null
-    @FXML private var filter_amount: Button? = null
-    @FXML private var filter_amount_from: TextField? = null
-    @FXML private var filter_amount_to: TextField? = null
-    @FXML private val tab_buy: Tab? = null
-    @FXML private val btn_back_menu: Button? = null
-    @FXML private val btn_clear_cart: Button? = null
-    @FXML private val btn_no_alc: CheckBox? = null
+    @FXML
+    private var location: URL? = null
+    @FXML
+    private var tab_loader: TabPane? = null
 
-    @FXML private val btn_buy1: Button? = null
-    @FXML private val tab_buy1: Tab? = null
-    @FXML private val btn_back_menu1: Button? = null
-    @FXML private val btn_create_request: Button? = null
-    @FXML private val table_cart1: TableView<BeerMenu>? = null
-    @FXML private val table_cart_num1: TableColumn<Long, Long>? = null
-    @FXML private val table_cart_name1: TableColumn<BeerMenu, String>? = null
-    @FXML private val table_cart_type1: TableColumn<BeerMenu, String>? = null
-    @FXML private val table_cart_amount1: TableColumn<BeerMenu, Long>? = null
-    @FXML private val table_cart_price1: TableColumn<BeerMenu, Long>? = null
+    @FXML
+    private var tab_factory: Tab? = null
 
-    @FXML private val table_beer_menu1: TableView<BeerMenu>? = null
-    @FXML private val table_beer_menu_name1: TableColumn<BeerMenu, String>? = null
-    @FXML private val table_beer_menu_type1: TableColumn<BeerMenu, String>? = null
-    @FXML private val table_beer_menu_amount1: TableColumn<BeerMenu, Long>? = null
-    @FXML private val table_beer_menu_price1: TableColumn<BeerMenu, Long>? = null
-    @FXML private val brn_clear: Button? = null
-    @FXML private val list_manager: ComboBox<*>? = null
+    @FXML
+    private var btn_buy: Button? = null
+
+    @FXML
+    private var tab_tasks: Tab? = null
+
+    @FXML
+    private var table_beer_menu: TableView<BeerMenu>? = null
+
+    @FXML
+    private var table_beer_menu_name: TableColumn<BeerMenu, String>? = null
+
+    @FXML
+    private var table_beer_menu_type: TableColumn<BeerMenu, String>? = null
+
+    @FXML
+    private var table_beer_menu_amount: TableColumn<BeerMenu, Long>? = null
+
+    @FXML
+    private var table_beer_menu_price: TableColumn<BeerMenu, Long>? = null
+
+    @FXML
+    private var table_cart: TableView<BeerMenu>? = null
+
+    @FXML
+    private var table_cart_num: TableColumn<Long, Long>? = null
+
+    @FXML
+    private var table_cart_name: TableColumn<BeerMenu, String>? = null
+
+    @FXML
+    private var table_cart_type: TableColumn<BeerMenu, String>? = null
+
+    @FXML
+    private var table_cart_amount: TableColumn<BeerMenu, Long>? = null
+
+    @FXML
+    private var table_cart_price: TableColumn<BeerMenu, Long>? = null
+
+    @FXML
+    private var filter_date_from: DatePicker? = null
+
+    @FXML
+    private var filter_date_to: DatePicker? = null
+
+    @FXML
+    private var filter_date: Button? = null
+
+    @FXML
+    private var filter_amount: Button? = null
+
+    @FXML
+    private var filter_amount_from: TextField? = null
+
+    @FXML
+    private var filter_amount_to: TextField? = null
+
+    @FXML
+    private var tab_buy: Tab? = null
+
+    @FXML
+    private var tab_request: Tab? = null
+
+    @FXML
+    private var btn_back_menu: Button? = null
+
+    @FXML
+    private var btn_clear_cart: Button? = null
+
+    @FXML
+    private var btn_no_alc: CheckBox? = null
+
+    @FXML
+    private var btn_buy1: Button? = null
+
+    @FXML
+    private var tab_buy1: Tab? = null
+
+    @FXML
+    private var btn_back_menu1: Button? = null
+
+    @FXML
+    private var btn_create_request: Button? = null
+
+    @FXML
+    private var table_cart1: TableView<BeerMenu>? = null
+
+    @FXML
+    private var table_cart_num1: TableColumn<Long, Long>? = null
+
+    @FXML
+    private var table_cart_name1: TableColumn<BeerMenu, String>? = null
+
+    @FXML
+    private var table_cart_type1: TableColumn<BeerMenu, String>? = null
+
+    @FXML
+    private var table_cart_amount1: TableColumn<BeerMenu, Long>? = null
+
+    @FXML
+    private var table_cart_price1: TableColumn<BeerMenu, Long>? = null
+
+    @FXML
+    private var table_beer_menu1: TableView<BeerMenu>? = null
+
+    @FXML
+    private var table_beer_menu_name1: TableColumn<BeerMenu, String>? = null
+
+    @FXML
+    private var table_beer_menu_type1: TableColumn<BeerMenu, String>? = null
+
+    @FXML
+    private var table_beer_menu_amount1: TableColumn<BeerMenu, Long>? = null
+
+    @FXML
+    private var table_beer_menu_price1: TableColumn<BeerMenu, Long>? = null
+
+    @FXML
+    private var brn_clear: Button? = null
+
+    @FXML
+    private var list_manager: ComboBox<String>? = null
+
+    @FXML
+    private var btn_go_buy: Button? = null
+
+    @FXML
+    private var btn_go_request: Button? = null
 
     private var worker: Worker? = null
 
@@ -69,10 +163,21 @@ class ControllerBar {
     }
 
     @FXML
+    private fun alert(str: String = "Incorrect input") {
+        val alert = Alert(Alert.AlertType.ERROR)
+        alert.title = "Attention"
+        alert.contentText = str
+        alert.showAndWait()
+    }
+
+    @FXML
     fun initialize(user: User) {
         val connection = Utils.getNewConnection()
         worker = Utils.getWorkerByLogin(user.login, connection!!)
+        val manager = Utils.getManagers(connection)
+        manager?.map { "${it.name} ${it.secondName} #${it.idWorker}" }?.toList()?.let { list_manager?.items?.addAll(it) }
         initMenu(connection)
+        initButtons(connection)
 
         btn_clear_cart?.setOnAction { table_cart?.items?.clear() }
         btn_buy?.setOnAction {
@@ -89,8 +194,36 @@ class ControllerBar {
                 table_beer_menu?.items?.clear()
                 Utils.getBeerMenu(connection)?.let { dataBeerOrders.addAll(it) }
                 table_beer_menu?.items?.addAll(dataBeerOrders)
+            } else {
+                alert()
             }
         }
+        btn_create_request?.setOnAction {
+            if (table_cart1!!.items?.isNotEmpty()!! && !list_manager?.value.isNullOrEmpty()) {
+                val nowDate = java.sql.Date(Calendar.getInstance().time.time)
+                println(nowDate)
+                println(table_cart1!!.items)
+
+                println(worker!!.idWorker)
+                println(table_cart!!.items)
+                val indexHash = list_manager?.value?.indexOf('#')
+                val managerId = list_manager?.value?.substring(indexHash!! + 1)
+                println(managerId)
+                worker?.idWorker?.let { it1 -> Utils.createAlcoOrder(connection, table_cart1!!.items, it1, managerId!!.toLong(), nowDate) }
+                table_cart1?.items?.clear()
+            } else {
+                alert()
+            }
+        }
+        brn_clear?.setOnAction { table_cart1?.items?.clear() }
+    }
+
+    private fun initButtons(connection: Connection) {
+
+        btn_go_buy?.setOnAction { tab_loader!!.selectionModel!!.select(tab_buy) }
+        btn_go_request?.setOnAction { tab_loader!!.selectionModel!!.select(tab_request) }
+        btn_back_menu?.setOnAction { tab_loader!!.selectionModel!!.select(tab_factory) }
+        btn_back_menu1?.setOnAction { tab_loader!!.selectionModel!!.select(tab_factory) }
     }
 
     @FXML
@@ -133,11 +266,52 @@ class ControllerBar {
             updateCart(data)
             //todo
         })
+
+        // table request alcohol
+        val dataRequest = mutableListOf<BeerMenu>()
+        table_beer_menu_name1?.cellValueFactory = PropertyValueFactory("Name")
+        table_beer_menu_type1?.cellValueFactory = PropertyValueFactory("Type")
+        table_beer_menu_amount1?.cellValueFactory = PropertyValueFactory("Amount")
+        table_beer_menu_price1?.cellValueFactory = PropertyValueFactory("Price")
+
+        table_beer_menu1?.items?.clear()
+        Utils.getBeerMenu(connection)?.let { table_beer_menu1?.items?.addAll(it.filter { i2 -> i2.type == "Import" }.toMutableList()) }
+        table_beer_menu1?.columns?.add(addButtonColumn("Action", "add") {
+            val beer = BeerMenu(it.name, it.type, 1, it.price)
+            dataRequest.add(beer)
+            val count = dataRequest.count { i1 -> i1.name == beer.name }
+            if (count > 1) {
+                val first = dataRequest.first { it2 -> it2.name == beer.name }
+                val index = dataRequest.indexOf(first)
+                dataRequest.removeAll { item -> item.name == beer.name }
+                val newBeer = BeerMenu(first.name, first.type, first.amount + beer.amount, first.price + beer.price)
+                dataRequest.add(index, newBeer)
+            }
+            updateCart2(dataRequest)
+            //todo
+        })
+
+
+        table_cart_num1?.cellFactory = LineNumbersCellFactory()
+        table_cart_name1?.cellValueFactory = PropertyValueFactory("Name")
+        table_cart_type1?.cellValueFactory = PropertyValueFactory("Type")
+        table_cart_amount1?.cellValueFactory = PropertyValueFactory("Amount")
+        table_cart_price1?.cellValueFactory = PropertyValueFactory("Price")
+        table_cart1?.columns?.add(addButtonColumn("Action", "del") {
+            data.remove(it)
+            updateCart2(data)
+            //todo
+        })
     }
 
-    private fun updateCart(data: MutableList<BeerMenu>) {
+    private fun updateCart2(dataRequest: MutableList<BeerMenu>) {
+        table_cart1?.items?.clear()
+        table_cart1?.items?.addAll(dataRequest)
+    }
+
+    private fun updateCart(dataRequest: MutableList<BeerMenu>) {
         table_cart?.items?.clear()
-        table_cart?.items?.addAll(data)
+        table_cart?.items?.addAll(dataRequest)
     }
 
     private fun <T> addButtonColumn(columnName: String, btnName: String, func: (it: T) -> Unit): TableColumn<T, Void> {

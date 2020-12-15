@@ -606,3 +606,8 @@ INSERT INTO testwind.clientlist (IdClient, NameClient, SecondNameClient, MiddleN
 INSERT INTO testwind.clientlist (IdClient, NameClient, SecondNameClient, MiddleNameClient, PhoneClient, Age, DateJoin) VALUES (3, 'Sergey', 'Ivanov', 'Artemovich', '8(999)-745-42-51', '1991-05-02', '2020-02-21');
 INSERT INTO testwind.clientlist (IdClient, NameClient, SecondNameClient, MiddleNameClient, PhoneClient, Age, DateJoin) VALUES (4, 'Alla', 'Duhova', 'Vladimirovna', '8(954)647-01-23', '1996-05-04', '2020-05-21');
 INSERT INTO testwind.clientlist (IdClient, NameClient, SecondNameClient, MiddleNameClient, PhoneClient, Age, DateJoin) VALUES (6, 'Boris', 'Moiseev', 'Mihailovich', '8(954)902-51-77', '1992-05-15', '2019-07-06');
+
+
+
+
+___________________
