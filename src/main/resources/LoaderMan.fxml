@@ -11,44 +11,64 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="700.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ControllerLoaderMan">
+<AnchorPane prefHeight="700.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ControllerLoaderMan">
     <children>
-        <TabPane fx:id="tab_loader" layoutX="79.0" layoutY="35.0" prefHeight="604.0" prefWidth="914.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <TabPane fx:id="tab_loader" layoutX="79.0" layoutY="35.0" prefHeight="604.0" prefWidth="914.0"
+                 tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                 AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <tabs>
                 <Tab fx:id="tab_factory" text="Storage">
                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="700.0" prefWidth="870.0" style="-fx-background-color: #FFFFFF;">
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="700.0" prefWidth="870.0"
+                                    style="-fx-background-color: #FFFFFF;">
                             <children>
-                                <Button fx:id="btn_load_res" layoutX="702.0" layoutY="485.0" mnemonicParsing="false" onAction="#findIdTask" style="-fx-background-color: #E19133; -fx-background-radius: 10 10 10 10;" text="LOAD RESOURCES">
+                                <Button fx:id="btn_load_res" layoutX="702.0" layoutY="485.0" mnemonicParsing="false"
+                                        onAction="#findIdTask"
+                                        style="-fx-background-color: #E19133; -fx-background-radius: 10 10 10 10;"
+                                        text="LOAD RESOURCES">
                                     <font>
-                                        <Font name="Arial" size="20.0" />
+                                        <Font name="Arial" size="20.0"/>
                                     </font>
                                 </Button>
-                                <ImageView fitHeight="339.0" fitWidth="309.0" layoutX="642.0" layoutY="94.0" pickOnBounds="true" preserveRatio="true">
-                                    <Image url="@assets/loader.jpg" />
+                                <ImageView fitHeight="339.0" fitWidth="309.0" layoutX="642.0" layoutY="94.0"
+                                           pickOnBounds="true" preserveRatio="true">
+                                    <Image url="@assets/loader.jpg"/>
                                 </ImageView>
                                 <Label layoutX="689.0" layoutY="32.0" text="LOADER MAN">
                                     <font>
-                                        <Font size="35.0" />
+                                        <Font size="35.0"/>
                                     </font>
                                 </Label>
-                                <Button fx:id="btn_load_alc" layoutX="702.0" layoutY="547.0" mnemonicParsing="false" onAction="#findIdTask" style="-fx-background-color: #E19133; -fx-background-radius: 10 10 10 10;" text="LOAD IMPORT ALC">
+                                <Button fx:id="btn_load_alc" layoutX="702.0" layoutY="547.0" mnemonicParsing="false"
+                                        onAction="#findIdTask"
+                                        style="-fx-background-color: #E19133; -fx-background-radius: 10 10 10 10;"
+                                        text="LOAD IMPORT ALC">
                                     <font>
-                                        <Font name="Arial" size="20.0" />
+                                        <Font name="Arial" size="20.0"/>
                                     </font>
                                 </Button>
-                                <TableView fx:id="table_tasks" layoutX="37.0" layoutY="189.0" prefHeight="377.0" prefWidth="514.0">
+                                <TableView fx:id="table_tasks" layoutX="37.0" layoutY="189.0" prefHeight="377.0"
+                                           prefWidth="514.0">
                                     <columns>
-                                        <TableColumn fx:id="table_tasks_number" prefWidth="75.0" text="taskNumber" />
-                                        <TableColumn fx:id="table_tasks_id_res" prefWidth="70.0" text="taskResource" />
-                                        <TableColumn fx:id="table_tasks_id_alc" prefWidth="73.0" text="taskImportAlco" />
-                                        <TableColumn fx:id="table_tasks_date" prefWidth="87.0" text="date" />
-                                        <TableColumn fx:id="table_tasks_status" prefWidth="75.0" text="status" />
+                                        <TableColumn fx:id="table_tasks_number" prefWidth="75.0" text="taskNumber"/>
+                                        <TableColumn fx:id="table_tasks_id_res" prefWidth="70.0" text="taskResource"/>
+                                        <TableColumn fx:id="table_tasks_id_alc" prefWidth="73.0" text="taskImportAlco"/>
+                                        <TableColumn fx:id="table_tasks_date" prefWidth="87.0" text="date"/>
+                                        <TableColumn fx:id="table_tasks_status" prefWidth="75.0" text="status"/>
                                     </columns>
                                     <columnResizePolicy>
-                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
                                     </columnResizePolicy>
                                 </TableView>
+                                <Button fx:id="btn_exit" layoutX="863.0" layoutY="620.0" mnemonicParsing="false"
+                                        onAction="#findIdTask"
+                                        style="-fx-background-color: #E19133; -fx-background-radius: 10 10 10 10;"
+                                        text="EXIT">
+                                    <font>
+                                        <Font name="Arial" size="20.0"/>
+                                    </font>
+                                </Button>
                             </children>
                         </AnchorPane>
                     </content>
@@ -59,39 +79,42 @@
                             <children>
                                 <Label layoutX="181.0" layoutY="130.0" text="Resource list">
                                     <font>
-                                        <Font name="System Bold" size="16.0" />
+                                        <Font name="System Bold" size="16.0"/>
                                     </font>
                                 </Label>
-                                <TableView fx:id="table_res" layoutX="48.0" layoutY="176.0" prefHeight="377.0" prefWidth="362.0">
+                                <TableView fx:id="table_res" layoutX="48.0" layoutY="176.0" prefHeight="377.0"
+                                           prefWidth="362.0">
                                     <columns>
-                              <TableColumn fx:id="table_res_id_task" prefWidth="75.0" text="idTask" />
-                                        <TableColumn fx:id="table_res_name" prefWidth="75.0" text="name" />
-                                        <TableColumn fx:id="table_res_count" prefWidth="70.0" text="count" />
-                                        <TableColumn fx:id="table_res_date" prefWidth="73.0" text="date" />
+                                        <TableColumn fx:id="table_res_id_task" prefWidth="75.0" text="idTask"/>
+                                        <TableColumn fx:id="table_res_name" prefWidth="75.0" text="name"/>
+                                        <TableColumn fx:id="table_res_count" prefWidth="70.0" text="count"/>
+                                        <TableColumn fx:id="table_res_date" prefWidth="73.0" text="date"/>
                                     </columns>
                                     <columnResizePolicy>
-                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
                                     </columnResizePolicy>
                                 </TableView>
-                                <TableView fx:id="table_res_store" layoutX="497.0" layoutY="176.0" prefHeight="377.0" prefWidth="439.0">
+                                <TableView fx:id="table_res_store" layoutX="497.0" layoutY="176.0" prefHeight="377.0"
+                                           prefWidth="439.0">
                                     <columns>
-                                        <TableColumn fx:id="table_res_store_name" prefWidth="75.0" text="name" />
-                                        <TableColumn fx:id="table_res_store_amount" prefWidth="70.0" text="amount" />
-                                        <TableColumn fx:id="table_res_store_unit" prefWidth="87.0" text="unit" />
-                                        <TableColumn fx:id="table_res_store_price" prefWidth="73.0" text="price" />
+                                        <TableColumn fx:id="table_res_store_name" prefWidth="75.0" text="name"/>
+                                        <TableColumn fx:id="table_res_store_amount" prefWidth="70.0" text="amount"/>
+                                        <TableColumn fx:id="table_res_store_unit" prefWidth="87.0" text="unit"/>
+                                        <TableColumn fx:id="table_res_store_price" prefWidth="73.0" text="price"/>
                                     </columns>
                                     <columnResizePolicy>
-                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
                                     </columnResizePolicy>
                                 </TableView>
-                                <Button fx:id="back_res" layoutX="882.0" layoutY="627.0" mnemonicParsing="false" text="BACK">
+                                <Button fx:id="back_res" layoutX="882.0" layoutY="627.0" mnemonicParsing="false"
+                                        text="BACK">
                                     <font>
-                                        <Font size="14.0" />
+                                        <Font size="14.0"/>
                                     </font>
                                 </Button>
                                 <Label layoutX="652.0" layoutY="143.0" text="Resource storage">
                                     <font>
-                                        <Font name="System Bold" size="16.0" />
+                                        <Font name="System Bold" size="16.0"/>
                                     </font>
                                 </Label>
                             </children>
@@ -102,41 +125,44 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
-                                <TableView fx:id="table_res_alc_store" layoutX="497.0" layoutY="182.0" prefHeight="377.0" prefWidth="439.0">
+                                <TableView fx:id="table_res_alc_store" layoutX="497.0" layoutY="182.0"
+                                           prefHeight="377.0" prefWidth="439.0">
                                     <columns>
-                                        <TableColumn fx:id="table_res_alc_store_name" prefWidth="75.0" text="name" />
-                                        <TableColumn fx:id="table_res_alc_store_amount" prefWidth="70.0" text="amount" />
-                                        <TableColumn fx:id="table_res_alc_store_type" prefWidth="87.0" text="type" />
-                                        <TableColumn fx:id="table_res_alc_store_price" prefWidth="73.0" text="price" />
+                                        <TableColumn fx:id="table_res_alc_store_name" prefWidth="75.0" text="name"/>
+                                        <TableColumn fx:id="table_res_alc_store_amount" prefWidth="70.0" text="amount"/>
+                                        <TableColumn fx:id="table_res_alc_store_type" prefWidth="87.0" text="type"/>
+                                        <TableColumn fx:id="table_res_alc_store_price" prefWidth="73.0" text="price"/>
                                     </columns>
                                     <columnResizePolicy>
-                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
                                     </columnResizePolicy>
                                 </TableView>
                                 <Label layoutX="171.0" layoutY="146.0" text="Import alco">
                                     <font>
-                                        <Font name="System Bold" size="16.0" />
+                                        <Font name="System Bold" size="16.0"/>
                                     </font>
                                 </Label>
-                        <Button fx:id="back_alc" layoutX="882.0" layoutY="627.0" mnemonicParsing="false" text="BACK">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Button>
-                                <TableView fx:id="table_res_alc" layoutX="34.0" layoutY="182.0" prefHeight="377.0" prefWidth="362.0">
+                                <Button fx:id="back_alc" layoutX="882.0" layoutY="627.0" mnemonicParsing="false"
+                                        text="BACK">
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                </Button>
+                                <TableView fx:id="table_res_alc" layoutX="34.0" layoutY="182.0" prefHeight="377.0"
+                                           prefWidth="362.0">
                                     <columns>
-                              <TableColumn fx:id="table_res_alc_id_task" prefWidth="75.0" text="idTask" />
-                                        <TableColumn fx:id="table_res_alc_name" prefWidth="75.0" text="name" />
-                                        <TableColumn fx:id="table_res_alc_count" prefWidth="70.0" text="count" />
-                                        <TableColumn fx:id="table_res_alc_date" prefWidth="73.0" text="date" />
+                                        <TableColumn fx:id="table_res_alc_id_task" prefWidth="75.0" text="idTask"/>
+                                        <TableColumn fx:id="table_res_alc_name" prefWidth="75.0" text="name"/>
+                                        <TableColumn fx:id="table_res_alc_count" prefWidth="70.0" text="count"/>
+                                        <TableColumn fx:id="table_res_alc_date" prefWidth="73.0" text="date"/>
                                     </columns>
                                     <columnResizePolicy>
-                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
                                     </columnResizePolicy>
                                 </TableView>
                                 <Label layoutX="686.0" layoutY="146.0" text="Beer list">
                                     <font>
-                                        <Font name="System Bold" size="16.0" />
+                                        <Font name="System Bold" size="16.0"/>
                                     </font>
                                 </Label>
                             </children>

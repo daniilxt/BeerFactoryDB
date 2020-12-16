@@ -5,8 +5,12 @@ import JDBC.dao.User
 import javafx.collections.FXCollections
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
+import javafx.fxml.FXMLLoader
+import javafx.scene.Parent
+import javafx.scene.Scene
 import javafx.scene.control.*
 import javafx.scene.control.cell.PropertyValueFactory
+import javafx.stage.Stage
 import javafx.util.Callback
 import pojo.BeerMenu
 import pojo.Worker
@@ -156,6 +160,8 @@ class ControllerBar {
 
     @FXML
     private var btn_go_request: Button? = null
+    @FXML
+    private var btn_exit: Button? = null
 
     private var worker: Worker? = null
     val data = mutableListOf<BeerMenu>()
@@ -196,14 +202,6 @@ class ControllerBar {
                 println(table_cart!!.items)
                 worker?.idWorker?.let { it1 -> Utils.createBarmanOrder(connection, table_cart!!.items, it1, nowDate) }
                 data.clear()
-
-
-/*                // todo  del duplicate
-                table_cart?.items?.clear()
-                val dataBeerOrders = mutableListOf<BeerMenu>()
-                table_beer_menu?.items?.clear()
-                Utils.getBeerMenu(connection)?.let { dataBeerOrders.addAll(it) }
-                table_beer_menu?.items?.addAll(dataBeerOrders)*/
             } else {
                 alert()
             }
@@ -229,6 +227,15 @@ class ControllerBar {
         brn_clear?.setOnAction {
             table_cart1?.items?.clear()
             dataRequest.clear()
+        }
+        btn_exit?.setOnAction {
+            val loader = FXMLLoader()
+            loader.location = javaClass.getResource("../${"MainApplication"}.fxml")
+            val root = loader.load<Parent>()
+            btn_exit?.scene?.window?.hide()
+            val stage = Stage()
+            stage.scene = Scene(root)
+            stage.show()
         }
     }
 

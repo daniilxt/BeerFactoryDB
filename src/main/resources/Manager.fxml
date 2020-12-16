@@ -20,7 +20,7 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="700.0" prefWidth="870.0" style="-fx-background-color: #FFFFFF;">
                             <children>
-                                <Label layoutX="51.0" layoutY="185.0" text="Created Tasks">
+                                <Label layoutX="51.0" layoutY="198.0" text="Created Tasks">
                                     <font>
                                         <Font name="System Bold" size="16.0" />
                                     </font>
@@ -47,7 +47,7 @@
                                         <Font name="Arial" size="20.0" />
                                     </font>
                                 </Button>
-                                <ImageView fitHeight="339.0" fitWidth="309.0" layoutX="599.0" layoutY="94.0" pickOnBounds="true" preserveRatio="true">
+                                <ImageView fitHeight="339.0" fitWidth="309.0" layoutX="637.0" layoutY="94.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
                                         <Image url="@assets/manager.png" />
                                     </image>
@@ -57,7 +57,7 @@
                                         <Font size="35.0" />
                                     </font>
                                 </Label>
-                                <Button fx:id="btn_buy1" layoutX="668.0" layoutY="582.0" mnemonicParsing="false" onAction="#findIdTask" style="-fx-background-color: #E19133; -fx-background-radius: 10 10 10 10;" text="ORDERS LIST">
+                                <Button fx:id="btn_exit" layoutX="863.0" layoutY="619.0" mnemonicParsing="false" onAction="#findIdTask" style="-fx-background-color: #E19133; -fx-background-radius: 10 10 10 10;" text="EXIT">
                                     <font>
                                         <Font name="Arial" size="20.0" />
                                     </font>
@@ -127,6 +127,11 @@
                                         <Font size="15.0" />
                                     </font>
                                 </TextField>
+                        <Button fx:id="btn_back_res" layoutX="875.0" layoutY="627.0" mnemonicParsing="false" text="BACK">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
                             </children>
                         </AnchorPane>
                     </content>
@@ -187,6 +192,11 @@
                                         <Font size="15.0" />
                                     </font>
                                 </TextField>
+                        <Button fx:id="btn_back_alc" layoutX="874.0" layoutY="627.0" mnemonicParsing="false" text="BACK">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
                             </children>
                         </AnchorPane>
                     </content>

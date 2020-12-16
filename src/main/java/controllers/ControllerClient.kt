@@ -3,8 +3,12 @@ package controllers
 import JDBC.Utils
 import JDBC.dao.User
 import javafx.fxml.FXML
+import javafx.fxml.FXMLLoader
+import javafx.scene.Parent
+import javafx.scene.Scene
 import javafx.scene.control.*
 import javafx.scene.control.cell.PropertyValueFactory
+import javafx.stage.Stage
 import javafx.util.Callback
 import pojo.BeerMenu
 import pojo.Client
@@ -59,6 +63,7 @@ class ControllerClient {
     @FXML private var tab_orders: Tab? = null
     @FXML private var btn_back_orders: Button? = null
     @FXML private var btn_back_menu: Button? = null
+    @FXML private var btn_exit: Button? = null
 
     private var client: Client? = null
 
@@ -132,6 +137,15 @@ class ControllerClient {
                     alert()
                 }
             }
+        }
+        btn_exit?.setOnAction {
+            val loader = FXMLLoader()
+            loader.location = javaClass.getResource("../${"MainApplication"}.fxml")
+            val root = loader.load<Parent>()
+            btn_exit?.scene?.window?.hide()
+            val stage = Stage()
+            stage.scene = Scene(root)
+            stage.show()
         }
         btn_clear?.setOnAction { table_orders_punct?.items?.clear() }
         //move

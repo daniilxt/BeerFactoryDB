@@ -41,6 +41,11 @@
                               <Font name="Arial" size="20.0" />
                            </font>
                         </Button>
+                        <Button fx:id="btn_exit" layoutX="863.0" layoutY="620.0" mnemonicParsing="false" onAction="#findIdTask" style="-fx-background-color: #E19133; -fx-background-radius: 10 10 10 10;" text="EXIT">
+                           <font>
+                              <Font name="Arial" size="20.0" />
+                           </font>
+                        </Button>
                             </children>
                         </AnchorPane>
                     </content>

@@ -52,7 +52,7 @@
                                         <TableColumn fx:id="cct_status" prefWidth="75.0" text="status" />
                                     </columns>
                                 </TableView>
-                                <ImageView fitHeight="282.0" fitWidth="258.0" layoutX="-46.0" layoutY="215.0" pickOnBounds="true" preserveRatio="true">
+                                <ImageView fitHeight="363.0" fitWidth="293.0" layoutX="-65.0" layoutY="218.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
                                         <Image url="@assets/engineer.png" />
                                     </image>
@@ -100,17 +100,23 @@
                                         <Font size="22.0" />
                                     </font>
                                 </Label>
-                        <TextField fx:id="id_cct" layoutX="566.0" layoutY="615.0" prefHeight="30.0" prefWidth="125.0" promptText="idCCT">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </TextField>
-                        <Button fx:id="btn_cct_handle" layoutX="712.0" layoutY="615.0" mnemonicParsing="false" onAction="#findIdTask" text="handle">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Button>
-                        <ComboBox fx:id="list_manager" layoutX="373.0" layoutY="91.0" prefWidth="150.0" promptText="Manager" />
+                                <TextField fx:id="id_cct" layoutX="566.0" layoutY="615.0" prefHeight="30.0" prefWidth="125.0" promptText="idCCT">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </TextField>
+                                <Button fx:id="btn_cct_handle" layoutX="712.0" layoutY="615.0" mnemonicParsing="false" onAction="#findIdTask" text="handle">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Button>
+                                <ComboBox fx:id="list_manager" layoutX="373.0" layoutY="91.0" prefWidth="150.0" promptText="Manager" />
+                                <Button fx:id="btn_exit" layoutX="863.0" layoutY="620.0" mnemonicParsing="false" onAction="#findIdTask" style="-fx-background-color: #E19133; -fx-background-radius: 10 10 10 10;" text="EXIT">
+                                    <font>
+                                        <Font name="Arial" size="20.0" />
+                                    </font>
+                                </Button>
+
                             </children>
                         </AnchorPane>
                     </content>

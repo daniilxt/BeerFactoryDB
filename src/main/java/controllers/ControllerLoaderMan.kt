@@ -4,8 +4,12 @@ import JDBC.Utils
 import JDBC.dao.User
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
+import javafx.fxml.FXMLLoader
+import javafx.scene.Parent
+import javafx.scene.Scene
 import javafx.scene.control.*
 import javafx.scene.control.cell.PropertyValueFactory
+import javafx.stage.Stage
 import javafx.util.Callback
 import pojo.*
 import java.net.URL
@@ -52,6 +56,7 @@ class ControllerLoaderMan {
     @FXML private var table_res_alc_date: TableColumn<TaskResource, Date>? = null
     @FXML private var back_res: Button? = null
     @FXML private var back_alc: Button? = null
+    @FXML private var btn_exit: Button? = null
 
     @FXML
     fun findIdTask(event: ActionEvent?) {
@@ -73,6 +78,15 @@ class ControllerLoaderMan {
         }
         back_alc?.setOnAction {
             tab_loader!!.selectionModel!!.select(tab_factory)
+        }
+        btn_exit?.setOnAction {
+            val loader = FXMLLoader()
+            loader.location = javaClass.getResource("../${"MainApplication"}.fxml")
+            val root = loader.load<Parent>()
+            btn_exit?.scene?.window?.hide()
+            val stage = Stage()
+            stage.scene = Scene(root)
+            stage.show()
         }
 
         val connection = Utils.getNewConnection()

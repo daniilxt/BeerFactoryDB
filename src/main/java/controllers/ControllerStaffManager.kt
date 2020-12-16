@@ -6,8 +6,12 @@ import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
+import javafx.fxml.FXMLLoader
+import javafx.scene.Parent
+import javafx.scene.Scene
 import javafx.scene.control.*
 import javafx.scene.control.cell.PropertyValueFactory
+import javafx.stage.Stage
 import javafx.util.Callback
 import pojo.Client
 import pojo.Worker
@@ -44,6 +48,7 @@ class ControllerStaffManager {
     @FXML private var btn_workers_clear: Button? = null
     @FXML private var tab_manager: Tab? = null
     @FXML private var btn_back_clients: Button? = null
+    @FXML private var btn_exit: Button? = null
     @FXML private var btn_back_workers: Button? = null
     @FXML private var tab_clients: Tab? = null
     var list: ObservableList<Client> = FXCollections.observableArrayList()
@@ -144,6 +149,15 @@ class ControllerStaffManager {
         btn_workers_clear?.setOnAction {
             table_workers?.items?.clear()
             Utils.getWorkers(connection)?.let { table_workers?.items?.addAll(it) }
+        }
+        btn_exit?.setOnAction {
+            val loader = FXMLLoader()
+            loader.location = javaClass.getResource("../${"MainApplication"}.fxml")
+            val root = loader.load<Parent>()
+            btn_exit?.scene?.window?.hide()
+            val stage = Stage()
+            stage.scene = Scene(root)
+            stage.show()
         }
 
         btn_clients?.setOnAction { tab_loader!!.selectionModel!!.select(tab_clients) }

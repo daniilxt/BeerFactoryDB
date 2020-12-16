@@ -3,12 +3,16 @@ package controllers
 import JDBC.Utils
 import JDBC.dao.User
 import javafx.fxml.FXML
+import javafx.fxml.FXMLLoader
+import javafx.scene.Parent
+import javafx.scene.Scene
 import javafx.scene.control.*
 import javafx.scene.control.Alert
 import javafx.scene.control.Alert.AlertType
 import javafx.scene.control.ButtonType
 import javafx.scene.control.cell.PropertyValueFactory
 import javafx.scene.text.Text
+import javafx.stage.Stage
 import pojo.*
 import java.net.URL
 import java.sql.Connection
@@ -140,6 +144,8 @@ class ControllerFactory {
 
     @FXML
     private val btn_cct_handle: Button? = null
+    @FXML
+    private val btn_exit: Button? = null
 
     @FXML
     private val id_cct: TextField? = null
@@ -265,6 +271,15 @@ class ControllerFactory {
         cct_numbers?.text = "${pair.first} / ${pair.second}"
         initCCT(connection)
         initColumns(connection)
+        btn_exit?.setOnAction {
+            val loader = FXMLLoader()
+            loader.location = javaClass.getResource("../${"MainApplication"}.fxml")
+            val root = loader.load<Parent>()
+            btn_exit?.scene?.window?.hide()
+            val stage = Stage()
+            stage.scene = Scene(root)
+            stage.show()
+        }
     }
 
     private fun initCCT(connection: Connection) {

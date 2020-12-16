@@ -1,11 +1,16 @@
 package controllers
 
 import JDBC.Utils
+import JDBC.dao.Role
 import JDBC.dao.User
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
+import javafx.fxml.FXMLLoader
+import javafx.scene.Parent
+import javafx.scene.Scene
 import javafx.scene.control.*
 import javafx.scene.control.cell.PropertyValueFactory
+import javafx.stage.Stage
 import javafx.util.Callback
 import pojo.*
 import java.sql.Connection
@@ -99,6 +104,15 @@ class ControllerManager {
     private var btn_show_res: Button? = null
 
     @FXML
+    private var btn_exit: Button? = null
+
+    @FXML
+    private var back_res: Button? = null
+
+    @FXML
+    private var back_alc: Button? = null
+
+    @FXML
     private var feld_show_res: TextField? = null
 
     @FXML
@@ -175,6 +189,15 @@ class ControllerManager {
                 table_tasks?.items?.clear()
                 Utils.getLoaderTasks(connection, worker!!.idWorker)?.let { table_tasks!!.items.addAll(it) }
             }
+        }
+        btn_exit?.setOnAction {
+            val loader = FXMLLoader()
+            loader.location = javaClass.getResource("../${"MainApplication"}.fxml")
+            val root = loader.load<Parent>()
+            btn_exit?.scene?.window?.hide()
+            val stage = Stage()
+            stage.scene = Scene(root)
+            stage.show()
         }
     }
 
