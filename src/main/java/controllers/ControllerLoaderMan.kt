@@ -14,118 +14,44 @@ import java.util.*
 
 
 class ControllerLoaderMan {
-    @FXML
-    private var resources: ResourceBundle? = null
-
-    @FXML
-    private var location: URL? = null
-
-    @FXML
-    private var tab_loader: TabPane? = null
-
-    @FXML
-    private var tab_res: Tab? = null
-
-    @FXML
-    private var tab_alc: Tab? = null
-
-    @FXML
-    private var btn_load_res: Button? = null
-
-    @FXML
-    private var btn_load_alc: Button? = null
-
-    @FXML
-    private var table_tasks: TableView<LoaderTask>? = null
-
-    @FXML
-    private var table_tasks_number: TableColumn<Long, Long>? = null
-
-    @FXML
-    private var table_tasks_id_res: TableColumn<LoaderTask, Long>? = null
-
-    @FXML
-    private var table_tasks_id_alc: TableColumn<LoaderTask, Long>? = null
-
-    @FXML
-    private var table_tasks_date: TableColumn<LoaderTask, java.sql.Date>? = null
-
-    @FXML
-    private var table_tasks_status: TableColumn<LoaderTask, String>? = null
-
-    @FXML
-    private var tab_tasks: Tab? = null
-
-    @FXML
-    private var table_res: TableView<TaskResource>? = null
-
-    @FXML
-    private var table_res_id_task: TableColumn<TaskResource, Long>? = null
-
-    @FXML
-    private var table_res_name: TableColumn<TaskResource, String>? = null
-
-    @FXML
-    private var table_res_count: TableColumn<TaskResource, Long>? = null
-
-    @FXML
-    private var table_res_date: TableColumn<TaskResource, Date>? = null
-
-    @FXML
-    private var table_res_store: TableView<ResStorage>? = null
-
-    @FXML
-    private var table_res_store_name: TableColumn<ResStorage, String>? = null
-
-    @FXML
-    private var table_res_store_amount: TableColumn<ResStorage, Long>? = null
-
-    @FXML
-    private var table_res_store_unit: TableColumn<ResStorage, String>? = null
-
-    @FXML
-    private var table_res_store_price: TableColumn<ResStorage, Long>? = null
-
-    @FXML
-    private var tab_factory: Tab? = null
-
-    @FXML
-    private var table_res_alc_store: TableView<AlcStorage>? = null
-
-    @FXML
-    private var table_res_alc_store_name: TableColumn<AlcStorage, String>? = null
-
-    @FXML
-    private var table_res_alc_store_amount: TableColumn<AlcStorage, Long>? = null
-
-    @FXML
-    private var table_res_alc_store_type: TableColumn<AlcStorage, String>? = null
-
-    @FXML
-    private var table_res_alc_store_price: TableColumn<AlcStorage, Long>? = null
-
-    @FXML
-    private var table_res_alc: TableView<TaskResource>? = null
-
-    @FXML
-    private var table_res_alc_id_task: TableColumn<TaskResource, String>? = null
-
-    @FXML
-    private var table_res_alc_name: TableColumn<TaskResource, String>? = null
-
-    @FXML
-    private var table_res_alc_count: TableColumn<TaskResource, Long>? = null
-
+    @FXML private var resources: ResourceBundle? = null
+    @FXML private var location: URL? = null
+    @FXML private var tab_loader: TabPane? = null
+    @FXML private var tab_res: Tab? = null
+    @FXML private var tab_alc: Tab? = null
+    @FXML private var btn_load_res: Button? = null
+    @FXML private var btn_load_alc: Button? = null
+    @FXML private var table_tasks: TableView<LoaderTask>? = null
+    @FXML private var table_tasks_number: TableColumn<Long, Long>? = null
+    @FXML private var table_tasks_id_res: TableColumn<LoaderTask, Long>? = null
+    @FXML private var table_tasks_id_alc: TableColumn<LoaderTask, Long>? = null
+    @FXML private var table_tasks_date: TableColumn<LoaderTask, java.sql.Date>? = null
+    @FXML private var table_tasks_status: TableColumn<LoaderTask, String>? = null
+    @FXML private var tab_tasks: Tab? = null
+    @FXML private var table_res: TableView<TaskResource>? = null
+    @FXML private var table_res_id_task: TableColumn<TaskResource, Long>? = null
+    @FXML private var table_res_name: TableColumn<TaskResource, String>? = null
+    @FXML private var table_res_count: TableColumn<TaskResource, Long>? = null
+    @FXML private var table_res_date: TableColumn<TaskResource, Date>? = null
+    @FXML private var table_res_store: TableView<ResStorage>? = null
+    @FXML private var table_res_store_name: TableColumn<ResStorage, String>? = null
+    @FXML private var table_res_store_amount: TableColumn<ResStorage, Long>? = null
+    @FXML private var table_res_store_unit: TableColumn<ResStorage, String>? = null
+    @FXML private var table_res_store_price: TableColumn<ResStorage, Long>? = null
+    @FXML private var tab_factory: Tab? = null
+    @FXML private var table_res_alc_store: TableView<AlcStorage>? = null
+    @FXML private var table_res_alc_store_name: TableColumn<AlcStorage, String>? = null
+    @FXML private var table_res_alc_store_amount: TableColumn<AlcStorage, Long>? = null
+    @FXML private var table_res_alc_store_type: TableColumn<AlcStorage, String>? = null
+    @FXML private var table_res_alc_store_price: TableColumn<AlcStorage, Long>? = null
+    @FXML private var table_res_alc: TableView<TaskResource>? = null
+    @FXML private var table_res_alc_id_task: TableColumn<TaskResource, String>? = null
+    @FXML private var table_res_alc_name: TableColumn<TaskResource, String>? = null
+    @FXML private var table_res_alc_count: TableColumn<TaskResource, Long>? = null
     private var worker: Worker? = null
-
-    @FXML
-    private var table_res_alc_date: TableColumn<TaskResource, Date>? = null
-
-    @FXML
-    private var back_res: Button? = null
-
-    @FXML
-    private var back_alc: Button? = null
+    @FXML private var table_res_alc_date: TableColumn<TaskResource, Date>? = null
+    @FXML private var back_res: Button? = null
+    @FXML private var back_alc: Button? = null
 
     @FXML
     fun findIdTask(event: ActionEvent?) {

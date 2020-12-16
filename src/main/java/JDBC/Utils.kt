@@ -230,6 +230,49 @@ object Utils {
         return null
     }
 
+    fun getBarmanAlcOrders(connection: Connection, idManager: Long): List<Orders>? {
+        val sql = "select * from barmanalcorders\n" +
+                "where barmanalcorders.IdManager = ${idManager}"
+        try {
+            val resultSet = connection.createStatement().executeQuery(sql)
+            return if (!resultSet.next()) {
+                null
+            } else {
+                getFromResultSet(resultSet) {
+                    Orders(
+                            resultSet.getLong(1), resultSet.getLong(2),
+                            resultSet.getDate(4), resultSet.getString(5)
+                    )
+                }
+            }
+        } catch (ex: SQLException) {
+            println(ex)
+        }
+        return null
+    }
+
+    fun getBarmanAlcOrdersPosition(connection: Connection, idTask: Long): List<OrderPosition>? {
+        val sql = "select b.Name,BOP.Number, b.Type, b.Price from barmanalcorderposition BOP\n" +
+                "inner join beerstorage b on BOP.IdBeerKind = b.IdBeerKind\n" +
+                "where IdBarmanAlcOrder = ${idTask}"
+        try {
+            val resultSet = connection.createStatement().executeQuery(sql)
+            return if (!resultSet.next()) {
+                null
+            } else {
+                getFromResultSet(resultSet) {
+                    OrderPosition(
+                            resultSet.getString(1), resultSet.getString(3),
+                            resultSet.getLong(2), resultSet.getLong(4)
+                    )
+                }
+            }
+        } catch (ex: SQLException) {
+            println(ex)
+        }
+        return null
+    }
+
     fun getLoaderTasks(connection: Connection, idLoader: Long): List<LoaderTask>? {
         val sql = "select * from loadertask LT\n" +
                 "where LT.IdLoaderMan = ${idLoader} and LT.Status != 'done' "
@@ -768,6 +811,48 @@ object Utils {
                         "VALUES (${it.amount}, ${records.last()}, ${idResource});"
                 connection.createStatement().executeQuery(sql)
             }
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
+    }
+
+    fun createLoaderAlcoTask(connection: Connection, idManager: Long, idBarman: Long, items: List<OrderPosition>, loader: Int, nowDate: Date) {
+        var sql = "INSERT INTO ImportAlcBuy (IdBarman, IdManager,Date, Status)\n" +
+                "VALUES (${idManager},${idManager}, '${nowDate}', 'process');"
+
+        try {
+            connection.createStatement().executeQuery(sql)
+
+            sql = "select IdImportAlcBuy from ImportAlcBuy where IdBarman = ${idBarman}"
+            var resultSet = connection.createStatement().executeQuery(sql)
+            val records: MutableList<Long> = ArrayList()
+            if (resultSet.next()) {
+                do {
+                    val tmp: Long = resultSet.getLong(1)
+                    records.add(tmp)
+                } while (resultSet.next())
+            }
+            items.forEach {
+                sql = "set @id = 0;"
+                connection.createStatement().executeQuery(sql)
+
+                sql = "SET @id = (select IdBeerKind from BeerStorage where Name = '${it.beerName}');" // beername = name!!
+                connection.createStatement().executeQuery(sql)
+
+                sql = "select @id;"
+                resultSet = connection.createStatement().executeQuery(sql)
+                val idBeerKind = if (resultSet!!.next()) {
+                    resultSet.getLong(1)
+                } else 0
+
+                sql = "INSERT INTO ImportAlcBuyPosition (Number, IdImportAlcBuy, IdBeerKind)\n" +
+                        "VALUES (${it.amount}, ${records.last()}, ${idBeerKind});"
+                connection.createStatement().executeQuery(sql)
+            }
+            sql = "INSERT INTO LoaderTask (IdLoaderMan, IdResBuy,IdImportAlc,Date, Status)\n" +
+                    "VALUES (${loader},5,${records.last()}, '${nowDate}', 'process');"
+            connection.createStatement().executeQuery(sql)
+
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
