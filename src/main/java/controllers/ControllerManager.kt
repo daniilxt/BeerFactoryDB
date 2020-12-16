@@ -85,14 +85,21 @@ class ControllerManager {
 
     @FXML
     private var btn_create_alc_task: Button? = null
+
     @FXML
     private var btn_show_alc: Button? = null
+
     @FXML
     private var feld_show_alc: TextField? = null
 
-    @FXML private var btn_create_res_task: Button? = null
-    @FXML private var btn_show_res: Button? = null
-    @FXML private var feld_show_res: TextField? = null
+    @FXML
+    private var btn_create_res_task: Button? = null
+
+    @FXML
+    private var btn_show_res: Button? = null
+
+    @FXML
+    private var feld_show_res: TextField? = null
 
     @FXML
     private var table_cart1: TableView<OrderPosition>? = null
@@ -126,8 +133,8 @@ class ControllerManager {
     private var worker: Worker? = null
     val dataResAlc = mutableListOf<OrderPosition>()
     val dataRes = mutableListOf<OrderPosition>()
-    var currentAlcoTask:Orders? = null
-    var currentResTask:Orders? = null
+    var currentAlcoTask: Orders? = null
+    var currentResTask: Orders? = null
 
 
     @FXML
@@ -145,11 +152,28 @@ class ControllerManager {
 
     private fun initButtons(connection: Connection) {
         btn_create_alc_task?.setOnAction {
-            if (table_cart1?.items?.isNotEmpty()!! && currentAlcoTask!= null){
+            if (table_cart1?.items?.isNotEmpty()!! && currentAlcoTask != null) {
                 // curr.manager this is barman
                 var loader = 1
                 val nowDate = Date(Calendar.getInstance().time.time)
-                Utils.createLoaderAlcoTask(connection,worker!!.idWorker,currentAlcoTask!!.manager,table_cart1!!.items,loader,nowDate)
+                Utils.createLoaderAlcoTask(connection, worker!!.idWorker, currentAlcoTask!!.manager, table_cart1!!.items, loader, nowDate, currentAlcoTask!!.idOrder)
+                table_cart1?.items?.clear()
+                table_lc_list?.items?.remove(currentResTask)
+                table_tasks?.items?.clear()
+                Utils.getLoaderTasks(connection, worker!!.idWorker)?.let { table_tasks!!.items.addAll(it) }
+            }
+        }
+
+        btn_create_res_task?.setOnAction {
+            if (table_cart?.items?.isNotEmpty()!! && currentResTask != null) {
+                // curr.manager this is engineer
+                var loader = 1
+                val nowDate = Date(Calendar.getInstance().time.time)
+                Utils.createLoaderResTask(connection, worker!!.idWorker, currentResTask!!.manager, table_cart1!!.items, loader, nowDate, currentResTask!!.idOrder)
+                table_cart?.items?.clear()
+                table_lc_list?.items?.remove(currentAlcoTask)
+                table_tasks?.items?.clear()
+                Utils.getLoaderTasks(connection, worker!!.idWorker)?.let { table_tasks!!.items.addAll(it) }
             }
         }
     }
@@ -189,6 +213,7 @@ class ControllerManager {
 
 
         // tasks via engineer
+        Utils.getEngineerResOrders(connection, worker!!.idWorker)?.let { table_res_list?.items?.addAll(it) }
         table_res_list_id?.cellValueFactory = PropertyValueFactory("idOrder")
         table_res_list_manager?.cellValueFactory = PropertyValueFactory("manager")
         table_res_list_date?.cellValueFactory = PropertyValueFactory("date")
@@ -199,18 +224,25 @@ class ControllerManager {
             //todo
         })
 
-
+        //position of task engineer
+        table_cart_name?.cellValueFactory = PropertyValueFactory("beerName") // this is res name
+        table_cart_amount?.cellValueFactory = PropertyValueFactory("type")
+        table_cart_unit?.cellValueFactory = PropertyValueFactory("amount")
+        table_cart_price?.cellValueFactory = PropertyValueFactory("price")
 
     }
 
     private fun createTasksRes(data: MutableList<OrderPosition>, connection: Connection, it: Orders?) {
         table_cart?.items?.clear()
-        table_cart?.items?.addAll(data)
+
+        Utils.getEngineerResOrdersPosition(connection, it!!.idOrder)?.let { it1 ->
+            table_cart?.items?.addAll(it1
+            )
+        }
     }
 
     private fun createTasksResAlc(dataResAlc: MutableList<OrderPosition>, connection: Connection, it: Orders?) {
         table_cart1?.items?.clear()
-        // table_cart1?.items?.addAll(dataResAlc)
 
         Utils.getBarmanAlcOrdersPosition(connection, it!!.idOrder)?.let { it1 ->
             table_cart1?.items?.addAll(it1

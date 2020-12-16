@@ -232,7 +232,28 @@ object Utils {
 
     fun getBarmanAlcOrders(connection: Connection, idManager: Long): List<Orders>? {
         val sql = "select * from barmanalcorders\n" +
-                "where barmanalcorders.IdManager = ${idManager}"
+                "where barmanalcorders.IdManager = ${idManager} and barmanalcorders.Status != 'done' "
+        try {
+            val resultSet = connection.createStatement().executeQuery(sql)
+            return if (!resultSet.next()) {
+                null
+            } else {
+                getFromResultSet(resultSet) {
+                    Orders(
+                            resultSet.getLong(1), resultSet.getLong(2),
+                            resultSet.getDate(4), resultSet.getString(5)
+                    )
+                }
+            }
+        } catch (ex: SQLException) {
+            println(ex)
+        }
+        return null
+    }
+
+    fun getEngineerResOrders(connection: Connection, idManager: Long): List<Orders>? {
+        val sql = "select * from TechnologistEngineerResOrders TET\n" +
+                "where TET.IdManager = ${idManager} and TET.Status != 'done' "
         try {
             val resultSet = connection.createStatement().executeQuery(sql)
             return if (!resultSet.next()) {
@@ -252,9 +273,33 @@ object Utils {
     }
 
     fun getBarmanAlcOrdersPosition(connection: Connection, idTask: Long): List<OrderPosition>? {
-        val sql = "select b.Name,BOP.Number, b.Type, b.Price from barmanalcorderposition BOP\n" +
-                "inner join beerstorage b on BOP.IdBeerKind = b.IdBeerKind\n" +
+        val sql = "select b.Name, BOP.Number, b.Type, b.Price * BOP.Number as Price\n" +
+                "from barmanalcorderposition BOP\n" +
+                "         inner join beerstorage b on BOP.IdBeerKind = b.IdBeerKind\n" +
                 "where IdBarmanAlcOrder = ${idTask}"
+        try {
+            val resultSet = connection.createStatement().executeQuery(sql)
+            return if (!resultSet.next()) {
+                null
+            } else {
+                getFromResultSet(resultSet) {
+                    OrderPosition(
+                            resultSet.getString(1), resultSet.getString(3),
+                            resultSet.getLong(2), resultSet.getLong(4)
+                    )
+                }
+            }
+        } catch (ex: SQLException) {
+            println(ex)
+        }
+        return null
+    }
+
+    fun getEngineerResOrdersPosition(connection: Connection, idTask: Long): List<OrderPosition>? {
+        val sql = "select r.Name, TEOP.Number, r.Unit, r.Price * TEOP.Number as Price\n" +
+                "from technologistengineerresorderposition TEOP\n" +
+                "         inner join resourcestorage r on TEOP.IdResource = r.IdResource\n" +
+                "where IdTechnologistEngineerResOrder = ${idTask}"
         try {
             val resultSet = connection.createStatement().executeQuery(sql)
             return if (!resultSet.next()) {
@@ -420,6 +465,24 @@ object Utils {
 
     fun updateStatusResTask(connection: Connection, status: String, idTask: Long) {
         val sql = "call changeResTaskStatus('${status}',${idTask})"
+        try {
+            connection.createStatement().executeQuery(sql)
+        } catch (ex: SQLException) {
+            println(ex)
+        }
+    }
+
+    fun updateStatusResTaskTechnologistEngineer(connection: Connection, status: String, idTask: Long) {
+        val sql = "call changeResTaskTechnologistEngineerStatus('${status}',${idTask})"
+        try {
+            connection.createStatement().executeQuery(sql)
+        } catch (ex: SQLException) {
+            println(ex)
+        }
+    }
+
+    fun updateStatusAlcBarman(connection: Connection, status: String, idTask: Long) {
+        val sql = "call changeAlcBarmanStatusStatus('${status}',${idTask})"
         try {
             connection.createStatement().executeQuery(sql)
         } catch (ex: SQLException) {
@@ -816,9 +879,9 @@ object Utils {
         }
     }
 
-    fun createLoaderAlcoTask(connection: Connection, idManager: Long, idBarman: Long, items: List<OrderPosition>, loader: Int, nowDate: Date) {
+    fun createLoaderAlcoTask(connection: Connection, idManager: Long, idBarman: Long, items: List<OrderPosition>, loader: Int, nowDate: Date, idTask: Long) {
         var sql = "INSERT INTO ImportAlcBuy (IdBarman, IdManager,Date, Status)\n" +
-                "VALUES (${idManager},${idManager}, '${nowDate}', 'process');"
+                "VALUES (${idManager},${idManager}, '${nowDate}', 'done');"
 
         try {
             connection.createStatement().executeQuery(sql)
@@ -852,7 +915,49 @@ object Utils {
             sql = "INSERT INTO LoaderTask (IdLoaderMan, IdResBuy,IdImportAlc,Date, Status)\n" +
                     "VALUES (${loader},5,${records.last()}, '${nowDate}', 'process');"
             connection.createStatement().executeQuery(sql)
+            updateStatusAlcBarman(connection, "done", idTask)
 
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
+    }
+
+    fun createLoaderResTask(connection: Connection, idManager: Long, idEngineer: Long, items: List<OrderPosition>, loader: Int, nowDate: Date, idTask: Long) {
+        var sql = "INSERT INTO ResBuy (IdEngineer, IdManager,Date, Status)\n" +
+                "VALUES (${idEngineer},${idManager}, '${nowDate}', 'done');"
+        try {
+            connection.createStatement().executeQuery(sql)
+
+            sql = "select IdResBuy from ResBuy where IdEngineer = ${idEngineer}"
+            var resultSet = connection.createStatement().executeQuery(sql)
+            val records: MutableList<Long> = ArrayList()
+            if (resultSet.next()) {
+                do {
+                    val tmp: Long = resultSet.getLong(1)
+                    records.add(tmp)
+                } while (resultSet.next())
+            }
+            items.forEach {
+                sql = "set @id = 0;"
+                connection.createStatement().executeQuery(sql)
+
+                sql = "SET @id = (select IdResource from ResourceStorage where Name = '${it.beerName}');" // beername = name!!
+                connection.createStatement().executeQuery(sql)
+
+                sql = "select @id;"
+                resultSet = connection.createStatement().executeQuery(sql)
+                val idBeerKind = if (resultSet!!.next()) {
+                    resultSet.getLong(1)
+                } else 0
+
+                sql = "INSERT INTO ResBuyPosition (Number, IdResBuy, IdResource)\n" +
+                        "VALUES (${it.amount}, ${records.last()}, ${idBeerKind});" //idresource this
+                connection.createStatement().executeQuery(sql)
+            }
+            sql = "INSERT INTO LoaderTask (IdLoaderMan, IdResBuy,IdImportAlc,Date, Status)\n" +
+                    "VALUES (${loader},${records.last()},1, '${nowDate}', 'process');"
+            connection.createStatement().executeQuery(sql)
+            updateStatusResTaskTechnologistEngineer(connection, "done", idTask)
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
