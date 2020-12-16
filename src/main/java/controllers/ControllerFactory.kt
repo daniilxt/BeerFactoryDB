@@ -4,6 +4,9 @@ import JDBC.Utils
 import JDBC.dao.User
 import javafx.fxml.FXML
 import javafx.scene.control.*
+import javafx.scene.control.Alert
+import javafx.scene.control.Alert.AlertType
+import javafx.scene.control.ButtonType
 import javafx.scene.control.cell.PropertyValueFactory
 import javafx.scene.text.Text
 import pojo.*
@@ -135,7 +138,16 @@ class ControllerFactory {
     @FXML
     private var cct_numbers: Text? = null
 
+    @FXML
+    private val btn_cct_handle: Button? = null
+
+    @FXML
+    private val id_cct: TextField? = null
+
     private var worker: Worker? = null
+
+    @FXML
+    private var list_manager: ComboBox<String>? = null
 
     @FXML
     fun addNewCCT() {
@@ -162,7 +174,48 @@ class ControllerFactory {
     }
 
     @FXML
+    fun alertConfirm(text: String = "", arr: List<Recipe>, connection: Connection) {
+        val alert = Alert(AlertType.CONFIRMATION)
+        alert.title = "Buy resources"
+        alert.headerText = "Are you want to create resource request?"
+        alert.contentText = text
+
+        // option != null.
+        val option = alert.showAndWait()
+        when {
+            option.get() == ButtonType.OK -> {
+                println("OK")
+                createRequest(arr, connection)
+            }
+            option.get() == ButtonType.CANCEL -> {
+                println("CANCELLED")
+
+            }
+            else -> {
+                println("??")
+
+            }
+        }
+    }
+
+    private fun createRequest(arr: List<Recipe>, connection: Connection) {
+        arr.forEach {
+            println(it)
+        }
+
+        val nowDate = java.sql.Date(Calendar.getInstance().time.time)
+        println(nowDate)
+        println(worker!!.idWorker)
+        println(arr)
+        val indexHash = list_manager?.value?.indexOf('#')
+        val managerId = list_manager?.value?.substring(indexHash!! + 1)
+        println(managerId)
+        worker?.idWorker?.let { it1 -> Utils.createResOrder(connection, arr, it1, managerId!!.toLong(), nowDate) }
+    }
+
+    @FXML
     fun handleTask() {
+        //todo fix bug multiply adding
         if (!table_task?.items?.isEmpty()!!) {
             val connection = Utils.getNewConnection()
             val pair = Utils.countFreeCCT(connection)
@@ -171,8 +224,8 @@ class ControllerFactory {
                 table_res!!.items.forEachIndexed { index, it ->
                     run {
                         if (Utils.checkRes(
-                                it.resName!!, it.amount * table_task!!.items[0].amount, connection!!
-                            ) < it.amount
+                                        it.resName!!, it.amount * table_task!!.items[0].amount, connection!!
+                                ) < it.amount
                         ) {
                             arrBuy.add(table_res!!.items[index])
                         }
@@ -180,27 +233,34 @@ class ControllerFactory {
                 }
                 println(arrBuy)
                 if (arrBuy.isNotEmpty()) {
+                    var bigStr = ""
                     println("Need Buy:")
                     arrBuy.forEachIndexed { index, it ->
                         run {
                             println(
-                                "${it.resName} ${(it.amount * table_task!!.items[0].amount) - it.storeAmount} ")
+                                    "${it.resName} ${(it.amount * table_task!!.items[0].amount) - it.storeAmount} ${it.unit} ")
+                            it.amount = ((it.amount * table_task!!.items[0].amount) - it.storeAmount)
                             println(index)
+                            bigStr += "${it.resName} ${it.amount} ${it.unit}\n "
                         }
                     }
+                    connection?.let { alertConfirm(bigStr, arrBuy, it) }
                 }
-                println("Success")
             } else {
-                alert()
+                alert("No free CCT")
             }
+        } else {
+            alert("Empty recipe!")
         }
-        alert()
     }
 
     @FXML
     fun initialize(user: User) {
         val connection = Utils.getNewConnection()
         worker = Utils.getWorkerByLogin(user.login, connection!!)
+        val manager = Utils.getManagers(connection)
+        manager?.map { "${it.name} ${it.secondName} #${it.idWorker}" }?.toList()?.let { list_manager?.items?.addAll(it) }
+
         val pair = Utils.countFreeCCT(connection)
         cct_numbers?.text = "${pair.first} / ${pair.second}"
         initCCT(connection)
@@ -251,10 +311,10 @@ class ControllerFactory {
     }
 
     @FXML
-    private fun alert() {
+    private fun alert(text: String = "Incorrect input") {
         val alert = Alert(Alert.AlertType.ERROR)
         alert.title = "Attention"
-        alert.contentText = "Incorrect input"
+        alert.contentText = text
         alert.showAndWait()
     }
 }

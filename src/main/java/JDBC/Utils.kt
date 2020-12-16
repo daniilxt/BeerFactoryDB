@@ -697,17 +697,7 @@ object Utils {
         return null
     }
 
-    @Throws(SQLException::class)
-    private fun <T> getFromResultSet(resultSet: ResultSet, action: () -> T): List<T>? {
-        val records: MutableList<T> = ArrayList()
-        do {
-            val tmp: T = action()
-            records.add(tmp)
-        } while (resultSet.next())
-        return records
-    }
-
-    fun createAlcoOrder(connection: Connection, items: List<BeerMenu>,idBarman:Long, idManager: Long, nowDate: Date) {
+    fun createAlcoOrder(connection: Connection, items: List<BeerMenu>, idBarman: Long, idManager: Long, nowDate: Date) {
         var sql = "INSERT INTO BarmanAlcOrders (IdBarman, IdManager,Date, Status)\n" +
                 "VALUES (${idBarman},${idManager}, '${nowDate}', 'process');"
 
@@ -743,5 +733,53 @@ object Utils {
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
+    }
+
+    fun createResOrder(connection: Connection, items: List<Recipe>, idTechnologistEngineer: Long, idManager: Long, nowDate: Date) {
+        var sql = "INSERT INTO TechnologistEngineerResOrders (IdTechnologistEngineer, IdManager,Date, Status)\n" +
+                "VALUES (${idTechnologistEngineer},${idManager}, '${nowDate}', 'process');"
+
+        try {
+            connection.createStatement().executeQuery(sql)
+            sql = "select IdTechnologistEngineerResOrder from TechnologistEngineerResOrders where IdTechnologistEngineer = ${idTechnologistEngineer}"
+            var resultSet = connection.createStatement().executeQuery(sql)
+            val records: MutableList<Long> = ArrayList()
+            if (resultSet.next()) {
+                do {
+                    val tmp: Long = resultSet.getLong(1)
+                    records.add(tmp)
+                } while (resultSet.next())
+            }
+
+            items.forEach {
+                sql = "set @id = 0;"
+                connection.createStatement().executeQuery(sql)
+
+                sql = "SET @id = (select IdResource from ResourceStorage where Name = '${it.resName}');"
+                connection.createStatement().executeQuery(sql)
+
+                sql = "select @id;"
+                resultSet = connection.createStatement().executeQuery(sql)
+                val idResource = if (resultSet!!.next()) {
+                    resultSet.getLong(1)
+                } else 0
+
+                sql = "INSERT INTO  TechnologistEngineerResOrderPosition (Number, IdTechnologistEngineerResOrder, IdResource)\n" +
+                        "VALUES (${it.amount}, ${records.last()}, ${idResource});"
+                connection.createStatement().executeQuery(sql)
+            }
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
+    }
+
+    @Throws(SQLException::class)
+    private fun <T> getFromResultSet(resultSet: ResultSet, action: () -> T): List<T>? {
+        val records: MutableList<T> = ArrayList()
+        do {
+            val tmp: T = action()
+            records.add(tmp)
+        } while (resultSet.next())
+        return records
     }
 }
