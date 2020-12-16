@@ -201,6 +201,71 @@
                         </AnchorPane>
                     </content>
                 </Tab>
+            <Tab fx:id="tab_alc1" text="GiveTask">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="btn_create_alc_task1" layoutX="618.0" layoutY="561.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="176.0" text="GIVE TASK">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
+                        <TableView fx:id="table_cart11" layoutX="513.0" layoutY="175.0" prefHeight="377.0" prefWidth="424.0">
+                           <columns>
+                              <TableColumn fx:id="table_cart_name11" prefWidth="135.0" text="beerName" />
+                              <TableColumn fx:id="table_cart_amount11" prefWidth="76.0" text="amount" />
+                              <TableColumn fx:id="table_cart_unit11" prefWidth="76.0" text="unit" />
+                              <TableColumn fx:id="table_cart_price11" prefWidth="89.0" text="price" />
+                           </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
+                        <Label layoutX="610.0" layoutY="121.0" text="Order position">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <TableView fx:id="table_lc_list1" layoutX="29.0" layoutY="175.0" prefHeight="377.0" prefWidth="387.0">
+                           <columns>
+                              <TableColumn fx:id="table_lc_list_name1" prefWidth="75.0" text="orderNumber" />
+                              <TableColumn fx:id="table_lc_list_manager1" prefWidth="73.0" text="clientID" />
+                              <TableColumn fx:id="table_lc_list_date1" prefWidth="87.0" text="date" />
+                              <TableColumn fx:id="table_lc_list_status1" prefWidth="75.0" text="status" />
+                           </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
+                        <ImageView fitHeight="66.0" fitWidth="77.0" layoutX="737.0" layoutY="101.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@assets/list.png" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="168.0" layoutY="134.0" text="ClientTasks">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="btn_show_alc1" layoutX="312.0" layoutY="584.0" mnemonicParsing="false" text="SHOW">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                        <TextField fx:id="feld_show_alc1" layoutX="104.0" layoutY="583.0" promptText="order number">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </TextField>
+                        <Button fx:id="btn_back_alc1" layoutX="874.0" layoutY="627.0" mnemonicParsing="false" text="BACK">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
             </tabs>
         </TabPane>
     </children>

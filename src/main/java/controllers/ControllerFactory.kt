@@ -24,134 +24,93 @@ class ControllerFactory {
 
     @FXML
     private var resources: ResourceBundle? = null
-
     @FXML
     private var location: URL? = null
-
     @FXML
     private var tab_factory: Tab? = null
-
     @FXML
     private var btn_add_cct: Button? = null
-
     @FXML
     private var table_res: TableView<Recipe>? = null //table resources
-
     @FXML
     private var res_name: TableColumn<Recipe, String>? = null
-
     @FXML
     private var res_amount: TableColumn<Recipe, Long>? = null
-
     @FXML
     private var res_amount_store: TableColumn<Recipe, Long>? = null
-
     @FXML
     private var res_unit: TableColumn<Recipe, String>? = null
-
     @FXML
     private var res_price: TableColumn<Recipe, Long>? = null
-
     @FXML
     private var btn_handle: Button? = null
-
     @FXML
     private var table_task: TableView<Task>? = null //table one task
-
     @FXML
     private var table_task_id: TableColumn<Task, Long>? = null
-
     @FXML
     private var table_task_id_beer_kind: TableColumn<Task, Long>? = null
-
     @FXML
     private var table_task_beer_name: TableColumn<Task, String>? = null
-
     @FXML
     private var table_task_amount: TableColumn<Task, Long>? = null
-
     @FXML
     private var table_task_date: TableColumn<Task, Date>? = null
-
     @FXML
     private var btn_find_task: Button? = null
-
     @FXML
     private var tab_tasks: Tab? = null
-
     @FXML
     private var table_tasks: TableView<Tasks>? = null //table all tasks
-
     @FXML
     private var table_tasks_id: TableColumn<Tasks, Long>? = null
-
     @FXML
     private var table_tasks_id_engineer: TableColumn<Tasks, Long>? = null
-
     @FXML
     private var table_tasks_id_beerkind: TableColumn<Tasks, String>? = null
-
     @FXML
     private var table_tasks_date: TableColumn<Tasks, Date>? = null
-
     @FXML
     private var table_tasks_status: TableColumn<Tasks, String>? = null
-
     @FXML
     private var table_tasks_amount: TableColumn<Tasks, Long>? = null
-
     @FXML
     private var table_cct: TableView<CylindricallyTank>? = null
-
     @FXML
     private var cct_id: TableColumn<CylindricallyTank, Long>? = null
-
     @FXML
     private var cct_task: TableColumn<CylindricallyTank, Long>? = null
-
     @FXML
     private var cct_start: TableColumn<CylindricallyTank, Date>? = null
-
     @FXML
     private var cct_end: TableColumn<CylindricallyTank, Date>? = null
-
     @FXML
     private var cct_status: TableColumn<CylindricallyTank, String>? = null
-
     @FXML
     private var id_task_find: TextField? = null
-
     @FXML
     private var filter_date_from: DatePicker? = null
-
     @FXML
     private var filter_date_to: DatePicker? = null
-
     @FXML
     private var filter_date: Button? = null
-
     @FXML
     private var filter_amount: Button? = null
-
     @FXML
     private var filter_amount_from: TextField? = null
-
     @FXML
     private var filter_amount_to: TextField? = null
-
     @FXML
     private var cct_numbers: Text? = null
-
     @FXML
-    private val btn_cct_handle: Button? = null
+    private var btn_cct_handle: Button? = null
     @FXML
-    private val btn_exit: Button? = null
-
+    private var btn_clear_list: Button? = null
     @FXML
-    private val id_cct: TextField? = null
-
+    private var btn_exit: Button? = null
+    @FXML
+    private var id_cct: TextField? = null
     private var worker: Worker? = null
-
     @FXML
     private var list_manager: ComboBox<String>? = null
 
@@ -260,6 +219,9 @@ class ControllerFactory {
         }
     }
 
+    val oldArray = mutableListOf<Tasks>()
+    val tasksArray = mutableListOf<Tasks>()
+
     @FXML
     fun initialize(user: User) {
         val connection = Utils.getNewConnection()
@@ -279,6 +241,29 @@ class ControllerFactory {
             val stage = Stage()
             stage.scene = Scene(root)
             stage.show()
+        }
+
+
+        Utils.getTasks(worker!!.idWorker, connection)?.let { tasksArray.addAll(it) }
+
+        btn_clear_list?.setOnAction {
+            println("clearr taskarr: ${tasksArray}")
+
+            table_tasks?.items?.clear()
+            table_tasks?.items?.addAll(tasksArray)
+        }
+
+
+        filter_date?.setOnAction {
+            if (filter_date_from?.value != null && filter_date_to?.value != null) {
+                table_tasks?.items?.let { it1 -> oldArray.addAll(it1) }
+                table_tasks?.items?.clear()
+                val dateFrom = Date.valueOf(filter_date_from?.value)
+                val dateTo = Date.valueOf(filter_date_to?.value)
+                table_tasks?.items?.addAll(oldArray.filter { (it.date!! >= dateFrom) && (it.date!! <= dateTo) }.toMutableList())
+                oldArray.clear()
+            }
+            else alert()
         }
     }
 

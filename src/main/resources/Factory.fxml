@@ -28,7 +28,7 @@
                                         <Image url="@assets/cylindrical_tank.png" />
                                     </image>
                                 </ImageView>
-                                <Label layoutX="676.0" layoutY="202.0" text="Canonical Tanks">
+                                <Label layoutX="676.0" layoutY="202.0" text="Cylindrical Tanks">
                                     <font>
                                         <Font size="22.0" />
                                     </font>
@@ -179,6 +179,11 @@
                                 </Button>
                                 <TextField fx:id="filter_amount_from" layoutX="703.0" layoutY="314.0" prefHeight="25.0" prefWidth="138.0" promptText="Enter amount" />
                                 <TextField fx:id="filter_amount_to" layoutX="703.0" layoutY="359.0" prefHeight="25.0" prefWidth="138.0" promptText="Enter amount" />
+                        <Button fx:id="btn_clear_list" layoutX="48.0" layoutY="532.0" mnemonicParsing="false" text="Clear">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
                             </children>
                         </AnchorPane>
                     </content>

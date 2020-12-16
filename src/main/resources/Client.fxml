@@ -13,71 +13,92 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="700.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ControllerClient">
+<AnchorPane prefHeight="700.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ControllerClient">
     <children>
-        <TabPane fx:id="tab_loader" layoutX="79.0" layoutY="35.0" prefHeight="604.0" prefWidth="914.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <TabPane fx:id="tab_loader" layoutX="79.0" layoutY="35.0" prefHeight="604.0" prefWidth="914.0"
+                 tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                 AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <tabs>
                 <Tab fx:id="tab_profile" text="Profile">
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
-                                <AnchorPane layoutX="209.0" layoutY="277.0" prefHeight="317.0" prefWidth="316.0" style="-fx-background-color: #A1C64F; -fx-background-radius: 20 20 20 20;">
+                                <AnchorPane layoutX="209.0" layoutY="277.0" prefHeight="317.0" prefWidth="316.0"
+                                            style="-fx-background-color: #A1C64F; -fx-background-radius: 20 20 20 20;">
                                     <children>
-                                        <TextField fx:id="reg_name" editable="false" layoutX="136.0" layoutY="72.0" style="-fx-background-radius: 8 8 8 8;">
+                                        <TextField fx:id="reg_name" editable="false" layoutX="136.0" layoutY="72.0"
+                                                   style="-fx-background-radius: 8 8 8 8;">
                                             <font>
-                                                <Font size="13.0" />
+                                                <Font size="13.0"/>
                                             </font>
                                         </TextField>
-                                        <Label layoutX="30.0" layoutY="78.0" text="FIRST NAME" />
-                                        <TextField fx:id="reg_second_name" editable="false" layoutX="136.0" layoutY="111.0" style="-fx-background-radius: 8 8 8 8;">
+                                        <Label layoutX="30.0" layoutY="78.0" text="FIRST NAME"/>
+                                        <TextField fx:id="reg_second_name" editable="false" layoutX="136.0"
+                                                   layoutY="111.0" style="-fx-background-radius: 8 8 8 8;">
                                             <font>
-                                                <Font size="13.0" />
+                                                <Font size="13.0"/>
                                             </font>
                                         </TextField>
-                                        <Label layoutX="30.0" layoutY="111.0" prefHeight="29.0" prefWidth="96.0" text="SECOND NAME" />
-                                        <TextField fx:id="reg_middle_name" editable="false" layoutX="136.0" layoutY="150.0" style="-fx-background-radius: 8 8 8 8;">
+                                        <Label layoutX="30.0" layoutY="111.0" prefHeight="29.0" prefWidth="96.0"
+                                               text="SECOND NAME"/>
+                                        <TextField fx:id="reg_middle_name" editable="false" layoutX="136.0"
+                                                   layoutY="150.0" style="-fx-background-radius: 8 8 8 8;">
                                             <font>
-                                                <Font size="13.0" />
+                                                <Font size="13.0"/>
                                             </font>
                                         </TextField>
-                                        <Label layoutX="30.0" layoutY="156.0" text="MIDDLE NAME" />
-                                        <TextField fx:id="reg_phone" alignment="TOP_LEFT" editable="false" layoutX="136.0" layoutY="193.0" style="-fx-background-radius: 8 8 8 8;">
+                                        <Label layoutX="30.0" layoutY="156.0" text="MIDDLE NAME"/>
+                                        <TextField fx:id="reg_phone" alignment="TOP_LEFT" editable="false"
+                                                   layoutX="136.0" layoutY="193.0"
+                                                   style="-fx-background-radius: 8 8 8 8;">
                                             <font>
-                                                <Font size="13.0" />
+                                                <Font size="13.0"/>
                                             </font>
                                         </TextField>
-                                        <Label layoutX="30.0" layoutY="199.0" text="PHONE" />
-                                        <Label layoutX="31.0" layoutY="242.0" text="DATE BIRTH" />
+                                        <Label layoutX="30.0" layoutY="199.0" text="PHONE"/>
+                                        <Label layoutX="31.0" layoutY="242.0" text="DATE BIRTH"/>
                                         <Label layoutX="112.0" layoutY="14.0" text=" Account">
                                             <font>
-                                                <Font name="System Bold" size="22.0" />
+                                                <Font name="System Bold" size="22.0"/>
                                             </font>
                                         </Label>
-                                        <TextField fx:id="reg_date" alignment="TOP_LEFT" editable="false" layoutX="136.0" layoutY="236.0" style="-fx-background-radius: 8 8 8 8;">
+                                        <TextField fx:id="reg_date" alignment="TOP_LEFT" editable="false"
+                                                   layoutX="136.0" layoutY="236.0"
+                                                   style="-fx-background-radius: 8 8 8 8;">
                                             <font>
-                                                <Font size="13.0" />
+                                                <Font size="13.0"/>
                                             </font>
                                         </TextField>
                                     </children>
                                 </AnchorPane>
-                                <ImageView fitHeight="252.0" fitWidth="197.0" layoutX="269.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true">
+                                <ImageView fitHeight="252.0" fitWidth="197.0" layoutX="269.0" layoutY="40.0"
+                                           pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@assets/logo.png" />
+                                        <Image url="@assets/logo.png"/>
                                     </image>
                                 </ImageView>
-                                <Button fx:id="btn_go_orders" layoutX="580.0" layoutY="372.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="162.0" style="-fx-background-color: #E19133; -fx-background-radius: 8 8 8 8;" text="ORDERS">
+                                <Button fx:id="btn_go_orders" layoutX="580.0" layoutY="372.0" mnemonicParsing="false"
+                                        prefHeight="45.0" prefWidth="162.0"
+                                        style="-fx-background-color: #E19133; -fx-background-radius: 8 8 8 8;"
+                                        text="ORDERS">
                                     <font>
-                                        <Font size="22.0" />
+                                        <Font size="22.0"/>
                                     </font>
                                 </Button>
-                                <Button fx:id="btn_go_buy" layoutX="580.0" layoutY="451.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="162.0" style="-fx-background-color: #E19133; -fx-background-radius: 8 8 8 8;" text="BUY">
+                                <Button fx:id="btn_go_buy" layoutX="580.0" layoutY="451.0" mnemonicParsing="false"
+                                        prefHeight="45.0" prefWidth="162.0"
+                                        style="-fx-background-color: #E19133; -fx-background-radius: 8 8 8 8;"
+                                        text="BUY">
                                     <font>
-                                        <Font size="22.0" />
+                                        <Font size="22.0"/>
                                     </font>
                                 </Button>
-                                <Button fx:id="btn_exit" layoutX="863.0" layoutY="620.0" mnemonicParsing="false" onAction="#findIdTask" style="-fx-background-color: #E19133; -fx-background-radius: 10 10 10 10;" text="EXIT">
+                                <Button fx:id="btn_exit" layoutX="863.0" layoutY="620.0" mnemonicParsing="false"
+                                        style="-fx-background-color: #E19133; -fx-background-radius: 10 10 10 10;"
+                                        text="EXIT">
                                     <font>
-                                        <Font name="Arial" size="20.0" />
+                                        <Font name="Arial" size="20.0"/>
                                     </font>
                                 </Button>
                             </children>
@@ -88,62 +109,73 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
-                                <Button fx:id="btn_back_menu" layoutX="880.0" layoutY="626.0" mnemonicParsing="false" text="BACK">
+                                <Button fx:id="btn_back_menu" layoutX="880.0" layoutY="626.0" mnemonicParsing="false"
+                                        text="BACK">
                                     <font>
-                                        <Font size="15.0" />
+                                        <Font size="15.0"/>
                                     </font>
                                 </Button>
-                                <Button fx:id="btn_buy" layoutX="727.0" layoutY="561.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="176.0" style="-fx-background-radius: 8 8 8 8; -fx-background-color: #F2AA22;" text="BUY">
+                                <Button fx:id="btn_buy" layoutX="727.0" layoutY="561.0" mnemonicParsing="false"
+                                        prefHeight="37.0" prefWidth="176.0"
+                                        style="-fx-background-radius: 8 8 8 8; -fx-background-color: #F2AA22;"
+                                        text="BUY">
                                     <font>
-                                        <Font name="System Bold" size="16.0" />
+                                        <Font name="System Bold" size="16.0"/>
                                     </font>
                                 </Button>
-                                <TableView fx:id="table_cart" layoutX="476.0" layoutY="175.0" prefHeight="377.0" prefWidth="461.0">
+                                <TableView fx:id="table_cart" layoutX="476.0" layoutY="175.0" prefHeight="377.0"
+                                           prefWidth="461.0">
                                     <columns>
-                                        <TableColumn fx:id="table_cart_num" prefWidth="75.0" text="Num" />
-                                        <TableColumn fx:id="table_cart_name" prefWidth="75.0" text="BeerName" />
-                                        <TableColumn fx:id="table_cart_type" prefWidth="70.0" text="TypeBeer" />
-                                        <TableColumn fx:id="table_cart_amount" prefWidth="59.0" text="Amount" />
-                                        <TableColumn fx:id="table_cart_price" prefWidth="95.0" text="Price" />
+                                        <TableColumn fx:id="table_cart_num" prefWidth="75.0" text="Num"/>
+                                        <TableColumn fx:id="table_cart_name" prefWidth="75.0" text="BeerName"/>
+                                        <TableColumn fx:id="table_cart_type" prefWidth="70.0" text="TypeBeer"/>
+                                        <TableColumn fx:id="table_cart_amount" prefWidth="59.0" text="Amount"/>
+                                        <TableColumn fx:id="table_cart_price" prefWidth="95.0" text="Price"/>
                                     </columns>
                                     <columnResizePolicy>
-                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
                                     </columnResizePolicy>
                                 </TableView>
                                 <Label layoutX="570.0" layoutY="115.0" text="SHOPPING CART">
                                     <font>
-                                        <Font name="System Bold" size="16.0" />
+                                        <Font name="System Bold" size="16.0"/>
                                     </font>
                                 </Label>
-                                <TableView fx:id="table_beer_menu" layoutX="29.0" layoutY="175.0" prefHeight="377.0" prefWidth="387.0">
+                                <TableView fx:id="table_beer_menu" layoutX="29.0" layoutY="175.0" prefHeight="377.0"
+                                           prefWidth="387.0">
                                     <columns>
-                                        <TableColumn fx:id="table_beer_menu_name" prefWidth="75.0" text="BeerName" />
-                                        <TableColumn fx:id="table_beer_menu_type" prefWidth="70.0" text="TypeBeer" />
-                                        <TableColumn fx:id="table_beer_menu_amount" prefWidth="73.0" text="Amount" />
-                                        <TableColumn fx:id="table_beer_menu_price" prefWidth="87.0" text="Price" />
+                                        <TableColumn fx:id="table_beer_menu_name" prefWidth="75.0" text="BeerName"/>
+                                        <TableColumn fx:id="table_beer_menu_type" prefWidth="70.0" text="TypeBeer"/>
+                                        <TableColumn fx:id="table_beer_menu_amount" prefWidth="73.0" text="Amount"/>
+                                        <TableColumn fx:id="table_beer_menu_price" prefWidth="87.0" text="Price"/>
                                     </columns>
                                     <columnResizePolicy>
-                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
                                     </columnResizePolicy>
                                 </TableView>
-                                <ImageView fitHeight="183.0" fitWidth="337.0" layoutX="67.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
+                                <ImageView fitHeight="183.0" fitWidth="337.0" layoutX="67.0" layoutY="65.0"
+                                           pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@assets/menu.png" />
+                                        <Image url="@assets/menu.png"/>
                                     </image>
                                 </ImageView>
-                                <ImageView fitHeight="92.0" fitWidth="132.0" layoutX="743.0" layoutY="62.0" pickOnBounds="true" preserveRatio="true">
+                                <ImageView fitHeight="92.0" fitWidth="132.0" layoutX="743.0" layoutY="62.0"
+                                           pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@assets/cart.png" />
+                                        <Image url="@assets/cart.png"/>
                                     </image>
                                 </ImageView>
-                                <Button fx:id="btn_clear_cart" layoutX="514.0" layoutY="561.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="176.0" style="-fx-background-radius: 8 8 8 8;" text="CLEAR LIST">
+                                <Button fx:id="btn_clear_cart" layoutX="514.0" layoutY="561.0" mnemonicParsing="false"
+                                        prefHeight="37.0" prefWidth="176.0" style="-fx-background-radius: 8 8 8 8;"
+                                        text="CLEAR LIST">
                                     <font>
-                                        <Font size="16.0" />
+                                        <Font size="16.0"/>
                                     </font>
                                 </Button>
-                                <CheckBox fx:id="btn_no_alc" layoutX="160.0" layoutY="561.0" mnemonicParsing="false" text="import alco">
+                                <CheckBox fx:id="btn_no_alc" layoutX="160.0" layoutY="561.0" mnemonicParsing="false"
+                                          text="import alco">
                                     <font>
-                                        <Font size="16.0" />
+                                        <Font size="16.0"/>
                                     </font>
                                 </CheckBox>
                             </children>
@@ -154,56 +186,63 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
-                                <TableView fx:id="table_orders_punct" layoutX="481.0" layoutY="212.0" prefHeight="377.0" prefWidth="387.0">
+                                <TableView fx:id="table_orders_punct" layoutX="481.0" layoutY="212.0" prefHeight="377.0"
+                                           prefWidth="387.0">
                                     <columns>
-                                        <TableColumn fx:id="table_orders_punct_name" prefWidth="75.0" text="beerName" />
-                                        <TableColumn fx:id="table_orders_punct_type" prefWidth="70.0" text="typeBeer" />
-                                        <TableColumn fx:id="table_orders_punct_amount" prefWidth="73.0" text="amount" />
-                                        <TableColumn fx:id="table_orders_punct_price" prefWidth="87.0" text="price" />
+                                        <TableColumn fx:id="table_orders_punct_name" prefWidth="75.0" text="beerName"/>
+                                        <TableColumn fx:id="table_orders_punct_type" prefWidth="70.0" text="typeBeer"/>
+                                        <TableColumn fx:id="table_orders_punct_amount" prefWidth="73.0" text="amount"/>
+                                        <TableColumn fx:id="table_orders_punct_price" prefWidth="87.0" text="price"/>
                                     </columns>
                                     <columnResizePolicy>
-                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
                                     </columnResizePolicy>
                                 </TableView>
-                                <TableView fx:id="table_orders" layoutX="42.0" layoutY="213.0" prefHeight="376.0" prefWidth="332.0">
+                                <TableView fx:id="table_orders" layoutX="42.0" layoutY="213.0" prefHeight="376.0"
+                                           prefWidth="332.0">
                                     <columns>
-                                        <TableColumn fx:id="table_orders_num" prefWidth="75.0" text="numOrder" />
-                                        <TableColumn fx:id="table_orders_manager_id" prefWidth="75.0" text="managerId" />
-                                        <TableColumn fx:id="table_orders_date" prefWidth="75.0" text="date" />
-                                        <TableColumn fx:id="table_orders_status" prefWidth="75.0" text="status" />
+                                        <TableColumn fx:id="table_orders_num" prefWidth="75.0" text="numOrder"/>
+                                        <TableColumn fx:id="table_orders_manager_id" prefWidth="75.0" text="managerId"/>
+                                        <TableColumn fx:id="table_orders_date" prefWidth="75.0" text="date"/>
+                                        <TableColumn fx:id="table_orders_status" prefWidth="75.0" text="status"/>
                                     </columns>
                                     <columnResizePolicy>
-                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
                                     </columnResizePolicy>
                                 </TableView>
                                 <TextField fx:id="find_num" layoutX="297.0" layoutY="97.0" promptText="numOrder">
                                     <font>
-                                        <Font size="15.0" />
+                                        <Font size="15.0"/>
                                     </font>
                                 </TextField>
-                                <Button fx:id="btn_find" layoutX="505.0" layoutY="97.0" mnemonicParsing="false" text="FIND">
+                                <Button fx:id="btn_find" layoutX="505.0" layoutY="97.0" mnemonicParsing="false"
+                                        text="FIND">
                                     <font>
-                                        <Font size="15.0" />
+                                        <Font size="15.0"/>
                                     </font>
                                 </Button>
-                                <Label layoutX="616.0" layoutY="159.0" prefHeight="32.0" prefWidth="118.0" text="Order puncts">
+                                <Label layoutX="616.0" layoutY="159.0" prefHeight="32.0" prefWidth="118.0"
+                                       text="Order puncts">
                                     <font>
-                                        <Font size="20.0" />
+                                        <Font size="20.0"/>
                                     </font>
                                 </Label>
-                                <Label layoutX="141.0" layoutY="159.0" prefHeight="32.0" prefWidth="134.0" text="Orders history">
+                                <Label layoutX="141.0" layoutY="159.0" prefHeight="32.0" prefWidth="134.0"
+                                       text="Orders history">
                                     <font>
-                                        <Font size="20.0" />
+                                        <Font size="20.0"/>
                                     </font>
                                 </Label>
-                                <Button fx:id="btn_clear" layoutX="582.0" layoutY="97.0" mnemonicParsing="false" text="CLEAR">
+                                <Button fx:id="btn_clear" layoutX="582.0" layoutY="97.0" mnemonicParsing="false"
+                                        text="CLEAR">
                                     <font>
-                                        <Font size="15.0" />
+                                        <Font size="15.0"/>
                                     </font>
                                 </Button>
-                                <Button fx:id="btn_back_orders" layoutX="879.0" layoutY="626.0" mnemonicParsing="false" text="BACK">
+                                <Button fx:id="btn_back_orders" layoutX="879.0" layoutY="626.0" mnemonicParsing="false"
+                                        text="BACK">
                                     <font>
-                                        <Font size="15.0" />
+                                        <Font size="15.0"/>
                                     </font>
                                 </Button>
                             </children>

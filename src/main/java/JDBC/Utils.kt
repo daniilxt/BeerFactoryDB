@@ -963,6 +963,27 @@ object Utils {
         }
     }
 
+    fun getClientOrders(connection: Connection, idManager: Long): List<Orders>? {
+        val sql = "select * from orders\n" +
+                "where IdManager = ${idManager} and Status != 'done' "
+        try {
+            val resultSet = connection.createStatement().executeQuery(sql)
+            return if (!resultSet.next()) {
+                null
+            } else {
+                getFromResultSet(resultSet) {
+                    Orders(
+                            resultSet.getLong(1), resultSet.getLong(2),
+                            resultSet.getDate(4), resultSet.getString(5)
+                    )
+                }
+            }
+        } catch (ex: SQLException) {
+            println(ex)
+        }
+        return null
+    }
+
     @Throws(SQLException::class)
     private fun <T> getFromResultSet(resultSet: ResultSet, action: () -> T): List<T>? {
         val records: MutableList<T> = ArrayList()

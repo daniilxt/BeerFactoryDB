@@ -19,131 +19,62 @@ import java.util.*
 
 
 class ControllerManager {
-    @FXML
-    private var tab_loader: TabPane? = null
+    @FXML private var tab_loader: TabPane? = null
+    @FXML private var table_tasks: TableView<LoaderTask>? = null
+    @FXML private var table_tasks_number: TableColumn<Long, Long>? = null
+    @FXML private var table_tasks_id_res: TableColumn<LoaderTask, Long>? = null
+    @FXML private var table_tasks_id_alc: TableColumn<LoaderTask, Long>? = null
+    @FXML private var table_tasks_date: TableColumn<LoaderTask, Date>? = null
+    @FXML private var table_tasks_status: TableColumn<LoaderTask, String>? = null
+    @FXML private var btn_buy: Button? = null
+    @FXML private var btn_buy1: Button? = null
+    @FXML private var btn_buy2: Button? = null
+    @FXML private var tab_res: Tab? = null
+    @FXML private var filter_date: Button? = null
+    @FXML private var table_cart: TableView<OrderPosition>? = null
+    @FXML private var table_cart_name: TableColumn<OrderPosition, String>? = null
+    @FXML private var table_cart_amount: TableColumn<OrderPosition, Long>? = null
+    @FXML private var table_cart_unit: TableColumn<OrderPosition, String>? = null
+    @FXML private var table_cart_price: TableColumn<OrderPosition, Long>? = null
+    @FXML private var table_res_list: TableView<Orders>? = null
+    @FXML private var table_res_list_id: TableColumn<Orders, Long>? = null
+    @FXML private var table_res_list_manager: TableColumn<Orders, Long>? = null
+    @FXML private var table_res_list_date: TableColumn<Orders, Date>? = null
+    @FXML private var table_res_list_status: TableColumn<Orders, String>? = null
+    @FXML private var tab_alc: Tab? = null
+    @FXML private var btn_create_alc_task: Button? = null
+    @FXML private var btn_show_alc: Button? = null
+    @FXML private var feld_show_alc: TextField? = null
+    @FXML private var btn_create_res_task: Button? = null
+    @FXML private var btn_show_res: Button? = null
+    @FXML private var btn_exit: Button? = null
+    @FXML private var back_res: Button? = null
+    @FXML private var back_alc: Button? = null
+    @FXML private var feld_show_res: TextField? = null
+    @FXML private var table_cart1: TableView<OrderPosition>? = null
+    @FXML private var table_cart_name1: TableColumn<OrderPosition, String>? = null
+    @FXML private var table_cart_amount1: TableColumn<OrderPosition, Long>? = null
+    @FXML private var table_cart_unit1: TableColumn<OrderPosition, String>? = null
+    @FXML private var table_cart_price1: TableColumn<OrderPosition, Long>? = null
 
-    @FXML
-    private var table_tasks: TableView<LoaderTask>? = null
+    @FXML private var table_lc_list: TableView<Orders>? = null
+    @FXML private var table_lc_list_name: TableColumn<Orders, Long>? = null
+    @FXML private var table_lc_list_manager: TableColumn<Orders, Long>? = null
+    @FXML private var table_lc_list_date: TableColumn<Orders, Date>? = null
+    @FXML private var table_lc_list_status: TableColumn<Orders, String>? = null
 
-    @FXML
-    private var table_tasks_number: TableColumn<Long, Long>? = null
+    @FXML private var table_lc_list1: TableView<Orders>? = null
+    @FXML private var table_lc_list_name1: TableColumn<Orders, Long>? = null
+    @FXML private var table_lc_list_manager1: TableColumn<Orders, Long>? = null
+    @FXML private var table_lc_list_date1: TableColumn<Orders, Date>? = null
+    @FXML private var table_lc_list_status1: TableColumn<Orders, String>? = null
 
-    @FXML
-    private var table_tasks_id_res: TableColumn<LoaderTask, Long>? = null
+    @FXML private var table_cart11: TableView<OrderPosition>? = null
+    @FXML private var table_cart_name11: TableColumn<OrderPosition, String>? = null
+    @FXML private var table_cart_amount11: TableColumn<OrderPosition, Long>? = null
+    @FXML private var table_cart_unit11: TableColumn<OrderPosition, String>? = null
+    @FXML private var table_cart_price11: TableColumn<OrderPosition, Long>? = null
 
-    @FXML
-    private var table_tasks_id_alc: TableColumn<LoaderTask, Long>? = null
-
-    @FXML
-    private var table_tasks_date: TableColumn<LoaderTask, Date>? = null
-
-    @FXML
-    private var table_tasks_status: TableColumn<LoaderTask, String>? = null
-
-    @FXML
-    private var btn_buy: Button? = null
-
-    @FXML
-    private var btn_buy1: Button? = null
-
-    @FXML
-    private var btn_buy2: Button? = null
-
-    @FXML
-    private var tab_res: Tab? = null
-
-    @FXML
-    private var filter_date: Button? = null
-
-    @FXML
-    private var table_cart: TableView<OrderPosition>? = null
-
-    @FXML
-    private var table_cart_name: TableColumn<OrderPosition, String>? = null
-
-    @FXML
-    private var table_cart_amount: TableColumn<OrderPosition, Long>? = null
-
-    @FXML
-    private var table_cart_unit: TableColumn<OrderPosition, String>? = null
-
-    @FXML
-    private var table_cart_price: TableColumn<OrderPosition, Long>? = null
-
-    @FXML
-    private var table_res_list: TableView<Orders>? = null
-
-    @FXML
-    private var table_res_list_id: TableColumn<Orders, Long>? = null
-
-    @FXML
-    private var table_res_list_manager: TableColumn<Orders, Long>? = null
-
-    @FXML
-    private var table_res_list_date: TableColumn<Orders, Date>? = null
-
-    @FXML
-    private var table_res_list_status: TableColumn<Orders, String>? = null
-
-    @FXML
-    private var tab_alc: Tab? = null
-
-    @FXML
-    private var btn_create_alc_task: Button? = null
-
-    @FXML
-    private var btn_show_alc: Button? = null
-
-    @FXML
-    private var feld_show_alc: TextField? = null
-
-    @FXML
-    private var btn_create_res_task: Button? = null
-
-    @FXML
-    private var btn_show_res: Button? = null
-
-    @FXML
-    private var btn_exit: Button? = null
-
-    @FXML
-    private var back_res: Button? = null
-
-    @FXML
-    private var back_alc: Button? = null
-
-    @FXML
-    private var feld_show_res: TextField? = null
-
-    @FXML
-    private var table_cart1: TableView<OrderPosition>? = null
-
-    @FXML
-    private var table_cart_name1: TableColumn<OrderPosition, String>? = null
-
-    @FXML
-    private var table_cart_amount1: TableColumn<OrderPosition, Long>? = null
-
-    @FXML
-    private var table_cart_unit1: TableColumn<OrderPosition, String>? = null
-
-    @FXML
-    private var table_cart_price1: TableColumn<OrderPosition, Long>? = null
-
-    @FXML
-    private var table_lc_list: TableView<Orders>? = null
-
-    @FXML
-    private var table_lc_list_name: TableColumn<Orders, Long>? = null
-
-    @FXML
-    private var table_lc_list_manager: TableColumn<Orders, Long>? = null
-
-    @FXML
-    private var table_lc_list_date: TableColumn<Orders, Date>? = null
-
-    @FXML
-    private var table_lc_list_status: TableColumn<Orders, String>? = null
     private var worker: Worker? = null
     val dataResAlc = mutableListOf<OrderPosition>()
     val dataRes = mutableListOf<OrderPosition>()
@@ -247,10 +178,28 @@ class ControllerManager {
             //todo
         })
 
+        //position of task client
+        table_cart_name11?.cellValueFactory = PropertyValueFactory("beerName") // this is res name
+        table_cart_amount11?.cellValueFactory = PropertyValueFactory("type")
+        table_cart_unit11?.cellValueFactory = PropertyValueFactory("amount")
+        table_cart_price11?.cellValueFactory = PropertyValueFactory("price")
+
+
+        Utils.getClientOrders(connection, worker!!.idWorker)?.let { table_lc_list1?.items?.addAll(it) }
+        table_lc_list_name1?.cellValueFactory = PropertyValueFactory("idOrder")
+        table_lc_list_manager1?.cellValueFactory = PropertyValueFactory("manager")
+        table_lc_list_date1?.cellValueFactory = PropertyValueFactory("date")
+        table_lc_list_status1?.cellValueFactory = PropertyValueFactory("status")
+        table_lc_list1?.columns?.add(addButtonColumn("Action", "handle") {
+
+            createTasksResAlc(dataResAlc, connection, it)
+            //todo
+        })
+
         //position of task engineer
         table_cart_name?.cellValueFactory = PropertyValueFactory("beerName") // this is res name
-        table_cart_amount?.cellValueFactory = PropertyValueFactory("type")
-        table_cart_unit?.cellValueFactory = PropertyValueFactory("amount")
+        table_cart_amount?.cellValueFactory = PropertyValueFactory("amount")
+        table_cart_unit1?.cellValueFactory = PropertyValueFactory("type")
         table_cart_price?.cellValueFactory = PropertyValueFactory("price")
 
     }
@@ -259,8 +208,7 @@ class ControllerManager {
         table_cart?.items?.clear()
 
         Utils.getEngineerResOrdersPosition(connection, it!!.idOrder)?.let { it1 ->
-            table_cart?.items?.addAll(it1
-            )
+            table_cart?.items?.addAll(it1)
         }
     }
 
