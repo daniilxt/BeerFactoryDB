@@ -15,44 +15,20 @@ import pojo.Client
 import pojo.Worker
 import java.net.URL
 import java.sql.Connection
-import java.time.Instant
-import java.time.LocalDate
-import java.time.ZoneId
 import java.util.*
 
 class ControllerRegistration {
-    @FXML
-    private var resources: ResourceBundle? = null
-
-    @FXML
-    private var location: URL? = null
-
-    @FXML
-    private var reg_date: DatePicker? = null
-
-    @FXML
-    private var reg_name: TextField? = null
-
-    @FXML
-    private var reg_second_name: TextField? = null
-
-    @FXML
-    private var reg_middle_name: TextField? = null
-
-    @FXML
-    private var reg_phone: TextField? = null
-
-    @FXML
-    private var reg_btn: Button? = null
-
-    @FXML
-    private var reg_password: PasswordField? = null
-
-    @FXML
-    private var reg_login: TextField? = null
-
-    @FXML
-    private var reg_conf_password: PasswordField? = null
+    @FXML private var resources: ResourceBundle? = null
+    @FXML private var location: URL? = null
+    @FXML private var reg_date: DatePicker? = null
+    @FXML private var reg_name: TextField? = null
+    @FXML private var reg_second_name: TextField? = null
+    @FXML private var reg_middle_name: TextField? = null
+    @FXML private var reg_phone: TextField? = null
+    @FXML private var reg_btn: Button? = null
+    @FXML private var reg_password: PasswordField? = null
+    @FXML private var reg_login: TextField? = null
+    @FXML private var reg_conf_password: PasswordField? = null
     private var worker: Worker? = null
 
     @FXML
@@ -105,12 +81,12 @@ class ControllerRegistration {
                         if (user.first) {
                             println("STAGE 4")
 
-                            val client = Utils.createClient(connection,
+                            val client = Utils.createHuman(connection,
                                     Client(
                                             reg_name!!.text.toString(), reg_second_name!!.text.toString(),
                                             reg_middle_name!!.text.toString(), reg_phone!!.text.toString(),
                                             date as java.sql.Date?, nowDate,  idUser= user.second
-                                    )
+                                    ),Role.CLIENT
                             )
                             if (client) {
                                 println("удаляем логин")

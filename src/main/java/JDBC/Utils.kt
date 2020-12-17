@@ -3,11 +3,8 @@ package JDBC
 import JDBC.dao.Role
 import JDBC.dao.User
 import pojo.*
-import java.sql.Connection
+import java.sql.*
 import java.sql.Date
-import java.sql.DriverManager
-import java.sql.ResultSet
-import java.sql.SQLException
 import java.util.*
 
 
@@ -527,10 +524,17 @@ object Utils {
         return Pair(false, 0)
     }
 
-    fun createClient(connection: Connection, client: Client): Boolean {
-        val sql = "INSERT INTO ClientList (NameClient, SecondNameClient, MiddleNameClient, PhoneClient, Age, DateJoin, IdUser)\n" +
-                "VALUES ( '${client.nameClient}', '${client.secondNameClient}', '${client.middleNameClient}'," +
-                " '${client.phoneClient}', '${client.age}', '${client.dateJoin}', '${client.idUser}');"
+    fun createHuman(connection: Connection, client: Client, role: Role): Boolean {
+
+        val sql = when (role) {
+            Role.CLIENT -> "INSERT INTO ClientList (NameClient, SecondNameClient, MiddleNameClient, PhoneClient, Age, DateJoin, IdUser)\n" +
+                    "VALUES ( '${client.nameClient}', '${client.secondNameClient}', '${client.middleNameClient}'," +
+                    " '${client.phoneClient}', '${client.age}', '${client.dateJoin}', '${client.idUser}');"
+            Role.BARMAN -> "INSERT INTO BarMan (Name, SecondName, MiddleName, Phone, DateJoin, Salary, IdUser)\n" +
+                    "VALUES ( '${client.nameClient}', '${client.secondNameClient}', '${client.middleNameClient}'," +
+                    " '${client.phoneClient}', '${client.age}', '${22000}', '${client.idUser}');"
+            else -> ""
+        }
         return try {
             val resultSet = connection.createStatement().executeQuery(sql)
             resultSet.next()
@@ -539,6 +543,7 @@ object Utils {
             true
         }
     }
+
 
     fun deleteAccount(connection: Connection, login: String) {
         val sql = "call deleteUserByLogin('${login}')"

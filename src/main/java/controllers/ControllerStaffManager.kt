@@ -1,7 +1,9 @@
 package controllers
 
 import JDBC.Utils
+import JDBC.dao.Role
 import JDBC.dao.User
+import encryptor.BaseCoder
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.event.ActionEvent
@@ -50,7 +52,21 @@ class ControllerStaffManager {
     @FXML private var btn_back_clients: Button? = null
     @FXML private var btn_exit: Button? = null
     @FXML private var btn_back_workers: Button? = null
+    @FXML private var btn_back_create: Button? = null
     @FXML private var tab_clients: Tab? = null
+
+    @FXML private var reg_date: DatePicker? = null
+    @FXML private var reg_name: TextField? = null
+    @FXML private var reg_second_name: TextField? = null
+    @FXML private var reg_middle_name: TextField? = null
+    @FXML private var reg_phone: TextField? = null
+    @FXML private var reg_btn: Button? = null
+    @FXML private var reg_password: PasswordField? = null
+    @FXML private var reg_login: TextField? = null
+    @FXML private var switch_role: ComboBox<String>? = null
+    @FXML private var reg_password_conf: PasswordField? = null
+    @FXML private var btn_reg: Button? = null
+
     var list: ObservableList<Client> = FXCollections.observableArrayList()
 
     @FXML
@@ -72,8 +88,11 @@ class ControllerStaffManager {
     fun initialize(user: User) {
         val connection = Utils.getNewConnection()
         worker = Utils.getWorkerByLogin(user.login, connection!!)
+        switch_role?.items?.addAll("client", "barman")
 
         initButtons(connection)
+        btn_reg?.setOnAction { registration(connection)}
+
         Utils.getClientsList(connection)?.let { list.addAll(it) }
         table_clients_second_name?.cellValueFactory = PropertyValueFactory("secondNameClient")
         table_clients_name?.cellValueFactory = PropertyValueFactory("nameClient")
@@ -109,6 +128,56 @@ class ControllerStaffManager {
             dismissWorker(connection, it)
             //todo
         })
+    }
+    private fun registration(connection: Connection) {
+        if (
+                reg_name?.text?.isNotEmpty()!! &&
+                reg_password_conf?.text?.isNotEmpty()!! &&
+                reg_login?.text?.isNotEmpty()!! &&
+                reg_password?.text?.isNotEmpty()!! &&
+                reg_phone?.text?.isNotEmpty()!! &&
+                reg_middle_name?.text?.isNotEmpty()!! &&
+                reg_second_name?.text?.isNotEmpty()!! &&
+                reg_date?.value != null
+        ) {
+            println("STAGE 1")
+            if (reg_password_conf!!.text.toString() == reg_password!!.text.toString()) {
+                println("STAGE 2")
+                val date: java.sql.Date = java.sql.Date.valueOf(reg_date!!.value)
+                val nowDate = java.sql.Date(Calendar.getInstance().time.time)
+
+                if (!Utils.checkLogin(connection, reg_login!!.text.toString())) {
+                    println("STAGE 3")
+
+                    val role = Role.valueOf(switch_role!!.value.toUpperCase())
+                    BaseCoder.encode(reg_password!!.text.toString())?.let {
+                        val user = Utils.createAccount(connection, reg_login!!.text.toString(), it, role)
+                        if (user.first) {
+                            println("STAGE 4")
+
+                            val client = Utils.createHuman(connection,
+                                    Client(
+                                            reg_name!!.text.toString(), reg_second_name!!.text.toString(),
+                                            reg_middle_name!!.text.toString(), reg_phone!!.text.toString(),
+                                            date as java.sql.Date?, nowDate,  idUser= user.second
+                                    ),role
+                            )
+                            if (client) {
+                                println("удаляем логин")
+                                Utils.deleteAccount(connection, reg_login!!.text.toString())
+                                alert("This user exists")
+                            }
+                            alert("SUCCESS")
+                            //moveToScreen()
+                        }
+                    }
+                    return
+                }
+                alert("This login is exist")
+            }
+            return
+        }
+        alert("Input all fields")
     }
 
     private fun initButtons(connection: Connection) {
