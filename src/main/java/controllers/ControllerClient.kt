@@ -177,9 +177,8 @@ class ControllerClient {
             updateCart(data)
             //todo
         })
-        btn_restore_password?.setOnAction {
-            // alert()
 
+        btn_restore_password?.setOnAction {
             val dialog: Dialog<Pair<String, String>> = Dialog()
             dialog.title = "Restore password"
 
@@ -216,7 +215,7 @@ class ControllerClient {
             val result = dialog.showAndWait()
             result.ifPresent { pair: Pair<String?, String?> ->
                 if (to.text == toConf.text) {
-                    changePassword(connection, oldPassword = from.text.toString(), newPassword = to.text.toString())
+                    changePassword(connection, oldPassword = from.text.toString().trim(), newPassword = to.text.toString().trim())
                 } else {
                     alert("Passwords don't match")
                 }

@@ -239,7 +239,12 @@
                                     <Font size="13.0" />
                                  </font>
                               </PasswordField>
-                              <Button fx:id="btn_reg" layoutX="271.0" layoutY="308.0" mnemonicParsing="false" text="CREATE">
+                              <Button fx:id="btn_reg" layoutX="168.0" layoutY="306.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="81.0" style="-fx-background-color: #A1D64F; -fx-background-radius: 8 8 8 8;" text="CREATE">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="btn_restore" layoutX="271.0" layoutY="306.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="158.0" style="-fx-background-color: #A1D64F; -fx-background-radius: 8 8 8 8;" text="RESTORE PASSWORD">
                                  <font>
                                     <Font size="14.0" />
                                  </font>

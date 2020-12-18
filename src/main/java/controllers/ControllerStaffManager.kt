@@ -4,15 +4,18 @@ import JDBC.Utils
 import JDBC.dao.Role
 import JDBC.dao.User
 import encryptor.BaseCoder
+import javafx.application.Platform
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
+import javafx.geometry.Insets
 import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.scene.control.*
 import javafx.scene.control.cell.PropertyValueFactory
+import javafx.scene.layout.GridPane
 import javafx.stage.Stage
 import javafx.util.Callback
 import pojo.Client
@@ -66,12 +69,13 @@ class ControllerStaffManager {
     @FXML private var switch_role: ComboBox<String>? = null
     @FXML private var reg_password_conf: PasswordField? = null
     @FXML private var btn_reg: Button? = null
+    @FXML private var btn_restore: Button? = null
 
     var list: ObservableList<Client> = FXCollections.observableArrayList()
 
     @FXML
-    private fun alert(text: String = "Incorrect input") {
-        val alert = Alert(Alert.AlertType.ERROR)
+    private fun alert(text: String = "Incorrect input",type:Alert.AlertType = Alert.AlertType.ERROR) {
+        val alert = Alert(type)
         alert.title = "Attention"
         alert.contentText = text
         alert.showAndWait()
@@ -81,7 +85,7 @@ class ControllerStaffManager {
     fun findIdTask(event: ActionEvent?) {
     }
 
-    private var worker: pojo.Worker? = null
+    private var worker: Worker? = null
     private var listIndex = mutableListOf<Int>()
 
     @FXML
@@ -143,8 +147,8 @@ class ControllerStaffManager {
             println("STAGE 1")
             if (reg_password_conf!!.text.toString() == reg_password!!.text.toString()) {
                 println("STAGE 2")
-                val date: java.sql.Date = java.sql.Date.valueOf(reg_date!!.value)
-                val nowDate = java.sql.Date(Calendar.getInstance().time.time)
+                val date: Date = Date.valueOf(reg_date!!.value)
+                val nowDate = Date(Calendar.getInstance().time.time)
 
                 if (!Utils.checkLogin(connection, reg_login!!.text.toString())) {
                     println("STAGE 3")
@@ -159,7 +163,7 @@ class ControllerStaffManager {
                                     Client(
                                             reg_name!!.text.toString(), reg_second_name!!.text.toString(),
                                             reg_middle_name!!.text.toString(), reg_phone!!.text.toString(),
-                                            date as java.sql.Date?, nowDate,  idUser= user.second
+                                            date as Date?, nowDate,  idUser= user.second
                                     ),role
                             )
                             if (client) {
@@ -167,7 +171,7 @@ class ControllerStaffManager {
                                 Utils.deleteAccount(connection, reg_login!!.text.toString())
                                 alert("This user exists")
                             }
-                            alert("SUCCESS")
+                            alert("SUCCESS",Alert.AlertType.INFORMATION)
                             //moveToScreen()
                         }
                     }
@@ -234,7 +238,63 @@ class ControllerStaffManager {
 
         btn_back_clients?.setOnAction { tab_loader!!.selectionModel!!.select(tab_manager) }
         btn_back_workers?.setOnAction { tab_loader!!.selectionModel!!.select(tab_manager) }
+        btn_back_create?.setOnAction { tab_loader!!.selectionModel!!.select(tab_manager) }
 
+        btn_restore?.setOnAction {
+            val dialog: Dialog<Pair<String, String>> = Dialog()
+            dialog.title = "Restore password"
+
+            val loginButtonType = ButtonType("OK", ButtonBar.ButtonData.OK_DONE)
+            dialog.dialogPane.buttonTypes.addAll(loginButtonType, ButtonType.CANCEL)
+
+            val gridPane = GridPane()
+            gridPane.hgap = 20.0
+            gridPane.vgap = 20.0
+            gridPane.padding = Insets(20.0, 150.0, 10.0, 10.0)
+
+            val from = TextField()
+            from.promptText = "Login"
+            val to = PasswordField()
+            to.promptText = "Enter password"
+            val toConf = PasswordField()
+            toConf.promptText = "Confirm password"
+            gridPane.add(from, 0, 0)
+            gridPane.add(Label("To:"), 1, 0)
+            gridPane.add(to, 2, 0)
+            gridPane.add(Label("To confirm:"), 1, 1)
+            gridPane.add(toConf, 2, 1)
+            dialog.dialogPane.content = gridPane
+            // Request focus on the username field by default.
+            Platform.runLater { from.requestFocus() }
+
+            // Convert the result to a username-password-pair when the login button is clicked.
+            dialog.setResultConverter { dialogButton ->
+                if (dialogButton === loginButtonType) {
+                    return@setResultConverter Pair(from.text, to.text)
+                }
+                null
+            }
+            val result = dialog.showAndWait()
+            result.ifPresent { pair: Pair<String?, String?> ->
+                if (to.text == toConf.text) {
+                    changePassword(connection, login = from.text.toString().trim(), newPassword = to.text.toString().trim())
+                } else {
+                    alert("Passwords don't match")
+                }
+            }
+        }
+    }
+
+    private fun changePassword(connection: Connection, login: String, newPassword: String) {
+        val tmp = Utils.checkLogin(connection, login)
+        if (!tmp) {
+            alert("Login not exist")
+        } else {
+            when (BaseCoder.encode(newPassword)?.let { Utils.updatePasswordByLogin(connection, login, it) }) {
+                true -> alert("SUCCESS", Alert.AlertType.INFORMATION)
+                else -> alert("ERROR")
+            }
+        }
     }
 
     private fun dismissWorker(connection: Connection, it: Worker) {
