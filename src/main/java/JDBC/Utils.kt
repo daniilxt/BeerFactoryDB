@@ -555,7 +555,7 @@ object Utils {
     }
 
     fun getClientByLogin(connection: Connection, login: String): Client? {
-        val sql = "select NameClient, SecondNameClient, MiddleNameClient, PhoneClient, Age, IdClient\n" +
+        val sql = "select NameClient, SecondNameClient, MiddleNameClient, PhoneClient, Age, IdClient, CL.IdUser\n" +
                 "from ClientList CL\n" +
                 "         inner join User US on CL.IdUser = US.IdUser\n" +
                 "where US.Login = '${login}'"
@@ -570,7 +570,8 @@ object Utils {
                     Client(
                             resultSet.getString(1), resultSet.getString(2),
                             resultSet.getString(3), resultSet.getString(4),
-                            resultSet.getDate(5), idClient = resultSet.getLong(6)
+                            resultSet.getDate(5), idClient = resultSet.getLong(6),
+                            idUser = resultSet.getLong("IdUser")
                     )
                 }?.get(0)
             }
@@ -987,6 +988,37 @@ object Utils {
             println(ex)
         }
         return null
+    }
+
+    fun getLoginById(connection: Connection, idUser: Long): Pair<String, String>? {
+        val sql = " select Login, Password from User U where U.IdUser = ${idUser}"
+        try {
+            connection.createStatement().executeQuery(sql)
+            val resultSet = connection.createStatement().executeQuery(sql)
+
+            return if (!resultSet.next()) {
+                null
+            } else {
+                getFromResultSet(resultSet) {
+                    Pair(resultSet.getString("Login"), resultSet.getString("Password"))
+                }?.get(0)
+            }
+        } catch (ex: SQLException) {
+            println(ex)
+        }
+        return null
+    }
+
+    fun updatePasswordByLogin(connection: Connection, login: String, password:String): Boolean {
+        val sql = "call changePasswordByLogin('${login}','${password}')"
+        try {
+            connection.createStatement().executeQuery(sql)
+            val resultSet = connection.createStatement().executeQuery(sql)
+            return !resultSet.next()
+        } catch (ex: SQLException) {
+            println(ex)
+        }
+        return false
     }
 
     @Throws(SQLException::class)

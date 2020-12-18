@@ -2,12 +2,18 @@ package controllers
 
 import JDBC.Utils
 import JDBC.dao.User
+import encryptor.BaseCoder
+import javafx.application.Platform
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
+import javafx.geometry.Insets
 import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.scene.control.*
+import javafx.scene.control.ButtonBar.ButtonData
+import javafx.scene.control.ButtonType
 import javafx.scene.control.cell.PropertyValueFactory
+import javafx.scene.layout.GridPane
 import javafx.stage.Stage
 import javafx.util.Callback
 import pojo.BeerMenu
@@ -64,12 +70,13 @@ class ControllerClient {
     @FXML private var btn_back_orders: Button? = null
     @FXML private var btn_back_menu: Button? = null
     @FXML private var btn_exit: Button? = null
+    @FXML private var btn_restore_password: Button? = null
 
     private var client: Client? = null
 
     @FXML
-    private fun alert(str: String = "Incorrect input") {
-        val alert = Alert(Alert.AlertType.ERROR)
+    private fun alert(str: String = "Incorrect input",type: Alert.AlertType = Alert.AlertType.ERROR) {
+        val alert = Alert(type)
         alert.title = "Attention"
         alert.contentText = str
         alert.showAndWait()
@@ -170,6 +177,51 @@ class ControllerClient {
             updateCart(data)
             //todo
         })
+        btn_restore_password?.setOnAction {
+            // alert()
+
+            val dialog: Dialog<Pair<String, String>> = Dialog()
+            dialog.title = "Restore password"
+
+            val loginButtonType = ButtonType("OK", ButtonData.OK_DONE)
+            dialog.dialogPane.buttonTypes.addAll(loginButtonType, ButtonType.CANCEL)
+
+            val gridPane = GridPane()
+            gridPane.hgap = 10.0
+            gridPane.vgap = 10.0
+            gridPane.padding = Insets(20.0, 150.0, 10.0, 10.0)
+
+            val from = PasswordField()
+            from.promptText = "From"
+            val to = PasswordField()
+            to.promptText = "Enter password"
+            val toConf = PasswordField()
+            toConf.promptText = "Confirm password"
+            gridPane.add(from, 0, 0)
+            gridPane.add(Label("To:"), 1, 0)
+            gridPane.add(to, 2, 0)
+            gridPane.add(Label("To confirm:"), 1, 1)
+            gridPane.add(toConf, 2, 1)
+            dialog.dialogPane.content = gridPane
+            // Request focus on the username field by default.
+            Platform.runLater { from.requestFocus() }
+
+            // Convert the result to a username-password-pair when the login button is clicked.
+            dialog.setResultConverter { dialogButton ->
+                if (dialogButton === loginButtonType) {
+                    return@setResultConverter Pair(from.text, to.text)
+                }
+                null
+            }
+            val result = dialog.showAndWait()
+            result.ifPresent { pair: Pair<String?, String?> ->
+                if (to.text == toConf.text) {
+                    changePassword(connection, oldPassword = from.text.toString(), newPassword = to.text.toString())
+                } else {
+                    alert("Passwords don't match")
+                }
+            }
+        }
 
         //table cart
         table_cart_num?.cellFactory = LineNumbersCellFactory()
@@ -205,6 +257,18 @@ class ControllerClient {
         table_orders_punct_amount?.cellValueFactory = PropertyValueFactory("amount")
         table_orders_punct_price?.cellValueFactory = PropertyValueFactory("price")
 
+    }
+
+    private fun changePassword(connection: Connection, oldPassword: String, newPassword: String) {
+        val tmp = Utils.getLoginById(connection, client!!.idUser)
+        if (tmp!!.second == BaseCoder.encode(oldPassword)) {
+            when (BaseCoder.encode(newPassword)?.let { Utils.updatePasswordByLogin(connection, tmp.first, it) }) {
+                true -> alert("SUCCESS", Alert.AlertType.INFORMATION)
+                else -> alert("ERROR")
+            }
+        } else {
+            alert("Incorrect old password")
+        }
     }
 
     private fun showOrders(idOrder: Long, connection: Connection) {
