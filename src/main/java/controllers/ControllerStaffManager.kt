@@ -92,10 +92,10 @@ class ControllerStaffManager {
     fun initialize(user: User) {
         val connection = Utils.getNewConnection()
         worker = Utils.getWorkerByLogin(user.login, connection!!)
-        switch_role?.items?.addAll("client", "barman")
+        switch_role?.items?.addAll("client", "barman", "manager", "staff_manager", "manager", "engineer","loader")
 
         initButtons(connection)
-        btn_reg?.setOnAction { registration(connection)}
+        btn_reg?.setOnAction { registration(connection) }
 
         Utils.getClientsList(connection)?.let { list.addAll(it) }
         table_clients_second_name?.cellValueFactory = PropertyValueFactory("secondNameClient")
@@ -145,31 +145,32 @@ class ControllerStaffManager {
                 reg_date?.value != null
         ) {
             println("STAGE 1")
-            if (reg_password_conf!!.text.toString() == reg_password!!.text.toString()) {
+            if (reg_password_conf!!.text.toString().trim() == reg_password!!.text.toString().trim()) {
                 println("STAGE 2")
                 val date: Date = Date.valueOf(reg_date!!.value)
                 val nowDate = Date(Calendar.getInstance().time.time)
 
-                if (!Utils.checkLogin(connection, reg_login!!.text.toString())) {
+                if (!Utils.checkLogin(connection, reg_login!!.text.toString())  && !Utils.checkUserExists(connection, reg_phone!!.text.toString().trim())) {
                     println("STAGE 3")
 
                     val role = Role.valueOf(switch_role!!.value.toUpperCase())
-                    BaseCoder.encode(reg_password!!.text.toString())?.let {
-                        val user = Utils.createAccount(connection, reg_login!!.text.toString(), it, role)
+                    BaseCoder.encode(reg_password!!.text.toString().trim())?.let {
+                        val user = Utils.createAccount(connection, reg_login!!.text.toString().trim(), it, role)
                         if (user.first) {
                             println("STAGE 4")
 
                             val client = Utils.createHuman(connection,
                                     Client(
-                                            reg_name!!.text.toString(), reg_second_name!!.text.toString(),
-                                            reg_middle_name!!.text.toString(), reg_phone!!.text.toString(),
+                                            reg_name!!.text.toString().trim(), reg_second_name!!.text.toString().trim(),
+                                            reg_middle_name!!.text.toString().trim(), reg_phone!!.text.toString().trim(),
                                             date as Date?, nowDate,  idUser= user.second
                                     ),role
                             )
                             if (client) {
                                 println("удаляем логин")
-                                Utils.deleteAccount(connection, reg_login!!.text.toString())
+                                //Utils.deleteAccount(connection, reg_login!!.text.toString().trim())
                                 alert("This user exists")
+                                return
                             }
                             alert("SUCCESS",Alert.AlertType.INFORMATION)
                             //moveToScreen()

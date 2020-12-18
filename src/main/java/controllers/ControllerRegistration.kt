@@ -73,7 +73,7 @@ class ControllerRegistration {
                 val date: java.sql.Date = java.sql.Date.valueOf(reg_date!!.value)
                 val nowDate = java.sql.Date(Calendar.getInstance().time.time)
 
-                if (!Utils.checkLogin(connection, reg_login!!.text.toString())) {
+                if (!Utils.checkLogin(connection, reg_login!!.text.toString()) && !Utils.checkUserExists(connection, reg_phone!!.text.toString().trim())) {
                     println("STAGE 3")
 
                     BaseCoder.encode(reg_password!!.text.toString())?.let {
@@ -90,8 +90,9 @@ class ControllerRegistration {
                             )
                             if (client) {
                                 println("удаляем логин")
-                                Utils.deleteAccount(connection, reg_login!!.text.toString())
+                                //Utils.deleteAccount(connection, reg_login!!.text.toString())
                                 alert("This user exists")
+                                return
                             }
                             alert("SUCCESS")
                             moveToScreen()

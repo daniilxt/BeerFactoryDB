@@ -533,6 +533,18 @@ object Utils {
             Role.BARMAN -> "INSERT INTO BarMan (Name, SecondName, MiddleName, Phone, DateJoin, Salary, IdUser)\n" +
                     "VALUES ( '${client.nameClient}', '${client.secondNameClient}', '${client.middleNameClient}'," +
                     " '${client.phoneClient}', '${client.age}', '${22000}', '${client.idUser}');"
+            Role.MANAGER -> "INSERT INTO Manager (Name, SecondName, MiddleName, Phone, DateJoin, Salary, IdUser)\n" +
+                    "VALUES ( '${client.nameClient}', '${client.secondNameClient}', '${client.middleNameClient}'," +
+                    " '${client.phoneClient}', '${client.age}', '${22000}', '${client.idUser}');"
+            Role.STAFF_MANAGER -> "INSERT INTO StaffManager (Name, SecondName, MiddleName, Phone, DateJoin, Salary, IdUser)\n" +
+                    "VALUES ( '${client.nameClient}', '${client.secondNameClient}', '${client.middleNameClient}'," +
+                    " '${client.phoneClient}', '${client.age}', '${22000}', '${client.idUser}');"
+            Role.LOADER -> "INSERT INTO LoaderMan (Name, SecondName, MiddleName, Phone, DateJoin, Salary, IdUser)\n" +
+                    "VALUES ( '${client.nameClient}', '${client.secondNameClient}', '${client.middleNameClient}'," +
+                    " '${client.phoneClient}', '${client.age}', '${22000}', '${client.idUser}');"
+            Role.ENGINEER -> "INSERT INTO TechnologistEngineer (Name, SecondName, MiddleName, Phone, DateJoin, Salary, IdUser)\n" +
+                    "VALUES ( '${client.nameClient}', '${client.secondNameClient}', '${client.middleNameClient}'," +
+                    " '${client.phoneClient}', '${client.age}', '${22000}', '${client.idUser}');"
             else -> ""
         }
         return try {
@@ -1019,6 +1031,19 @@ object Utils {
             println(ex)
         }
         return false
+    }
+    fun checkUserExists(connection: Connection,phone:String): Boolean {
+        val sql = "SELECT EXISTS(SELECT Phone FROM workers WHERE Phone = '${phone}') or EXISTS(SELECT PhoneClient FROM clientlist WHERE PhoneClient = '${phone}')\n"
+        try {
+            connection.createStatement().executeQuery(sql)
+            val resultSet = connection.createStatement().executeQuery(sql)
+            if(resultSet.next()){
+                return resultSet.getLong(0) == 0L
+            }
+        } catch (ex: SQLException) {
+            println(ex)
+        }
+        return true
     }
 
     @Throws(SQLException::class)
