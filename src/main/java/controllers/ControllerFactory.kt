@@ -22,95 +22,54 @@ import java.util.*
 
 class ControllerFactory {
 
-    @FXML
-    private var resources: ResourceBundle? = null
-    @FXML
-    private var location: URL? = null
-    @FXML
-    private var tab_factory: Tab? = null
-    @FXML
-    private var btn_add_cct: Button? = null
-    @FXML
-    private var table_res: TableView<Recipe>? = null //table resources
-    @FXML
-    private var res_name: TableColumn<Recipe, String>? = null
-    @FXML
-    private var res_amount: TableColumn<Recipe, Long>? = null
-    @FXML
-    private var res_amount_store: TableColumn<Recipe, Long>? = null
-    @FXML
-    private var res_unit: TableColumn<Recipe, String>? = null
-    @FXML
-    private var res_price: TableColumn<Recipe, Long>? = null
-    @FXML
-    private var btn_handle: Button? = null
-    @FXML
-    private var table_task: TableView<Task>? = null //table one task
-    @FXML
-    private var table_task_id: TableColumn<Task, Long>? = null
-    @FXML
-    private var table_task_id_beer_kind: TableColumn<Task, Long>? = null
-    @FXML
-    private var table_task_beer_name: TableColumn<Task, String>? = null
-    @FXML
-    private var table_task_amount: TableColumn<Task, Long>? = null
-    @FXML
-    private var table_task_date: TableColumn<Task, Date>? = null
-    @FXML
-    private var btn_find_task: Button? = null
-    @FXML
-    private var tab_tasks: Tab? = null
-    @FXML
-    private var table_tasks: TableView<Tasks>? = null //table all tasks
-    @FXML
-    private var table_tasks_id: TableColumn<Tasks, Long>? = null
-    @FXML
-    private var table_tasks_id_engineer: TableColumn<Tasks, Long>? = null
-    @FXML
-    private var table_tasks_id_beerkind: TableColumn<Tasks, String>? = null
-    @FXML
-    private var table_tasks_date: TableColumn<Tasks, Date>? = null
-    @FXML
-    private var table_tasks_status: TableColumn<Tasks, String>? = null
-    @FXML
-    private var table_tasks_amount: TableColumn<Tasks, Long>? = null
-    @FXML
-    private var table_cct: TableView<CylindricallyTank>? = null
-    @FXML
-    private var cct_id: TableColumn<CylindricallyTank, Long>? = null
-    @FXML
-    private var cct_task: TableColumn<CylindricallyTank, Long>? = null
-    @FXML
-    private var cct_start: TableColumn<CylindricallyTank, Date>? = null
-    @FXML
-    private var cct_end: TableColumn<CylindricallyTank, Date>? = null
-    @FXML
-    private var cct_status: TableColumn<CylindricallyTank, String>? = null
-    @FXML
-    private var id_task_find: TextField? = null
-    @FXML
-    private var filter_date_from: DatePicker? = null
-    @FXML
-    private var filter_date_to: DatePicker? = null
-    @FXML
-    private var filter_date: Button? = null
-    @FXML
-    private var filter_amount: Button? = null
-    @FXML
-    private var filter_amount_from: TextField? = null
-    @FXML
-    private var filter_amount_to: TextField? = null
-    @FXML
-    private var cct_numbers: Text? = null
-    @FXML
-    private var btn_cct_handle: Button? = null
-    @FXML
-    private var btn_clear_list: Button? = null
-    @FXML
-    private var btn_exit: Button? = null
+    @FXML private var resources: ResourceBundle? = null
+    @FXML private var location: URL? = null
+    @FXML private var tab_factory: Tab? = null
+    @FXML private var btn_add_cct: Button? = null
+    @FXML private var table_res: TableView<Recipe>? = null //table resources
+    @FXML private var res_name: TableColumn<Recipe, String>? = null
+    @FXML private var res_amount: TableColumn<Recipe, Long>? = null
+    @FXML private var res_amount_store: TableColumn<Recipe, Long>? = null
+    @FXML private var res_unit: TableColumn<Recipe, String>? = null
+    @FXML private var res_price: TableColumn<Recipe, Long>? = null
+    @FXML private var btn_handle: Button? = null
+    @FXML private var table_task: TableView<Task>? = null //table one task
+    @FXML private var table_task_id: TableColumn<Task, Long>? = null
+    @FXML private var table_task_id_beer_kind: TableColumn<Task, Long>? = null
+    @FXML private var table_task_beer_name: TableColumn<Task, String>? = null
+    @FXML private var table_task_amount: TableColumn<Task, Long>? = null
+    @FXML private var table_task_date: TableColumn<Task, Date>? = null
+    @FXML private var btn_find_task: Button? = null
+    @FXML private var tab_tasks: Tab? = null
+    @FXML private var table_tasks: TableView<Tasks>? = null //table all tasks
+    @FXML private var table_tasks_id: TableColumn<Tasks, Long>? = null
+    @FXML private var table_tasks_id_engineer: TableColumn<Tasks, Long>? = null
+    @FXML private var table_tasks_id_beerkind: TableColumn<Tasks, String>? = null
+    @FXML private var table_tasks_date: TableColumn<Tasks, Date>? = null
+    @FXML private var table_tasks_status: TableColumn<Tasks, String>? = null
+    @FXML private var table_tasks_amount: TableColumn<Tasks, Long>? = null
+    @FXML private var table_cct: TableView<CylindricallyTank>? = null
+    @FXML private var cct_id: TableColumn<CylindricallyTank, Long>? = null
+    @FXML private var cct_task: TableColumn<CylindricallyTank, Long>? = null
+    @FXML private var cct_start: TableColumn<CylindricallyTank, Date>? = null
+    @FXML private var cct_end: TableColumn<CylindricallyTank, Date>? = null
+    @FXML private var cct_status: TableColumn<CylindricallyTank, String>? = null
+    @FXML private var id_task_find: TextField? = null
+    @FXML private var filter_date_from: DatePicker? = null
+    @FXML private var filter_date_to: DatePicker? = null
+    @FXML private var filter_date: Button? = null
+    @FXML private var filter_amount: Button? = null
+    @FXML private var filter_amount_from: TextField? = null
+    @FXML private var filter_amount_to: TextField? = null
+    @FXML private var cct_numbers: Text? = null
+    @FXML private var btn_cct_handle: Button? = null
+    @FXML private var btn_clear_list: Button? = null
+    @FXML private var btn_exit: Button? = null
+
     @FXML
     private var id_cct: TextField? = null
     private var worker: Worker? = null
+
     @FXML
     private var list_manager: ComboBox<String>? = null
 
@@ -168,7 +127,7 @@ class ControllerFactory {
             println(it)
         }
 
-        val nowDate = java.sql.Date(Calendar.getInstance().time.time)
+        val nowDate = Date(Calendar.getInstance().time.time)
         println(nowDate)
         println(worker!!.idWorker)
         println(arr)
@@ -176,6 +135,7 @@ class ControllerFactory {
         val managerId = list_manager?.value?.substring(indexHash!! + 1)
         println(managerId)
         worker?.idWorker?.let { it1 -> Utils.createResOrder(connection, arr, it1, managerId!!.toLong(), nowDate) }
+        alert("Request sent. Wait some time.",AlertType.INFORMATION)
     }
 
     @FXML
@@ -188,15 +148,15 @@ class ControllerFactory {
                 val arrBuy = mutableListOf<Recipe>()
                 table_res!!.items.forEachIndexed { index, it ->
                     run {
+                        val tmp = it.amount * table_task!!.items[0].amount
                         if (Utils.checkRes(
-                                        it.resName!!, it.amount * table_task!!.items[0].amount, connection!!
+                                        it.resName!!, tmp, connection!!
                                 ) < it.amount
                         ) {
                             arrBuy.add(table_res!!.items[index])
                         }
                     }
                 }
-                println(arrBuy)
                 if (arrBuy.isNotEmpty()) {
                     var bigStr = ""
                     println("Need Buy:")
@@ -204,9 +164,9 @@ class ControllerFactory {
                         run {
                             println(
                                     "${it.resName} ${(it.amount * table_task!!.items[0].amount) - it.storeAmount} ${it.unit} ")
-                            it.amount = ((it.amount * table_task!!.items[0].amount) - it.storeAmount)
+                            val tmp = ((it.amount * table_task!!.items[0].amount) - it.storeAmount)
                             println(index)
-                            bigStr += "${it.resName} ${it.amount} ${it.unit}\n "
+                            bigStr += "${it.resName} $tmp ${it.unit}\n "
                         }
                     }
                     connection?.let { alertConfirm(bigStr, arrBuy, it) }
@@ -262,8 +222,7 @@ class ControllerFactory {
                 val dateTo = Date.valueOf(filter_date_to?.value)
                 table_tasks?.items?.addAll(oldArray.filter { (it.date!! >= dateFrom) && (it.date!! <= dateTo) }.toMutableList())
                 oldArray.clear()
-            }
-            else alert()
+            } else alert()
         }
     }
 
@@ -311,8 +270,8 @@ class ControllerFactory {
     }
 
     @FXML
-    private fun alert(text: String = "Incorrect input") {
-        val alert = Alert(Alert.AlertType.ERROR)
+    private fun alert(text: String = "Incorrect input", type:AlertType= AlertType.ERROR) {
+        val alert = Alert(type)
         alert.title = "Attention"
         alert.contentText = text
         alert.showAndWait()

@@ -92,7 +92,7 @@ class ControllerStaffManager {
     fun initialize(user: User) {
         val connection = Utils.getNewConnection()
         worker = Utils.getWorkerByLogin(user.login, connection!!)
-        switch_role?.items?.addAll("client", "barman", "manager", "staff_manager", "manager", "engineer","loader")
+        switch_role?.items?.addAll("client", "barman", "manager", "staff_manager", "engineer","loader")
 
         initButtons(connection)
         btn_reg?.setOnAction { registration(connection) }
