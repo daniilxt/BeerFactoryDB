@@ -16,6 +16,7 @@ import pojo.*
 import java.sql.Connection
 import java.sql.Date
 import java.util.*
+import kotlin.math.abs
 
 
 class ControllerManager {
@@ -48,6 +49,7 @@ class ControllerManager {
     @FXML private var btn_show_alc: Button? = null
     @FXML private var feld_show_alc: TextField? = null
     @FXML private var btn_create_res_task: Button? = null
+    @FXML private var btn_create_give: Button? = null
     @FXML private var btn_show_res: Button? = null
     @FXML private var btn_exit: Button? = null
     @FXML private var btn_back_res: Button? = null
@@ -77,27 +79,74 @@ class ControllerManager {
     @FXML private var table_cart_amount11: TableColumn<OrderPosition, Long>? = null
     @FXML private var table_cart_unit11: TableColumn<OrderPosition, String>? = null
     @FXML private var table_cart_price11: TableColumn<OrderPosition, Long>? = null
+    @FXML private var switch_engineer:ComboBox<String>? = null
 
     private var worker: Worker? = null
     val dataResAlc = mutableListOf<OrderPosition>()
     val dataRes = mutableListOf<OrderPosition>()
     var currentAlcoTask: Orders? = null
     var currentResTask: Orders? = null
+    var currentClientTask: Orders? = null
 
 
     @FXML
     fun findIdTask(event: ActionEvent?) {
+    }
+    @FXML
+    private fun alert(text: String = "Incorrect input", type: Alert.AlertType = Alert.AlertType.ERROR) {
+        val alert = Alert(type)
+        alert.title = "Attention"
+        alert.contentText = text
+        alert.showAndWait()
+    }
+    @FXML
+    fun alertConfirm(text: String = "", arr: List<OrderPosition>, connection: Connection) {
+        val alert = Alert(Alert.AlertType.CONFIRMATION)
+        alert.title = "Create"
+        alert.headerText = "Are you want to create task to engineer?"
+        alert.contentText = text
+
+        // option != null.
+        val option = alert.showAndWait()
+        when {
+            option.get() == ButtonType.OK -> {
+                println("OK")
+                createRequest(arr, connection)
+            }
+            option.get() == ButtonType.CANCEL -> {
+                println("CANCELLED")
+            }
+            else -> {
+                println("??")
+            }
+        }
+    }
+    private fun createRequest(arr: List<OrderPosition>, connection: Connection) {
+        val nowDate = Date(Calendar.getInstance().time.time)
+        val indexHash = switch_engineer?.value?.indexOf('#')
+        val engineerId = switch_engineer?.value?.substring(indexHash!! + 1)
+        if (engineerId != null) {
+            Utils.createEngineerTask(connection, engineerId, arr, nowDate)
+            table_lc_list1?.items?.remove(currentClientTask)
+            alert("Request sent. Wait some time.", Alert.AlertType.INFORMATION)
+        } else {
+            alert("Pick engineer!")
+        }
     }
 
     @FXML
     fun initialize(user: User) {
         var connection = Utils.getNewConnection()
         worker = Utils.getWorkerByLogin(user.login, connection!!)
+        val engineer = Utils.getEngineers(connection)
+        engineer?.map { "${it.name} ${it.secondName} #${it.idWorker}" }?.toList()?.let {
+            switch_engineer
+                    ?.items?.addAll(it)
+        }
 
         initTables(connection)
         initButtons(connection)
         Utils.getLoaderTasksViaManager(connection,worker!!.idWorker)?.let { table_tasks!!.items.addAll(it) }
-
     }
 
     private fun initButtons(connection: Connection) {
@@ -110,7 +159,6 @@ class ControllerManager {
                 table_cart1?.items?.clear()
                 table_lc_list?.items?.remove(currentAlcoTask)
                 table_tasks?.items?.clear()
-              //  Utils.getLoaderTasks(connection, worker!!.idWorker)?.let { table_tasks!!.items.addAll(it) }
                Utils.getLoaderTasksViaManager(connection,worker!!.idWorker)?.let { table_tasks!!.items.addAll(it) }
             }
         }
@@ -118,15 +166,58 @@ class ControllerManager {
         btn_create_res_task?.setOnAction {
             if (table_cart?.items?.isNotEmpty()!! && currentResTask != null) {
                 // curr.manager this is engineer
+                //TODO OOOOOOOOOOO
                 var loader = 1
                 val nowDate = Date(Calendar.getInstance().time.time)
                 Utils.createLoaderResTask(connection, worker!!.idWorker, currentResTask!!.manager, table_cart!!.items, loader, nowDate, currentResTask!!.idOrder)
                 table_cart?.items?.clear()
                 table_res_list?.items?.remove(currentResTask)
                 table_tasks?.items?.clear()
-                //tils.getLoaderTasks(connection, worker!!.idWorker)?.let { table_tasks!!.items.addAll(it) }
-                Utils.getLoaderTasksViaManager(connection,worker!!.idWorker)?.let { table_tasks!!.items.addAll(it) }
+                Utils.getLoaderTasksViaManager(connection, worker!!.idWorker)?.let { table_tasks!!.items.addAll(it) }
 
+            }
+        }
+        btn_create_give?.setOnAction {
+            if (table_cart11?.items?.isNotEmpty()!! && currentClientTask != null) {
+                val arrBuy = mutableListOf<OrderPosition>()
+                var bigStr = ""
+                table_cart11!!.items.forEachIndexed { index, it1 ->
+                    run {
+                        val tmp = Utils.checkBeer(it1.beerName!!, it1.amount, connection)
+                        if (tmp < 0) {
+                            val tmpElement = table_cart11!!.items[index].copy(amount = abs(tmp))
+                            arrBuy.add(tmpElement)
+                            bigStr += "${it1.beerName} ${abs(tmp)}\n "
+                        }
+                    }
+                }
+                if (arrBuy.isNotEmpty()) {
+                    val basic = arrBuy.filter { it.type != "Import" }
+                    val import = arrBuy.filter { it.type == "Import" }
+                    println("import ${import}")
+                    println("not import ${basic}")
+                    if (basic.isNotEmpty()) {
+                        alertConfirm(bigStr, basic, connection)
+                    } else if (import.isNotEmpty()) {
+                        //task
+                        println("create alco task")
+                        var loader = 1
+                        var barman = 1L
+                        val nowDate = Date(Calendar.getInstance().time.time)
+                        Utils.createLoaderAlcoTask(connection, worker!!.idWorker, barman, import, loader, nowDate, currentClientTask!!.idOrder)
+                        table_cart11?.items?.clear()
+                        table_lc_list1?.items?.remove(currentClientTask)
+                        table_tasks?.items?.clear()
+                        Utils.getLoaderTasksViaManager(connection, worker!!.idWorker)?.let { table_tasks!!.items.addAll(it) }
+                    }
+                } else {
+                    if (Utils.completeOrder(connection, currentClientTask!!, table_cart11?.items!!)) {
+                        alert("Order success", Alert.AlertType.INFORMATION)
+                        table_cart11?.items?.clear()
+                    }
+                }
+            } else {
+                alert("List is empty")
             }
         }
         btn_exit?.setOnAction {
@@ -179,6 +270,7 @@ class ControllerManager {
         table_lc_list_date?.cellValueFactory = PropertyValueFactory("date")
         table_lc_list_status?.cellValueFactory = PropertyValueFactory("status")
         table_lc_list?.columns?.add(addButtonColumn("Action", "handle") {
+            table_cart1?.items?.clear()
             currentAlcoTask = it
             createTasksResAlc(dataResAlc, connection, it)
             //todo
@@ -197,6 +289,7 @@ class ControllerManager {
         table_res_list_date?.cellValueFactory = PropertyValueFactory("date")
         table_res_list_status?.cellValueFactory = PropertyValueFactory("status")
         table_res_list?.columns?.add(addButtonColumn("Action", "handle") {
+            table_cart?.items?.clear()
             currentResTask = it
             createTasksRes(dataResAlc, connection, it)
             //todo
@@ -205,7 +298,7 @@ class ControllerManager {
         //position of task client
         table_cart_name11?.cellValueFactory = PropertyValueFactory("beerName") // this is res name
         table_cart_amount11?.cellValueFactory = PropertyValueFactory("amount")
-        table_cart_unit11?.cellValueFactory = PropertyValueFactory("unit")
+        table_cart_unit11?.cellValueFactory = PropertyValueFactory("type")
         table_cart_price11?.cellValueFactory = PropertyValueFactory("price")
 
 
@@ -215,8 +308,9 @@ class ControllerManager {
         table_lc_list_date1?.cellValueFactory = PropertyValueFactory("date")
         table_lc_list_status1?.cellValueFactory = PropertyValueFactory("status")
         table_lc_list1?.columns?.add(addButtonColumn("Action", "handle") {
-
-            createTasksResAlc(dataResAlc, connection, it)
+            table_cart11?.items?.clear()
+            currentClientTask = it
+            createTasksClient(dataResAlc, connection, it)
             //todo
         })
 
@@ -226,6 +320,12 @@ class ControllerManager {
         table_cart_unit?.cellValueFactory = PropertyValueFactory("type")
         table_cart_price?.cellValueFactory = PropertyValueFactory("price")
 
+    }
+
+    private fun createTasksClient(dataResAlc: MutableList<OrderPosition>, connection: Connection, it: Orders?) {
+        table_cart11?.items?.clear()
+
+        Utils.getClientOrdersPosition(connection, it!!.idOrder)?.let { it1 -> table_cart11?.items?.addAll(it1) }
     }
 
     private fun createTasksRes(data: MutableList<OrderPosition>, connection: Connection, it: Orders?) {
@@ -239,9 +339,7 @@ class ControllerManager {
     private fun createTasksResAlc(dataResAlc: MutableList<OrderPosition>, connection: Connection, it: Orders?) {
         table_cart1?.items?.clear()
 
-        Utils.getBarmanAlcOrdersPosition(connection, it!!.idOrder)?.let { it1 ->
-            table_cart1?.items?.addAll(it1)
-        }
+        Utils.getBarmanAlcOrdersPosition(connection, it!!.idOrder)?.let { it1 -> table_cart1?.items?.addAll(it1) }
     }
 
     private fun <T> addButtonColumn(columnName: String, btnName: String, func: (it: T) -> Unit): TableColumn<T, Void> {

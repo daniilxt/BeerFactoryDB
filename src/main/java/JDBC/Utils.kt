@@ -207,6 +207,23 @@ object Utils {
         return 0
     }
 
+    fun checkBeer(beerName: String, amount: Long, connection: Connection): Long {
+        val sql = "set @num =0;"
+        val sql2 = "call validateBeer(${amount},'${beerName}',@num);"
+        val sql3 = "select @num;"
+        try {
+            connection.createStatement().executeQuery(sql)
+            connection.createStatement().executeQuery(sql2)
+            val resultSet = connection.createStatement().executeQuery(sql3)
+            return if (resultSet!!.next()) {
+                resultSet.getLong(1)
+            } else 0
+        } catch (ex: SQLException) {
+            println(ex)
+        }
+        return 0
+    }
+
     fun getBeerMenu(connection: Connection): List<BeerMenu>? {
         val sql = "select * from BeerMenu"
         try {
@@ -821,6 +838,29 @@ object Utils {
         return null
     }
 
+    fun getEngineers(connection: Connection): List<Worker>? {
+        val sql = "select * from technologistengineer t\n" +
+                "inner join user  u on t.IdUser = u.IdUser"
+        try {
+            val resultSet = connection.createStatement().executeQuery(sql)
+
+            return if (!resultSet.next()) {
+                null
+            } else {
+                getFromResultSet(resultSet) {
+                    Worker(
+                            resultSet.getLong(1), resultSet.getString(2),
+                            resultSet.getString(3), resultSet.getString(4),
+                            resultSet.getString(5), dateJoin = null, dateDismiss = null, login = null, worksDays = 0
+                    )
+                }
+            }
+        } catch (ex: SQLException) {
+            println(ex)
+        }
+        return null
+    }
+
     fun createAlcoOrder(connection: Connection, items: List<BeerMenu>, idBarman: Long, idManager: Long, nowDate: Date) {
         var sql = "INSERT INTO BarmanAlcOrders (IdBarman, IdManager,Date, Status)\n" +
                 "VALUES (${idBarman},${idManager}, '${nowDate}', 'process');"
@@ -1070,6 +1110,64 @@ object Utils {
             println(ex)
         }
         return null
+    }
+
+    fun getClientOrdersPosition(connection: Connection, idOrder: Long): List<OrderPosition>? {
+        val sql = "select b.Name, OP.Number, b.Type, b.Price * OP.Number as Price\n" +
+                "from orderposition OP\n" +
+                "         inner join beerstorage b on OP.IdBeerKind = b.IdBeerKind\n" +
+                "where IdOrder = ${idOrder}"
+        try {
+            val resultSet = connection.createStatement().executeQuery(sql)
+            return if (!resultSet.next()) {
+                null
+            } else {
+                getFromResultSet(resultSet) {
+                    OrderPosition(
+                            resultSet.getString(1), resultSet.getString(3),
+                            resultSet.getLong(2), resultSet.getLong(4)
+                    )
+                }
+            }
+        } catch (ex: SQLException) {
+            println(ex)
+        }
+        return null
+    }
+
+    fun createEngineerTask(connection: Connection, engineerId: String, arr: List<OrderPosition>, dateNow: Date) {
+
+        try {
+            arr.forEach {
+                var beerKindId = 0L
+                val sqlName = "select IdBeerKind from  beerstorage where Name = '${it.beerName}'"
+                var resultSet = connection.createStatement().executeQuery(sqlName)
+                if (resultSet.next()) {
+                    beerKindId = resultSet.getLong(1)
+                }
+                val sql = "INSERT INTO Task (IdTechnologicalEngineer, IdBeerKind, Date, Status, Amount)\n" +
+                        "VALUES ('${engineerId}',' ${beerKindId}', '${dateNow}', 'Active', '${it.amount}');"
+                connection.createStatement().executeQuery(sql)
+
+            }
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
+    }
+
+    fun completeOrder(connection: Connection, currentClientTask: Orders, items: List<OrderPosition>): Boolean {
+        try {
+            items.forEach {
+                val sql = "call changeBeerCount(${-it.amount},'${it.beerName}')"
+                connection.createStatement().executeQuery(sql)
+            }
+            val sql = "update orders o set o.Status = 'done' where o.IdOrder = ${currentClientTask.idOrder}"
+            connection.createStatement().executeQuery(sql)
+            return true
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
+        return false
     }
 
     @Throws(SQLException::class)

@@ -144,7 +144,6 @@ class ControllerFactory {
 
     @FXML
     fun handleTask() {
-        //todo fix bug multiply adding
         if (!table_task?.items?.isEmpty()!!) {
             val connection = Utils.getNewConnection()
             val pair = Utils.countFreeCCT(connection)
