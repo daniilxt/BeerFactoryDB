@@ -30,6 +30,8 @@ class ControllerManager {
     @FXML private var btn_buy1: Button? = null
     @FXML private var btn_buy2: Button? = null
     @FXML private var tab_res: Tab? = null
+    @FXML private var tab_manager: Tab? = null
+    @FXML private var tab_task: Tab? = null
     @FXML private var filter_date: Button? = null
     @FXML private var table_cart: TableView<OrderPosition>? = null
     @FXML private var table_cart_name: TableColumn<OrderPosition, String>? = null
@@ -48,8 +50,9 @@ class ControllerManager {
     @FXML private var btn_create_res_task: Button? = null
     @FXML private var btn_show_res: Button? = null
     @FXML private var btn_exit: Button? = null
-    @FXML private var back_res: Button? = null
-    @FXML private var back_alc: Button? = null
+    @FXML private var btn_back_res: Button? = null
+    @FXML private var btn_back_alc: Button? = null
+    @FXML private var btn_back_task: Button? = null
     @FXML private var feld_show_res: TextField? = null
     @FXML private var table_cart1: TableView<OrderPosition>? = null
     @FXML private var table_cart_name1: TableColumn<OrderPosition, String>? = null
@@ -134,6 +137,22 @@ class ControllerManager {
             val stage = Stage()
             stage.scene = Scene(root)
             stage.show()
+        }
+
+        btn_back_res?.setOnAction {
+            tab_loader!!.selectionModel!!.select(tab_manager)
+        }
+        btn_back_alc?.setOnAction {
+            tab_loader!!.selectionModel!!.select(tab_manager)
+        }
+        btn_back_task?.setOnAction {
+            tab_loader!!.selectionModel!!.select(tab_manager)
+        }
+        btn_buy?.setOnAction {
+            tab_loader!!.selectionModel!!.select(tab_res)
+        }
+        btn_buy2?.setOnAction {
+            tab_loader!!.selectionModel!!.select(tab_alc)
         }
     }
 

@@ -16,7 +16,7 @@
     <children>
         <TabPane fx:id="tab_loader" layoutX="79.0" layoutY="35.0" prefHeight="604.0" prefWidth="914.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <tabs>
-                <Tab fx:id="tab_factory" text="Manager">
+                <Tab fx:id="tab_manager" text="Manager">
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="700.0" prefWidth="870.0" style="-fx-background-color: #FFFFFF;">
                             <children>
@@ -201,11 +201,11 @@
                         </AnchorPane>
                     </content>
                 </Tab>
-            <Tab fx:id="tab_alc1" text="GiveTask">
+            <Tab fx:id="tab_task" text="GiveTask">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="btn_create_alc_task1" layoutX="618.0" layoutY="561.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="176.0" text="GIVE TASK">
+                        <Button fx:id="btn_create_give" layoutX="618.0" layoutY="561.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="176.0" text="GIVE TASK">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -247,17 +247,17 @@
                               <Font name="System Bold" size="16.0" />
                            </font>
                         </Label>
-                        <Button fx:id="btn_show_alc1" layoutX="312.0" layoutY="584.0" mnemonicParsing="false" text="SHOW">
+                        <Button fx:id="btn_show_task" layoutX="312.0" layoutY="584.0" mnemonicParsing="false" text="SHOW">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Button>
-                        <TextField fx:id="feld_show_alc1" layoutX="104.0" layoutY="583.0" promptText="order number">
+                        <TextField fx:id="feld_show_task" layoutX="104.0" layoutY="583.0" promptText="order number">
                            <font>
                               <Font size="15.0" />
                            </font>
                         </TextField>
-                        <Button fx:id="btn_back_alc1" layoutX="874.0" layoutY="627.0" mnemonicParsing="false" text="BACK">
+                        <Button fx:id="btn_back_task" layoutX="874.0" layoutY="627.0" mnemonicParsing="false" text="BACK">
                            <font>
                               <Font size="14.0" />
                            </font>
