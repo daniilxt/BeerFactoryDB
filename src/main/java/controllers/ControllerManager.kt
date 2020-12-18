@@ -93,6 +93,8 @@ class ControllerManager {
 
         initTables(connection)
         initButtons(connection)
+        Utils.getLoaderTasksViaManager(connection,worker!!.idWorker)?.let { table_tasks!!.items.addAll(it) }
+
     }
 
     private fun initButtons(connection: Connection) {
@@ -103,9 +105,10 @@ class ControllerManager {
                 val nowDate = Date(Calendar.getInstance().time.time)
                 Utils.createLoaderAlcoTask(connection, worker!!.idWorker, currentAlcoTask!!.manager, table_cart1!!.items, loader, nowDate, currentAlcoTask!!.idOrder)
                 table_cart1?.items?.clear()
-                table_lc_list?.items?.remove(currentResTask)
+                table_lc_list?.items?.remove(currentAlcoTask)
                 table_tasks?.items?.clear()
-                Utils.getLoaderTasks(connection, worker!!.idWorker)?.let { table_tasks!!.items.addAll(it) }
+              //  Utils.getLoaderTasks(connection, worker!!.idWorker)?.let { table_tasks!!.items.addAll(it) }
+               Utils.getLoaderTasksViaManager(connection,worker!!.idWorker)?.let { table_tasks!!.items.addAll(it) }
             }
         }
 
@@ -114,11 +117,13 @@ class ControllerManager {
                 // curr.manager this is engineer
                 var loader = 1
                 val nowDate = Date(Calendar.getInstance().time.time)
-                Utils.createLoaderResTask(connection, worker!!.idWorker, currentResTask!!.manager, table_cart1!!.items, loader, nowDate, currentResTask!!.idOrder)
+                Utils.createLoaderResTask(connection, worker!!.idWorker, currentResTask!!.manager, table_cart!!.items, loader, nowDate, currentResTask!!.idOrder)
                 table_cart?.items?.clear()
-                table_lc_list?.items?.remove(currentAlcoTask)
+                table_res_list?.items?.remove(currentResTask)
                 table_tasks?.items?.clear()
-                Utils.getLoaderTasks(connection, worker!!.idWorker)?.let { table_tasks!!.items.addAll(it) }
+                //tils.getLoaderTasks(connection, worker!!.idWorker)?.let { table_tasks!!.items.addAll(it) }
+                Utils.getLoaderTasksViaManager(connection,worker!!.idWorker)?.let { table_tasks!!.items.addAll(it) }
+
             }
         }
         btn_exit?.setOnAction {
@@ -161,8 +166,8 @@ class ControllerManager {
         })
         //position of task barman
         table_cart_name1?.cellValueFactory = PropertyValueFactory("beerName")
-        table_cart_amount1?.cellValueFactory = PropertyValueFactory("type")
-        table_cart_unit1?.cellValueFactory = PropertyValueFactory("amount")
+        table_cart_amount1?.cellValueFactory = PropertyValueFactory("amount")
+        table_cart_unit1?.cellValueFactory = PropertyValueFactory("type")
         table_cart_price1?.cellValueFactory = PropertyValueFactory("price")
 
 
@@ -180,8 +185,8 @@ class ControllerManager {
 
         //position of task client
         table_cart_name11?.cellValueFactory = PropertyValueFactory("beerName") // this is res name
-        table_cart_amount11?.cellValueFactory = PropertyValueFactory("type")
-        table_cart_unit11?.cellValueFactory = PropertyValueFactory("amount")
+        table_cart_amount11?.cellValueFactory = PropertyValueFactory("amount")
+        table_cart_unit11?.cellValueFactory = PropertyValueFactory("unit")
         table_cart_price11?.cellValueFactory = PropertyValueFactory("price")
 
 
@@ -199,7 +204,7 @@ class ControllerManager {
         //position of task engineer
         table_cart_name?.cellValueFactory = PropertyValueFactory("beerName") // this is res name
         table_cart_amount?.cellValueFactory = PropertyValueFactory("amount")
-        table_cart_unit1?.cellValueFactory = PropertyValueFactory("type")
+        table_cart_unit?.cellValueFactory = PropertyValueFactory("type")
         table_cart_price?.cellValueFactory = PropertyValueFactory("price")
 
     }
@@ -216,8 +221,7 @@ class ControllerManager {
         table_cart1?.items?.clear()
 
         Utils.getBarmanAlcOrdersPosition(connection, it!!.idOrder)?.let { it1 ->
-            table_cart1?.items?.addAll(it1
-            )
+            table_cart1?.items?.addAll(it1)
         }
     }
 

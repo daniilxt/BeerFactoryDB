@@ -134,8 +134,12 @@ class ControllerFactory {
         val indexHash = list_manager?.value?.indexOf('#')
         val managerId = list_manager?.value?.substring(indexHash!! + 1)
         println(managerId)
-        worker?.idWorker?.let { it1 -> Utils.createResOrder(connection, arr, it1, managerId!!.toLong(), nowDate) }
-        alert("Request sent. Wait some time.",AlertType.INFORMATION)
+        if (managerId != null) {
+            worker?.idWorker?.let { it1 -> Utils.createResOrder(connection, arr, it1, managerId.toLong(), nowDate) }
+            alert("Request sent. Wait some time.", AlertType.INFORMATION)
+        } else {
+            alert("Pick manager!")
+        }
     }
 
     @FXML

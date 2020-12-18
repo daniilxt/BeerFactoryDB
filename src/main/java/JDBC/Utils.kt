@@ -899,7 +899,7 @@ object Utils {
 
     fun createLoaderAlcoTask(connection: Connection, idManager: Long, idBarman: Long, items: List<OrderPosition>, loader: Int, nowDate: Date, idTask: Long) {
         var sql = "INSERT INTO ImportAlcBuy (IdBarman, IdManager,Date, Status)\n" +
-                "VALUES (${idManager},${idManager}, '${nowDate}', 'done');"
+                "VALUES (${idBarman},${idManager}, '${nowDate}', 'done');"
 
         try {
             connection.createStatement().executeQuery(sql)
@@ -930,8 +930,8 @@ object Utils {
                         "VALUES (${it.amount}, ${records.last()}, ${idBeerKind});"
                 connection.createStatement().executeQuery(sql)
             }
-            sql = "INSERT INTO LoaderTask (IdLoaderMan, IdResBuy,IdImportAlc,Date, Status)\n" +
-                    "VALUES (${loader},5,${records.last()}, '${nowDate}', 'process');"
+            sql = "INSERT INTO LoaderTask (IdLoaderMan, IdResBuy,IdImportAlc,Date, Status, IdManager)\n" +
+                    "VALUES (${loader},5,${records.last()},'${nowDate}', 'process','${idManager}');"
             connection.createStatement().executeQuery(sql)
             updateStatusAlcBarman(connection, "done", idTask)
 
@@ -972,8 +972,10 @@ object Utils {
                         "VALUES (${it.amount}, ${records.last()}, ${idBeerKind});" //idresource this
                 connection.createStatement().executeQuery(sql)
             }
-            sql = "INSERT INTO LoaderTask (IdLoaderMan, IdResBuy,IdImportAlc,Date, Status)\n" +
-                    "VALUES (${loader},${records.last()},1, '${nowDate}', 'process');"
+            sql = "INSERT INTO LoaderTask (IdLoaderMan, IdResBuy,IdImportAlc,Date, Status, IdManager)\n" +
+                    "VALUES (${loader},${records.last()},1, '${nowDate}', 'process','${idManager}');"
+
+            "VALUES (${loader},5,${records.last()},'${nowDate}', 'process','${idManager}');"
             connection.createStatement().executeQuery(sql)
             updateStatusResTaskTechnologistEngineer(connection, "done", idTask)
         } catch (ex: Exception) {
@@ -1021,7 +1023,7 @@ object Utils {
         return null
     }
 
-    fun updatePasswordByLogin(connection: Connection, login: String, password:String): Boolean {
+    fun updatePasswordByLogin(connection: Connection, login: String, password: String): Boolean {
         val sql = "call changePasswordByLogin('${login}','${password}')"
         try {
             connection.createStatement().executeQuery(sql)
@@ -1032,18 +1034,42 @@ object Utils {
         }
         return false
     }
-    fun checkUserExists(connection: Connection,phone:String): Boolean {
+
+    fun checkUserExists(connection: Connection, phone: String): Boolean {
         val sql = "SELECT EXISTS(SELECT Phone FROM workers WHERE Phone = '${phone}') or EXISTS(SELECT PhoneClient FROM clientlist WHERE PhoneClient = '${phone}')\n"
         try {
             connection.createStatement().executeQuery(sql)
             val resultSet = connection.createStatement().executeQuery(sql)
-            if(resultSet.next()){
+            if (resultSet.next()) {
                 return resultSet.getLong(0) == 0L
             }
         } catch (ex: SQLException) {
             println(ex)
         }
         return true
+    }
+
+    fun getLoaderTasksViaManager(connection: Connection, idWorker: Long): List<LoaderTask>? {
+        val sql = "select * from loadertask LT\n" +
+                "where LT.IdManager = ${idWorker} and LT.Status != 'done' "
+        try {
+            val resultSet = connection.createStatement().executeQuery(sql)
+
+            return if (!resultSet.next()) {
+                null
+            } else {
+                getFromResultSet(resultSet) {
+                    LoaderTask(
+                            resultSet.getLong("IdLoaderTask"), resultSet.getLong("IdResBuy"),
+                            resultSet.getLong("IdImportAlc"), resultSet.getDate("Date"),
+                            resultSet.getString("Status")
+                    )
+                }
+            }
+        } catch (ex: SQLException) {
+            println(ex)
+        }
+        return null
     }
 
     @Throws(SQLException::class)
