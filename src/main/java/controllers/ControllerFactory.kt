@@ -173,12 +173,35 @@ class ControllerFactory {
                         }
                     }
                     connection?.let { alertConfirm(bigStr, arrBuy, it) }
+                } else {
+                    alert("Process...", AlertType.INFORMATION)
+                    table_task?.items?.first()?.let {
+                        table_res?.items?.let { it1 ->
+                            if (connection != null) {
+                                createBeer(connection, it1, it)
+                            }
+                        }
+                    }
                 }
             } else {
                 alert("No free CCT")
             }
         } else {
             alert("Empty recipe!")
+        }
+    }
+
+    private fun createBeer(connection: Connection, items: List<Recipe>, task: Task) {
+        val freeIndex = table_cct?.items?.find { it.statusCCT == "FREE" }?.idCCT
+        val nowDate = Date(Calendar.getInstance().time.time)
+        val tmpDate = nowDate.toLocalDate().plusDays(40)
+        val dateEnd = Date.valueOf(tmpDate)
+        if (freeIndex != null) {
+            Utils.setToCCT(connection, freeIndex, task.idTask, nowDate, dateEnd, "WORK")
+            table_cct?.items?.clear()
+            Utils.showCCT(connection)?.let { table_cct?.items?.addAll(it) }
+            val pair = Utils.countFreeCCT(connection)
+            cct_numbers?.text = "${pair.first} / ${pair.second}"
         }
     }
 
@@ -192,7 +215,7 @@ class ControllerFactory {
         val manager = Utils.getManagers(connection)
         manager?.map { "${it.name} ${it.secondName} #${it.idWorker}" }?.toList()?.let { list_manager?.items?.addAll(it) }
 
-        val pair = Utils.countFreeCCT(connection)
+        var pair = Utils.countFreeCCT(connection)
         cct_numbers?.text = "${pair.first} / ${pair.second}"
         initCCT(connection)
         initColumns(connection)
@@ -214,6 +237,22 @@ class ControllerFactory {
 
             table_tasks?.items?.clear()
             table_tasks?.items?.addAll(tasksArray)
+        }
+        btn_cct_handle?.setOnAction {
+            if (id_cct?.text?.isNotEmpty()!!) {
+                if (Utils.handleTaskFromCCTById(connection, id_cct!!.text.toString().toLong())) {
+                    alert("Success Handled", AlertType.INFORMATION)
+                } else {
+                    alert("Something went wrong")
+                }
+            } else {
+                alert("Empty id CCT")
+            }
+
+            table_cct?.items?.clear()
+            Utils.showCCT(connection)?.let { table_cct?.items?.addAll(it) }
+            pair = Utils.countFreeCCT(connection)
+            cct_numbers?.text = "${pair.first} / ${pair.second}"
         }
 
 
@@ -273,7 +312,7 @@ class ControllerFactory {
     }
 
     @FXML
-    private fun alert(text: String = "Incorrect input", type:AlertType= AlertType.ERROR) {
+    private fun alert(text: String = "Incorrect input", type: AlertType = AlertType.ERROR) {
         val alert = Alert(type)
         alert.title = "Attention"
         alert.contentText = text

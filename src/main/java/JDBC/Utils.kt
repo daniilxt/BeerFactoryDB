@@ -1170,6 +1170,57 @@ object Utils {
         return false
     }
 
+    fun setToCCT(connection: Connection, freeIndex: Long, idTask: Long, nowDate: Date, dateEnd: Date?, status: String) {
+        try {
+            val sql = "update cylindricallyconicaltank c" +
+                    " set c.StatusCCT = '${status}', c.DateStart='${nowDate}',c.DateEnd = '${dateEnd}', c.IdTask = ${idTask} " +
+                    "where IdCCT = ${freeIndex}"
+            connection.createStatement().executeQuery(sql)
+
+        } catch (ex: Exception) {
+
+        }
+    }
+
+    fun handleTaskFromCCTById(connection: Connection, idCCT: Long): Boolean {
+        try {
+            var sql = "select IdTask from cylindricallyconicaltank where IdCCT = ${idCCT}"
+            var resultSet = connection.createStatement().executeQuery(sql)
+            var idTask = 0L
+            if (resultSet.next()) {
+                idTask = resultSet.getLong(1)
+            } else {
+                return false
+            }
+            sql = "select t.Amount, b.Name\n" +
+                    "from task t\n" +
+                    "inner join beerstorage b on t.IdBeerKind = b.IdBeerKind\n" +
+                    "where IdTask = ${idTask}"
+            resultSet = connection.createStatement().executeQuery(sql)
+            var it: Pair<Long, String>
+            if (resultSet.next()) {
+                it = Pair(resultSet.getLong(1), resultSet.getString(2))
+            } else {
+                return false
+            }
+            sql = "call changeBeerCount(${it.first},'${it.second}')"
+            connection.createStatement().executeQuery(sql)
+
+            sql = "update task t  set t.Status = 'Done' where IdTask = ${idTask}"
+            connection.createStatement().executeQuery(sql)
+
+            sql = "update cylindricallyconicaltank c" +
+                    " set c.StatusCCT = 'FREE', c.DateStart='${Date(Calendar.getInstance().time.time)}',c.DateEnd = NULL, c.IdTask = ${idTask} " +
+                    "where IdCCT = ${idCCT}"
+            connection.createStatement().executeQuery(sql)
+
+            return true
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
+        return false
+    }
+
     @Throws(SQLException::class)
     private fun <T> getFromResultSet(resultSet: ResultSet, action: () -> T): List<T>? {
         val records: MutableList<T> = ArrayList()
