@@ -204,6 +204,7 @@ class ControllerFactory {
                                         it.resName!!, tmp, connection!!
                                 ) < it.amount
                         ) {
+                            val element =
                             arrBuy.add(table_res!!.items[index])
                         }
                     }

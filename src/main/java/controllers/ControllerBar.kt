@@ -13,10 +13,14 @@ import javafx.scene.control.cell.PropertyValueFactory
 import javafx.stage.Stage
 import javafx.util.Callback
 import pojo.BeerMenu
+import pojo.OrderPosition
+import pojo.Recipe
 import pojo.Worker
 import java.net.URL
 import java.sql.Connection
+import java.sql.Date
 import java.util.*
+import kotlin.math.abs
 
 
 class ControllerBar { @FXML
@@ -82,11 +86,35 @@ private var resources: ResourceBundle? = null
     }
 
     @FXML
-    private fun alert(str: String = "Incorrect input") {
-        val alert = Alert(Alert.AlertType.ERROR)
+    private fun alert(str: String = "Incorrect input", type: Alert.AlertType = Alert.AlertType.ERROR) {
+        val alert = Alert(type)
         alert.title = "Attention"
         alert.contentText = str
         alert.showAndWait()
+    }
+
+    @FXML
+    fun alertConfirm(text: String = "", arr: List<BeerMenu>, connection: Connection) {
+        val alert = Alert(Alert.AlertType.CONFIRMATION)
+        alert.title = "Dele this positions"
+        alert.headerText = "We haven't enough beer, please delete"
+        alert.contentText = text
+
+        // option != null.
+        val option = alert.showAndWait()
+        when {
+            option.get() == ButtonType.OK -> {
+                println("OK")
+            }
+            option.get() == ButtonType.CANCEL -> {
+                println("CANCELLED")
+
+            }
+            else -> {
+                println("??")
+
+            }
+        }
     }
 
     @FXML
@@ -109,12 +137,37 @@ private var resources: ResourceBundle? = null
                 println(nowDate)
                 println(worker!!.idWorker)
                 println(table_cart!!.items)
-                worker?.idWorker?.let { it1 -> Utils.createBarmanOrder(connection, table_cart!!.items, it1, nowDate) }
-                data.clear()
+
+                val arrBuy = mutableListOf<BeerMenu>()
+                var bigStr = ""
+                table_cart!!.items.forEachIndexed { index, it1 ->
+                    run {
+                        val tmp = Utils.checkBeer(it1.name!!, it1.amount, connection)
+                        if (tmp < 0) {
+                            val tmpElement = table_cart!!.items[index].copy(amount = abs(tmp))
+                            arrBuy.add(tmpElement)
+                            bigStr += "${it1.name} ${abs(tmp)}\n "
+                        }
+                    }
+                }
+                if (arrBuy.isNotEmpty()) {
+                    alertConfirm(bigStr, arrBuy, connection)
+                } else {
+                    val nowDate = java.sql.Date(Calendar.getInstance().time.time)
+                    println(nowDate)
+                    println(worker!!.idWorker)
+                    println(table_cart!!.items)
+                    worker?.idWorker?.let { it1 -> Utils.createBarmanOrder(connection, table_cart!!.items, it1, nowDate) }
+                    data.clear()
+                    table_beer_menu?.items?.clear()
+                    Utils.getBeerMenu(connection)?.let { table_beer_menu?.items?.addAll(it) }
+                    alert("All complete", Alert.AlertType.INFORMATION)
+                }
             } else {
                 alert()
             }
         }
+
         btn_create_request?.setOnAction {
             if (table_cart1!!.items?.isNotEmpty()!! && !list_manager?.value.isNullOrEmpty()) {
                 val nowDate = java.sql.Date(Calendar.getInstance().time.time)
