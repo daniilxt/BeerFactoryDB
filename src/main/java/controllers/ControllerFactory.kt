@@ -246,7 +246,7 @@ class ControllerFactory {
         val tmpDate = nowDate.toLocalDate().plusDays(40)
         val dateEnd = Date.valueOf(tmpDate)
         if (freeIndex != null) {
-            Utils.setToCCT(connection, freeIndex, task.idTask, nowDate, dateEnd, "WORK")
+            Utils.setToCCT(connection, freeIndex, task.idTask, nowDate, dateEnd, "WORK",task.amount)
             table_cct?.items?.clear()
             Utils.showCCT(connection)?.let { table_cct?.items?.addAll(it) }
             val pair = Utils.countFreeCCT(connection)

@@ -1170,15 +1170,40 @@ object Utils {
         return false
     }
 
-    fun setToCCT(connection: Connection, freeIndex: Long, idTask: Long, nowDate: Date, dateEnd: Date?, status: String) {
+    fun setToCCT(connection: Connection, freeIndex: Long, idTask: Long, nowDate: Date, dateEnd: Date?, status: String, amountTask:Long) {
         try {
-            val sql = "update cylindricallyconicaltank c" +
+            var sql = "update cylindricallyconicaltank c" +
                     " set c.StatusCCT = '${status}', c.DateStart='${nowDate}',c.DateEnd = '${dateEnd}', c.IdTask = ${idTask} " +
                     "where IdCCT = ${freeIndex}"
             connection.createStatement().executeQuery(sql)
 
-        } catch (ex: Exception) {
+            sql = "select * from recipelist\n" +
+                    "inner join beerstorage b on recipelist.IdBeerKind = b.IdBeerKind\n" +
+                    "inner join task t on b.IdBeerKind = t.IdBeerKind\n" +
+                    "inner join resourcestorage r on recipelist.IdResource = r.IdResource\n" +
+                    "where  IdTask = ${idTask}"
+            val resultSet = connection.createStatement().executeQuery(sql)
+            var arr: List<Pair<String, Long>>? = mutableListOf<Pair<String, Long>>()
+            if (resultSet.next()) {
+                arr = getFromResultSet(resultSet) {
+                    Pair(
+                            resultSet.getString("r.Name"), resultSet.getLong("recipeList.Amount")
+                    )
+                }
+            }
+            if (arr != null) {
+                println("all good")
+                arr.forEach {
+                     sql = "call changeResCount(${-it.second*amountTask},'${it.first}')"
+                    connection.createStatement().executeQuery(sql)
 
+                }
+            } else {
+                println("all good")
+
+            }
+        } catch (ex: Exception) {
+            ex.printStackTrace()
         }
     }
 
