@@ -14,6 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory
 import javafx.scene.text.Text
 import javafx.stage.Stage
 import pojo.*
+import java.lang.Math.abs
 import java.net.URL
 import java.sql.Connection
 import java.sql.Date
@@ -146,6 +147,7 @@ class ControllerFactory {
         alert.title = "Buy resources"
         alert.headerText = "Are you want to create resource request?"
         alert.contentText = text
+        println("buy arr: ${arr}")
 
         // option != null.
         val option = alert.showAndWait()
@@ -200,12 +202,14 @@ class ControllerFactory {
                 table_res!!.items.forEachIndexed { index, it ->
                     run {
                         val tmp = it.amount * table_task!!.items[0].amount
+                        println(tmp)
                         if (Utils.checkRes(
                                         it.resName!!, tmp, connection!!
                                 ) < it.amount
                         ) {
-                            val element =
-                            arrBuy.add(table_res!!.items[index])
+                            //val element = arrBuy.add(table_res!!.items[index])
+                            val tmpElement = table_res!!.items[index].copy(amount = kotlin.math.abs(it.storeAmount- tmp))
+                            arrBuy.add(tmpElement)
                         }
                     }
                 }
@@ -215,10 +219,10 @@ class ControllerFactory {
                     arrBuy.forEachIndexed { index, it ->
                         run {
                             println(
-                                    "${it.resName} ${(it.amount * table_task!!.items[0].amount) - it.storeAmount} ${it.unit} ")
-                            val tmp = ((it.amount * table_task!!.items[0].amount) - it.storeAmount)
+                                    "${it.resName} ${it.amount} ${it.unit} ")
+                           // val tmp = kotlin.math.abs(it.storeAmount - (it.amount * table_task!!.items[0].amount))
                             println(index)
-                            bigStr += "${it.resName} $tmp ${it.unit}\n "
+                            bigStr += "${it.resName} ${it.amount} ${it.unit}\n "
                         }
                     }
                     connection?.let { alertConfirm(bigStr, arrBuy, it) }
