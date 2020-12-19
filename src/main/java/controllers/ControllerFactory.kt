@@ -319,6 +319,16 @@ class ControllerFactory {
                 oldArray.clear()
             } else alert()
         }
+        filter_amount?.setOnAction {
+            if (filter_amount_from?.text.toString().isNotEmpty() && filter_amount_to?.text.toString().isNotEmpty()) {
+                table_tasks?.items?.let { it1 -> oldArray.addAll(it1) }
+                table_tasks?.items?.clear()
+                val from = filter_amount_from?.text.toString().toLong()
+                val to = filter_amount_to?.text.toString().toLong()
+                table_tasks?.items?.addAll(oldArray.filter { (it.amount >= from) && (it.amount <= to) }.toMutableList())
+                oldArray.clear()
+            } else alert()
+        }
     }
 
     private fun initCCT(connection: Connection) {

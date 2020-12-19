@@ -207,6 +207,7 @@ class ControllerLoaderMan {
         val dataRes = mutableListOf<TaskResource>()
         val connection: Connection? = Utils.getNewConnection()
         Utils.getTaskResources(connection!!, first)?.let { dataRes.addAll(it) }
+        println("data res ${dataRes}")
         tab_loader?.selectionModel?.select(tab_res)
         table_res?.items?.clear()
         table_res?.items?.addAll(dataRes)

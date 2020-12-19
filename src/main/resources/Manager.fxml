@@ -118,12 +118,12 @@
                                         <Font name="System Bold" size="16.0" />
                                     </font>
                                 </Label>
-                                <Button fx:id="btn_show_res" layoutX="312.0" layoutY="584.0" mnemonicParsing="false" text="SHOW">
+                                <Button fx:id="btn_show_res" layoutX="312.0" layoutY="584.0" mnemonicParsing="false" text="SHOW" visible="false">
                                     <font>
                                         <Font size="14.0" />
                                     </font>
                                 </Button>
-                                <TextField fx:id="feld_show_res" layoutX="104.0" layoutY="583.0" promptText="order number">
+                                <TextField fx:id="feld_show_res" layoutX="104.0" layoutY="583.0" promptText="order number" visible="false">
                                     <font>
                                         <Font size="15.0" />
                                     </font>
@@ -183,12 +183,12 @@
                                         <Font name="System Bold" size="16.0" />
                                     </font>
                                 </Label>
-                                <Button fx:id="btn_show_alc" layoutX="312.0" layoutY="584.0" mnemonicParsing="false" text="SHOW">
+                                <Button fx:id="btn_show_alc" layoutX="312.0" layoutY="584.0" mnemonicParsing="false" text="SHOW" visible="false">
                                     <font>
                                         <Font size="14.0" />
                                     </font>
                                 </Button>
-                                <TextField fx:id="feld_show_alc" layoutX="104.0" layoutY="583.0" promptText="order number">
+                                <TextField fx:id="feld_show_alc" layoutX="104.0" layoutY="583.0" promptText="order number" visible="false">
                                     <font>
                                         <Font size="15.0" />
                                     </font>
@@ -248,12 +248,12 @@
                               <Font name="System Bold" size="16.0" />
                            </font>
                         </Label>
-                        <Button fx:id="btn_show_task" layoutX="312.0" layoutY="584.0" mnemonicParsing="false" text="SHOW">
+                        <Button fx:id="btn_show_task" layoutX="312.0" layoutY="584.0" mnemonicParsing="false" text="SHOW" visible="false">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Button>
-                        <TextField fx:id="feld_show_task" layoutX="104.0" layoutY="583.0" promptText="order number">
+                        <TextField fx:id="feld_show_task" layoutX="104.0" layoutY="583.0" promptText="order number" visible="false">
                            <font>
                               <Font size="15.0" />
                            </font>

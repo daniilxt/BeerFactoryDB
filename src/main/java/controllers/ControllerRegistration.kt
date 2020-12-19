@@ -38,8 +38,8 @@ class ControllerRegistration {
     }
 
     @FXML
-    private fun alert(text: String) {
-        val alert = Alert(Alert.AlertType.ERROR)
+    private fun alert(text: String,type:Alert.AlertType=Alert.AlertType.ERROR) {
+        val alert = Alert(type)
         alert.title = "Attention"
         alert.contentText = text
         alert.showAndWait()
@@ -73,7 +73,7 @@ class ControllerRegistration {
                 val date: java.sql.Date = java.sql.Date.valueOf(reg_date!!.value)
                 val nowDate = java.sql.Date(Calendar.getInstance().time.time)
 
-                if (!Utils.checkLogin(connection, reg_login!!.text.toString()) && !Utils.checkUserExists(connection, reg_phone!!.text.toString().trim())) {
+                if (!Utils.checkLogin(connection, reg_login!!.text.toString()) && Utils.checkUserExists(connection, reg_phone!!.text.toString().trim())) {
                     println("STAGE 3")
 
                     BaseCoder.encode(reg_password!!.text.toString())?.let {
@@ -94,7 +94,7 @@ class ControllerRegistration {
                                 alert("This user exists")
                                 return
                             }
-                            alert("SUCCESS")
+                            alert("SUCCESS",Alert.AlertType.INFORMATION)
                             moveToScreen()
                         }
                     }

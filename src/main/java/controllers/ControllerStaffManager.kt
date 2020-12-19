@@ -150,7 +150,7 @@ class ControllerStaffManager {
                 val date: Date = Date.valueOf(reg_date!!.value)
                 val nowDate = Date(Calendar.getInstance().time.time)
 
-                if (!Utils.checkLogin(connection, reg_login!!.text.toString())  && !Utils.checkUserExists(connection, reg_phone!!.text.toString().trim())) {
+                if (!Utils.checkLogin(connection, reg_login!!.text.toString())  && Utils.checkUserExists(connection, reg_phone!!.text.toString().trim())) {
                     println("STAGE 3")
 
                     val role = Role.valueOf(switch_role!!.value.toUpperCase())
