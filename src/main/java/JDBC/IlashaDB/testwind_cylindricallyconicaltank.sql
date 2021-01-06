@@ -13,6 +13,9 @@ create table cylindricallyconicaltank
 create index IdTask
     on cylindricallyconicaltank (IdTask);
 
-INSERT INTO testwind.cylindricallyconicaltank (IdCCT, IdTask, DateStart, DateEnd, StatusCCT) VALUES (1, 1, '1970-01-01', '1970-02-10', 'WORK');
-INSERT INTO testwind.cylindricallyconicaltank (IdCCT, IdTask, DateStart, DateEnd, StatusCCT) VALUES (2, 1, '1970-01-01', null, 'FREE');
-INSERT INTO testwind.cylindricallyconicaltank (IdCCT, IdTask, DateStart, DateEnd, StatusCCT) VALUES (3, 1, '1970-01-01', null, 'FREE');
+INSERT INTO testwind.cylindricallyconicaltank (IdCCT, IdTask, DateStart, DateEnd, StatusCCT)
+VALUES (1, 1, '1970-01-01', '1970-02-10', 'WORK');
+INSERT INTO testwind.cylindricallyconicaltank (IdCCT, IdTask, DateStart, DateEnd, StatusCCT)
+VALUES (2, 1, '1970-01-01', null, 'FREE');
+INSERT INTO testwind.cylindricallyconicaltank (IdCCT, IdTask, DateStart, DateEnd, StatusCCT)
+VALUES (3, 1, '1970-01-01', null, 'FREE');

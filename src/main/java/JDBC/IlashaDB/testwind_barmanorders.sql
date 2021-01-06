@@ -9,5 +9,7 @@ create table barmanorders
         foreign key (IdBarman) references barman (IdBarMan)
 );
 
-INSERT INTO testwind.barmanorders (IdBarmanOrder, IdBarman, Date, Status) VALUES (1, 1, '2020-12-15', 'done');
-INSERT INTO testwind.barmanorders (IdBarmanOrder, IdBarman, Date, Status) VALUES (2, 1, '2020-12-15', 'done');
+INSERT INTO testwind.barmanorders (IdBarmanOrder, IdBarman, Date, Status)
+VALUES (1, 1, '2020-12-15', 'done');
+INSERT INTO testwind.barmanorders (IdBarmanOrder, IdBarman, Date, Status)
+VALUES (2, 1, '2020-12-15', 'done');

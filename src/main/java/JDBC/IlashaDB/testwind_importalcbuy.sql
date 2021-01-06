@@ -18,5 +18,7 @@ create index IdBarman
 create index IdManager
     on importalcbuy (IdManager);
 
-INSERT INTO testwind.importalcbuy (IdImportAlcBuy, IdBarman, IdManager, Date, Status) VALUES (1, 1, 1, '2020-01-02', 'system');
-INSERT INTO testwind.importalcbuy (IdImportAlcBuy, IdBarman, IdManager, Date, Status) VALUES (2, 1, 1, '2020-02-03', 'done');
+INSERT INTO testwind.importalcbuy (IdImportAlcBuy, IdBarman, IdManager, Date, Status)
+VALUES (1, 1, 1, '2020-01-02', 'system');
+INSERT INTO testwind.importalcbuy (IdImportAlcBuy, IdBarman, IdManager, Date, Status)
+VALUES (2, 1, 1, '2020-02-03', 'done');

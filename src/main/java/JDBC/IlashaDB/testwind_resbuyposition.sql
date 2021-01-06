@@ -17,6 +17,9 @@ create index IdResBuy
 create index IdResource
     on resbuyposition (IdResource);
 
-INSERT INTO testwind.resbuyposition (IdResBuyPosition, Number, IdResBuy, IdResource) VALUES (1, 3, 3, 3);
-INSERT INTO testwind.resbuyposition (IdResBuyPosition, Number, IdResBuy, IdResource) VALUES (2, 7, 3, 8);
-INSERT INTO testwind.resbuyposition (IdResBuyPosition, Number, IdResBuy, IdResource) VALUES (4, 11, 4, 5);
+INSERT INTO testwind.resbuyposition (IdResBuyPosition, Number, IdResBuy, IdResource)
+VALUES (1, 3, 3, 3);
+INSERT INTO testwind.resbuyposition (IdResBuyPosition, Number, IdResBuy, IdResource)
+VALUES (2, 7, 3, 8);
+INSERT INTO testwind.resbuyposition (IdResBuyPosition, Number, IdResBuy, IdResource)
+VALUES (4, 11, 4, 5);

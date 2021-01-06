@@ -361,18 +361,18 @@ begin
 
 end;
 
-INSERT INTO `BeerStorage` (`IdBeerKind`, `Name`, `Price`, `Type`, `Amount`, `CookTime`)
+INSERT INTO BeerStorage (IdBeerKind, Name, Price, Type, Amount, CookTime)
 VALUES (1, 'Ale', 100, 'Our', 10, 50),
        (2, 'Lager', 120, 'Our', 2, 100),
        (3, 'VolkovskoeHoney', 150, 'Import', 4, 1),
        (4, 'GarageLemon', 80, 'Import', 3, 1),
        (5, 'GingerBeer', 90, 'Craft', 10, 30),
        (6, 'BavarianWheat', 125, 'Our', 2, 40);
-INSERT INTO `CylindricallyConicalTank` (`IdCCT`, `IdTask`, `DateStart`, `DateEnd`, `StatusCCT`)
+INSERT INTO CylindricallyConicalTank (IdCCT, IdTask, DateStart, DateEnd, StatusCCT)
 VALUES (1, 1, '1970-01-01', '1970-02-10', 'WORK'),
        (2, 1, '1970-01-01', NULL, 'FREE'),
        (3, 1, '1970-01-01', NULL, 'FREE');
-INSERT INTO `RecipeList` (`idRecipe`, `IdBeerKind`, `IdResource`, `Amount`)
+INSERT INTO RecipeList (idRecipe, IdBeerKind, IdResource, Amount)
 VALUES (1, 1, 1, 5),
        (2, 1, 2, 4),
        (3, 1, 3, 2),
@@ -384,7 +384,7 @@ VALUES (1, 1, 1, 5),
        (9, 2, 1, 5),
        (10, 2, 2, 4),
        (11, 2, 5, 1);
-INSERT INTO `ResourceStorage` (`IdResource`, `Name`, `Amount`, `Price`, `Unit`)
+INSERT INTO ResourceStorage (IdResource, Name, Amount, Price, Unit)
 VALUES (1, 'Water', 1000, 1, 'liters'),
        (2, 'HotWater', 1000, 2, 'liters'),
        (3, 'Hop', 250, 4, 'piece'),
@@ -394,15 +394,15 @@ VALUES (1, 'Water', 1000, 1, 'liters'),
        (7, 'MunichMalt', 150, 3, 'kg'),
        (8, 'Malt', 50, 1, 'kg'),
        (9, 'AscorbicAcid', 5, 1, 'kg');
-INSERT INTO `Task` (`IdTask`, `IdTechnologicalEngineer`, `IdBeerKind`, `Date`, `Status`, `Amount`)
+INSERT INTO Task (IdTask, IdTechnologicalEngineer, IdBeerKind, Date, Status, Amount)
 VALUES (1, 1, 1, '2020-01-14', 'Active', 3),
        (3, 2, 2, '2020-01-04', 'Done', 4),
        (4, 1, 6, '2020-01-15', 'Active', 5);
-INSERT INTO `TechnologistEngineer` (`IdTechnologistEngineer`, `Name`, `SecondName`, `MiddleName`, `Phone`, `DateJoin`,
-                                    `DateDismiss`, `Salary`, `IdUser`)
+INSERT INTO TechnologistEngineer (IdTechnologistEngineer, Name, SecondName, MiddleName, Phone, DateJoin,
+                                    DateDismiss, Salary, IdUser)
 VALUES (1, 'Novikov', 'Alexey', 'Igorevich', '8(952)344-24-15', '2020-12-01', NULL, 20000, 1),
        (2, 'Ptushkin', 'Anton', 'Olegovich', '8(911)234-123-33', '2020-12-02', NULL, 20000, 2);
-INSERT INTO `User` (`IdUser`, `Login`, `Password`, `Role`)
+INSERT INTO User (IdUser, Login, Password, Role)
 VALUES (1, 'w_eng1', 'd19lbmcx', 'engineer'),
        (2, 'w_eng2', 'd19lbmcy', 'engineer'),
        (3, 'w_man1', 'd19tYW4x', 'staff_manager'),
@@ -967,18 +967,18 @@ begin
 
 end;
 
-INSERT INTO `BeerStorage` (`IdBeerKind`, `Name`, `Price`, `Type`, `Amount`, `CookTime`)
+INSERT INTO BeerStorage (IdBeerKind, Name, Price, Type, Amount, CookTime)
 VALUES (1, 'Ale', 100, 'Our', 10, 50),
        (2, 'Lager', 120, 'Our', 2, 100),
        (3, 'VolkovskoeHoney', 150, 'Import', 4, 1),
        (4, 'GarageLemon', 80, 'Import', 3, 1),
        (5, 'GingerBeer', 90, 'Craft', 10, 30),
        (6, 'BavarianWheat', 125, 'Our', 2, 40);
-INSERT INTO `CylindricallyConicalTank` (`IdCCT`, `IdTask`, `DateStart`, `DateEnd`, `StatusCCT`)
+INSERT INTO CylindricallyConicalTank (IdCCT, IdTask, DateStart, DateEnd, StatusCCT)
 VALUES (1, 1, '1970-01-01', '1970-02-10', 'WORK'),
        (2, 1, '1970-01-01', NULL, 'FREE'),
        (3, 1, '1970-01-01', NULL, 'FREE');
-INSERT INTO `RecipeList` (`idRecipe`, `IdBeerKind`, `IdResource`, `Amount`)
+INSERT INTO RecipeList (idRecipe, IdBeerKind, IdResource, Amount)
 VALUES (1, 1, 1, 5),
        (2, 1, 2, 4),
        (3, 1, 3, 2),
@@ -990,7 +990,7 @@ VALUES (1, 1, 1, 5),
        (9, 2, 1, 5),
        (10, 2, 2, 4),
        (11, 2, 5, 1);
-INSERT INTO `ResourceStorage` (`IdResource`, `Name`, `Amount`, `Price`, `Unit`)
+INSERT INTO ResourceStorage (IdResource, Name, Amount, Price, Unit)
 VALUES (1, 'Water', 1000, 1, 'liters'),
        (2, 'HotWater', 1000, 2, 'liters'),
        (3, 'Hop', 250, 4, 'piece'),
@@ -1000,15 +1000,15 @@ VALUES (1, 'Water', 1000, 1, 'liters'),
        (7, 'MunichMalt', 150, 3, 'kg'),
        (8, 'Malt', 50, 1, 'kg'),
        (9, 'AscorbicAcid', 5, 1, 'kg');
-INSERT INTO `Task` (`IdTask`, `IdTechnologicalEngineer`, `IdBeerKind`, `Date`, `Status`, `Amount`)
+INSERT INTO Task (IdTask, IdTechnologicalEngineer, IdBeerKind, Date, Status, Amount)
 VALUES (1, 1, 1, '2020-01-14', 'Active', 3),
        (3, 2, 2, '2020-01-04', 'Done', 4),
        (4, 1, 6, '2020-01-15', 'Active', 5);
-INSERT INTO `TechnologistEngineer` (`IdTechnologistEngineer`, `Name`, `SecondName`, `MiddleName`, `Phone`, `DateJoin`,
-                                    `DateDismiss`, `Salary`, `IdUser`)
+INSERT INTO TechnologistEngineer (IdTechnologistEngineer, Name, SecondName, MiddleName, Phone, DateJoin,
+                                    DateDismiss, Salary, IdUser)
 VALUES (1, 'Novikov', 'Alexey', 'Igorevich', '8(952)344-24-15', '2020-12-01', NULL, 20000, 1),
        (2, 'Ptushkin', 'Anton', 'Olegovich', '8(911)234-123-33', '2020-12-02', NULL, 20000, 2);
-INSERT INTO `User` (`IdUser`, `Login`, `Password`, `Role`)
+INSERT INTO User (IdUser, Login, Password, Role)
 VALUES (1, 'w_eng1', 'd19lbmcx', 'engineer'),
        (2, 'w_eng2', 'd19lbmcy', 'engineer'),
        (3, 'w_man1', 'd19tYW4x', 'staff_manager'),

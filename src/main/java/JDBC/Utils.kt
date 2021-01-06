@@ -1161,7 +1161,7 @@ object Utils {
                 val sql = "call changeBeerCount(${-it.amount},'${it.beerName}')"
                 connection.createStatement().executeQuery(sql)
             }
-            val sql = "update orders o set o.Status = 'done' where o.IdOrder = ${currentClientTask.idOrder}"
+            val sql = " ${currentClientTask.idOrder}"
             connection.createStatement().executeQuery(sql)
             return true
         } catch (ex: Exception) {

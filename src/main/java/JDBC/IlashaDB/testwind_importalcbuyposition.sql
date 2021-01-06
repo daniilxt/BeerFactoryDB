@@ -17,5 +17,7 @@ create index IdBeerKind
 create index IdImportAlcBuy
     on importalcbuyposition (IdImportAlcBuy);
 
-INSERT INTO testwind.importalcbuyposition (IdImportAlcPosition, Number, IdImportAlcBuy, IdBeerKind) VALUES (1, 5, 2, 3);
-INSERT INTO testwind.importalcbuyposition (IdImportAlcPosition, Number, IdImportAlcBuy, IdBeerKind) VALUES (2, 7, 2, 4);
+INSERT INTO testwind.importalcbuyposition (Number, IdImportAlcBuy, IdBeerKind)
+VALUES (5, 2, 3);
+INSERT INTO testwind.importalcbuyposition (IdImportAlcPosition, Number, IdImportAlcBuy, IdBeerKind)
+VALUES (2, 7, 2, 4);

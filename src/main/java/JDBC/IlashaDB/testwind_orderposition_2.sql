@@ -17,8 +17,8 @@ create index IdBeerKind
 create index IdOrder
     on orderposition (IdOrder);
 
-INSERT INTO testwind.orderposition (IdOrderPosition, Number, IdOrder, IdBeerKind)
-VALUES (1, 3, 1, 3);
+INSERT INTO orderposition (Number, IdOrder, IdBeerKind)
+VALUES (3, 1, 3);
 INSERT INTO testwind.orderposition (IdOrderPosition, Number, IdOrder, IdBeerKind)
 VALUES (2, 5, 1, 4);
 INSERT INTO testwind.orderposition (IdOrderPosition, Number, IdOrder, IdBeerKind)
@@ -30,7 +30,7 @@ VALUES (5, 2, 7, 1);
 INSERT INTO testwind.orderposition (IdOrderPosition, Number, IdOrder, IdBeerKind)
 VALUES (6, 1, 7, 2);
 INSERT INTO testwind.orderposition (IdOrderPosition, Number, IdOrder, IdBeerKind)
-VALUES (7, 2, 8, 4);
+VALUES (7, 10, 8, 4);
 INSERT INTO testwind.orderposition (IdOrderPosition, Number, IdOrder, IdBeerKind)
 VALUES (8, 2, 8, 3);
 INSERT INTO testwind.orderposition (IdOrderPosition, Number, IdOrder, IdBeerKind)
@@ -65,3 +65,23 @@ INSERT INTO testwind.orderposition (IdOrderPosition, Number, IdOrder, IdBeerKind
 VALUES (23, 2, 18, 1);
 INSERT INTO testwind.orderposition (IdOrderPosition, Number, IdOrder, IdBeerKind)
 VALUES (24, 4, 18, 2);
+INSERT INTO testwind.orderposition (IdOrderPosition, Number, IdOrder, IdBeerKind)
+VALUES (25, 2, 19, 1);
+INSERT INTO testwind.orderposition (IdOrderPosition, Number, IdOrder, IdBeerKind)
+VALUES (26, 1, 19, 2);
+INSERT INTO testwind.orderposition (IdOrderPosition, Number, IdOrder, IdBeerKind)
+VALUES (27, 7, 20, 3);
+INSERT INTO testwind.orderposition (IdOrderPosition, Number, IdOrder, IdBeerKind)
+VALUES (28, 2, 20, 4);
+INSERT INTO testwind.orderposition (IdOrderPosition, Number, IdOrder, IdBeerKind)
+VALUES (29, 5, 20, 5);
+INSERT INTO testwind.orderposition (IdOrderPosition, Number, IdOrder, IdBeerKind)
+VALUES (30, 6, 21, 1);
+INSERT INTO testwind.orderposition (IdOrderPosition, Number, IdOrder, IdBeerKind)
+VALUES (31, 2, 21, 2);
+INSERT INTO testwind.orderposition (IdOrderPosition, Number, IdOrder, IdBeerKind)
+VALUES (32, 1, 21, 3);
+INSERT INTO testwind.orderposition (IdOrderPosition, Number, IdOrder, IdBeerKind)
+VALUES (33, 2, 21, 5);
+INSERT INTO testwind.orderposition (IdOrderPosition, Number, IdOrder, IdBeerKind)
+VALUES (34, 1, 21, 4);
